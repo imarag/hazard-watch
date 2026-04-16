@@ -1,0 +1,29 @@
+{
+  "users": [
+    {
+      "name": "giannis maragkakis",
+      "email": "giannis.marar@hotmail.com",
+      "password": "$2b$10$ZtTyBLOb5CCs0Pg8Rj8REO8/kVp2Oca.kZleehDNDM8/XhVzZO.M6",
+      "id": "CNxJib3-yCU"
+    },
+    {
+      "name": "nadfdda",
+      "email": "giannis.marar@hotmail.com",
+      "password": "$2b$10$/IZ3GpmWC/KXPaj37LaiFeKcQ2/cjeRhm/04seBuygZciyODN3Lgi",
+      "id": "DR9NDJCYUDk"
+    },
+    {
+      "name": "nadfdda",
+      "email": "giannis.marar@hotmail.com",
+      "password": "$2b$10$..heljKzScbwUrCp/2WMoOn8cN7DTTCeOzBCEgJWZNILOiJBb6Aj.",
+      "id": "MaJ6ZCX-4Gg"
+    },
+    {
+      "name": "giannis",
+      "email": "ioannis.maragkakis@voda.ai",
+      "password": "$2b$10$/SxMUmRfjQ9hNL3vXmRuM.y2Z6hZZBJke6NWBdhbUapvUY/xkVqlq",
+      "id": "9KCqJPCAwwk"
+    }
+  ],
+  "$schema": "./node_modules/json-server/schema.json"
+}

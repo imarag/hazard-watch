@@ -6,8 +6,24 @@ import Button from '@mui/material/Button'
 import { Box, Stack } from '@mui/material'
 import Title from '../ui/Title'
 import FormDescription from './FormDescription'
+import { useState } from 'react'
+import { useNavigate } from 'react-router'
+import userService from '../../services/auth'
 
 export default function Register() {
+  const [userInfo, setUserInfo] = useState({
+    email: '',
+    password: '',
+    name: '',
+  })
+  const navigate = useNavigate()
+
+  async function handleRegister(e: React.SubmitEvent<HTMLFormElement>) {
+    e.preventDefault()
+    console.log(userInfo)
+    await userService.register(userInfo)
+    navigate('/auth/login')
+  }
   return (
     <Box
       sx={{
@@ -26,20 +42,36 @@ export default function Register() {
           borderRadius: 2,
         }}
       >
-        <form>
+        <form onSubmit={handleRegister}>
           <Stack spacing={2}>
             <Title>Register</Title>
             <FormControl required={true}>
               <InputLabel>Email</InputLabel>
-              <Input />
+              <Input
+                value={userInfo.email}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, email: e.target.value })
+                }
+              />
             </FormControl>
             <FormControl required={true}>
-              <InputLabel>Username</InputLabel>
-              <Input />
+              <InputLabel>Name</InputLabel>
+              <Input
+                value={userInfo.name}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, name: e.target.value })
+                }
+              />
             </FormControl>
             <FormControl required={true}>
               <InputLabel>Password</InputLabel>
-              <Input type='password' />
+              <Input
+                type='password'
+                value={userInfo.password}
+                onChange={(e) =>
+                  setUserInfo({ ...userInfo, password: e.target.value })
+                }
+              />
             </FormControl>
             <Box sx={{ pt: 2 }}>
               <Button type='submit' variant='contained' fullWidth>
