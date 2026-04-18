@@ -10,11 +10,13 @@ import {
 } from '@mui/material'
 import { Link } from 'react-router'
 import { useEffect, useState } from 'react'
-import usersService from '../../../services/users'
+import usersService from '@/services/users'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { useAuth } from '@/contexts/AuthContext'
+import { formatCoordinates } from '@/utils/geometry'
+import { hazardIconMapping } from '@/icons'
 
 interface PostProps {
   post: Post
@@ -31,6 +33,8 @@ export default function UserPost({ post }: PostProps) {
     }
     getUser()
   }, [post.id])
+
+  const Icon = hazardIconMapping[post.hazardType]
   return (
     <Card raised={false} sx={{ backgroundColor: 'background.paper' }}>
       <CardHeader
@@ -39,11 +43,26 @@ export default function UserPost({ post }: PostProps) {
         subheader={post.createdAt}
       />
       <CardContent>
-        <Typography variant='h6' gutterBottom>
+        <Typography
+          variant='h6'
+          gutterBottom
+          sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+        >
           {post.title}
+          <Icon fontSize='small' />
+        </Typography>
+        <Typography
+          variant='body2'
+          color='text.secondary'
+          sx={{ fontWeight: 'fontWeightLight' }}
+        >
+          {post.description}
         </Typography>
         <Typography variant='body2' color='text.secondary'>
-          {post.description}
+          {formatCoordinates(
+            post.location.geometry.coordinates[0],
+            post.location.geometry.coordinates[1],
+          )}
         </Typography>
       </CardContent>
       <CardActions>

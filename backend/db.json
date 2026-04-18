@@ -13,12 +13,6 @@
       "id": "DR9NDJCYUDk"
     },
     {
-      "name": "nadfdda",
-      "email": "giannis.marar@hotmail.com",
-      "password": "$2b$10$..heljKzScbwUrCp/2WMoOn8cN7DTTCeOzBCEgJWZNILOiJBb6Aj.",
-      "id": "MaJ6ZCX-4Gg"
-    },
-    {
       "name": "giannis",
       "email": "ioannis.maragkakis@voda.ai",
       "password": "$2b$10$/SxMUmRfjQ9hNL3vXmRuM.y2Z6hZZBJke6NWBdhbUapvUY/xkVqlq",
@@ -31,6 +25,18 @@
       "title": "Earthquake near Crete",
       "description": "A moderate earthquake of magnitude 5.2 was recorded near Crete. No major damages reported.",
       "userId": "user_123",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            25.1442,
+            35.2401
+          ]
+        },
+        "properties": {}
+      },
       "createdAt": "2026-04-17T10:15:00Z"
     },
     {
@@ -38,6 +44,18 @@
       "title": "Wildfire in Northern Greece",
       "description": "A wildfire has spread across a forested area due to strong winds and high temperatures.",
       "userId": "user_456",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            22.9444,
+            41.1231
+          ]
+        },
+        "properties": {}
+      },
       "createdAt": "2026-04-16T14:30:00Z"
     },
     {
@@ -45,6 +63,18 @@
       "title": "Flood warnings issued",
       "description": "Heavy rainfall has caused rivers to rise, prompting flood warnings in several regions.",
       "userId": "user_789",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            21.7346,
+            40.6401
+          ]
+        },
+        "properties": {}
+      },
       "createdAt": "2026-04-15T08:45:00Z"
     },
     {
@@ -52,21 +82,95 @@
       "title": "Storm approaching Athens",
       "description": "Meteorologists warn of an incoming storm with strong winds and possible hail.",
       "userId": "user_321",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            23.7275,
+            37.9838
+          ]
+        },
+        "properties": {}
+      },
       "createdAt": "2026-04-14T19:20:00Z"
     },
     {
       "id": "5",
       "title": "Aftershocks continue",
-      "description": "Several aftershocks have been recorded following yesterday's earthquake, causing concern among residents.",
+      "description": "Several aftershocks have been recorded following yesterday's earthquake.",
       "userId": "user_654",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            26.1042,
+            38.3731
+          ]
+        },
+        "properties": {}
+      },
       "createdAt": "2026-04-13T22:10:00Z"
     },
     {
+      "id": "V8ouyPmsfiQ",
       "title": "Fire warnings issued",
       "description": "Heavy Fire has caused rivers to rise, prompting flood warnings in several regions.",
       "userId": "user_189",
-      "createdAt": "2026-04-15T02:45:00Z",
-      "id": "V8ouyPmsfiQ"
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            23.1234,
+            38.9012
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-15T02:45:00Z"
+    },
+    {
+      "id": "Tw41CaMRpSw",
+      "title": "Earthquake near Athens",
+      "description": "A strong earthquake of magnitude 5.2 was recorded near Athens. No major damages reported.",
+      "userId": "CNxJib3-yCU",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            23.7275,
+            37.9838
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-18T11:02:08.607Z"
+    },
+    {
+      "id": "Vt17xaUDUNw",
+      "title": "this is a title",
+      "description": "this is description in Crete",
+      "userId": "CNxJib3-yCU",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            24.8093,
+            35.3387
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-18T11:06:13.912Z"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

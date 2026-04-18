@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
-import postsService from '../services/posts'
+import postsService from '@/services/posts'
 import type { Post } from '@/types/posts'
-import UserPost from './features/posts/UserPost'
+import UserPost from '@/components/features/posts/UserPost'
 import { Stack } from '@mui/material'
 
 export default function Home() {
@@ -15,13 +15,9 @@ export default function Home() {
   }, [])
   return (
     <div>
-      <Stack
-        direction='column'
-        spacing={2}
-        sx={{ marginInline: 4, marginBlock: 4 }}
-      >
+      <Stack direction='column' spacing={2}>
         {posts.map((post) => (
-          <UserPost post={post} />
+          <UserPost key={post.id} post={post} />
         ))}
       </Stack>
     </div>

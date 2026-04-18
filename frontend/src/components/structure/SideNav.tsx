@@ -3,6 +3,7 @@ import { Link } from 'react-router'
 import SettingsIcon from '@mui/icons-material/Settings'
 import ArticleIcon from '@mui/icons-material/Article'
 import MapIcon from '@mui/icons-material/Map'
+import ThemeSwitch from '../ui/ThemeSwitch'
 
 export default function SideNav() {
   return (
@@ -39,17 +40,16 @@ export default function SideNav() {
           Map
         </Button>
       </Box>
-      <Button
-        sx={{ marginTop: 'auto' }}
-        component={Link}
-        to='/settings'
-        startIcon={<SettingsIcon />}
-        size='small'
-        variant='text'
-        fullWidth
+      <Box
+        sx={{
+          marginTop: 'auto',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
-        settings
-      </Button>
+        <ThemeSwitch />
+      </Box>
     </Box>
   )
 }

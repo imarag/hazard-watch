@@ -27,7 +27,7 @@ export const requireAuth = (
   next: NextFunction,
 ) => {
   const token = req.token
-  console.log(token, '*******')
+
   if (!token) {
     return res
       .status(401)

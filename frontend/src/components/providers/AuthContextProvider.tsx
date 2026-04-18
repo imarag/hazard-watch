@@ -1,18 +1,18 @@
 import { useState, useEffect } from 'react'
 import AuthContext from '@/contexts/AuthContext'
 import type { CurrentUser, UserRegister } from '@/types/users'
-import authService from '../../services/auth'
-import { setToken } from '../../services/api'
-import userService from '../../services/auth'
+import authService from '@/services/auth'
+import { setToken } from '@/services/api'
+import userService from '@/services/auth'
 import type { UserLogin } from '@/types/users'
 
-interface UserContextProviderProps {
+interface AuthContextProviderProps {
   children: React.ReactNode
 }
 
-export default function UserContextProvider({
+export default function AuthContextProvider({
   children,
-}: UserContextProviderProps) {
+}: AuthContextProviderProps) {
   const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null)
   const [loading, setLoading] = useState(true)
 

@@ -1,7 +1,11 @@
+import type { HazardType, Location } from './hazards'
+
 type BasePost = {
   title: string
   description: string
   userId: string
+  hazardType: HazardType
+  location: Location
   createdAt: string
 }
 

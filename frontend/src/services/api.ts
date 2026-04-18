@@ -1,5 +1,5 @@
 import axios from 'axios'
-import authService from './auth.ts'
+import authService from '@/services/auth.ts'
 
 let accessToken: string | null = null
 

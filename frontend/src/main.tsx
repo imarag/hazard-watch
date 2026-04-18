@@ -1,27 +1,16 @@
-import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
 import { BrowserRouter } from 'react-router'
-import { createTheme, ThemeProvider } from '@mui/material'
-import UserContextProvider from './components/providers/UserContextProvider.tsx'
-
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#1d232a',
-      paper: '#191e24',
-    },
-  },
-})
+import AuthContextProvider from '@/components/providers/AuthContextProvider.tsx'
+import ThemeContextProvider from './components/providers/ThemeContextProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <ThemeProvider theme={theme}>
-    <UserContextProvider>
+  <ThemeContextProvider>
+    <AuthContextProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </UserContextProvider>
-  </ThemeProvider>,
+    </AuthContextProvider>
+  </ThemeContextProvider>,
 )

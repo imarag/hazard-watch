@@ -1,6 +1,6 @@
-import { Box } from '@mui/material'
-import SideNav from '../structure/SideNav'
-import TopBar from '../structure/TopBar'
+import { Box, Container } from '@mui/material'
+import SideNav from '@/components/structure/SideNav'
+import TopBar from '@/components/structure/TopBar'
 import { Outlet } from 'react-router'
 
 export default function AppLayout() {
@@ -27,9 +27,12 @@ export default function AppLayout() {
         </Box>
 
         {/* Content */}
-        <Box sx={{ flex: 1, overflow: 'auto' }}>
+        <Container
+          fixed
+          sx={{ flex: 1, overflow: 'auto', padding: { xs: 1, md: 2 } }}
+        >
           <Outlet />
-        </Box>
+        </Container>
       </Box>
     </Box>
   )

@@ -5,7 +5,7 @@ import { requireAuth, requireOwnership } from '../middleware.ts'
 
 const router = express.Router()
 
-router.get('/', requireAuth, async (_req, res) => {
+router.get('/', async (_req, res) => {
   const posts = await postService.getAllPosts()
   return res.status(200).json(posts)
 })
@@ -16,11 +16,15 @@ router.get('/:id', async (req, res) => {
   return res.status(200).json(post)
 })
 
-router.post('/', requireAuth, requireOwnership, async (req, res) => {
+router.post('/', requireAuth, async (req, res) => {
   const body = req.body
-  const newPost = NewPostSchema.parse(body)
+  const newPost = NewPostSchema.parse({
+    ...body,
+    createdAt: new Date().toISOString(),
+    userId: req.userId,
+  })
   const post = await postService.createPost(newPost)
-  return res.status(200).json(post)
+  return res.status(201).json(post)
 })
 
 router.put('/:id', requireAuth, requireOwnership, async (req, res) => {
