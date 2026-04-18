@@ -36,7 +36,7 @@ export default function Login() {
         }}
       >
         <Stack component='form' onSubmit={handleLogin} spacing={2}>
-          <Title>Login</Title>
+          <Title>Sign in</Title>
           <TextField label='Email' {...email} required />
           <TextField label='Password' type='password' {...password} required />
           <Button type='submit' variant='contained' fullWidth>

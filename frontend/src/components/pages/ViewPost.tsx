@@ -112,8 +112,11 @@ export default function ViewPost() {
             icon={hazardIconMapping[post.hazardType]}
           />
         </PostInfo>
+        <PostInfo title='Report creation date'>
+          <PostInfoText text={post.createdAt} />
+        </PostInfo>
         <PostInfo title='Location'>
-          <Map>
+          <Map height='380px'>
             <LocationMarker
               lat={post.location.geometry.coordinates[1]}
               lon={post.location.geometry.coordinates[0]}

@@ -1,6 +1,6 @@
 import { Box, Button } from '@mui/material'
 import { Link } from 'react-router'
-import SettingsIcon from '@mui/icons-material/Settings'
+import PersonIcon from '@mui/icons-material/Person'
 import ArticleIcon from '@mui/icons-material/Article'
 import MapIcon from '@mui/icons-material/Map'
 import ThemeSwitch from '../ui/ThemeSwitch'
@@ -18,27 +18,44 @@ export default function SideNav() {
         paddingInline: 2,
       }}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-        <Button
-          startIcon={<ArticleIcon />}
-          component={Link}
-          to='/'
-          size='small'
-          variant='text'
-          fullWidth
+      <Box sx={{ textAlign: 'center' }}>
+        <Box
+          sx={{
+            display: 'inline-flex',
+            flexDirection: 'column',
+            alignItems: 'start',
+            gap: 1,
+            width: 'min-content',
+          }}
         >
-          Posts
-        </Button>
-        <Button
-          startIcon={<MapIcon />}
-          component={Link}
-          to='/map'
-          size='small'
-          variant='text'
-          fullWidth
-        >
-          Map
-        </Button>
+          <Button
+            startIcon={<ArticleIcon />}
+            component={Link}
+            to='/'
+            size='small'
+            variant='text'
+          >
+            Posts
+          </Button>
+          <Button
+            startIcon={<MapIcon />}
+            component={Link}
+            to='/map'
+            size='small'
+            variant='text'
+          >
+            Map
+          </Button>
+          <Button
+            startIcon={<PersonIcon />}
+            component={Link}
+            to='/about'
+            size='small'
+            variant='text'
+          >
+            About
+          </Button>
+        </Box>
       </Box>
       <Box
         sx={{

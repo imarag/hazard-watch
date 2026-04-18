@@ -36,7 +36,11 @@ export default function UserPost({ post }: PostProps) {
 
   const Icon = hazardIconMapping[post.hazardType]
   return (
-    <Card raised={false} sx={{ backgroundColor: 'background.paper' }}>
+    <Card
+      raised={false}
+      variant='outlined'
+      sx={{ backgroundColor: 'background.paper' }}
+    >
       <CardHeader
         avatar={<Avatar>{author ? author[0].toUpperCase() : ''}</Avatar>}
         title={post.title}

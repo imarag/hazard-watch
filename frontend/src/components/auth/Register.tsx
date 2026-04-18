@@ -40,7 +40,7 @@ export default function Register() {
         }}
       >
         <Stack component='form' onSubmit={handleRegister} spacing={2}>
-          <Title>Register</Title>
+          <Title>Create an account</Title>
           <TextField label='Email' {...email} required />
           <TextField label='Name' {...name} required />
           <TextField label='Password' type='password' {...password} required />

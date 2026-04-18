@@ -7,6 +7,8 @@ import MainLayout from '@/components/layouts/MainLayout'
 import { CssBaseline } from '@mui/material'
 import CreatePost from '@/components/pages/CreatePost'
 import ViewPost from '@/components/pages/ViewPost'
+import InteractiveMap from '@/components/pages/InteractiveMap'
+import About from './components/pages/About'
 
 function App() {
   return (
@@ -20,6 +22,8 @@ function App() {
             <Route path='/' element={<Home />} />
             <Route path='/posts/create' element={<CreatePost />} />
             <Route path='/posts/:id' element={<ViewPost />} />
+            <Route path='/map' element={<InteractiveMap />} />
+            <Route path='/about' element={<About />} />
           </Route>
         </Route>
       </Routes>

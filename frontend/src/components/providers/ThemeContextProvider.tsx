@@ -24,8 +24,12 @@ export default function ThemeContextProvider({
         default: config.colors[themeMode].default,
         paper: config.colors[themeMode].paper,
       },
+      primary: {
+        main: config.colors[themeMode].primary,
+      },
     },
   })
+
   return (
     <ThemeContext.Provider value={{ themeMode, setThemeMode }}>
       <ThemeProvider theme={theme}>{children}</ThemeProvider>

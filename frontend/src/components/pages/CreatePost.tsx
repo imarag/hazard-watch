@@ -44,30 +44,32 @@ function HazardMap({
       <Typography variant='caption' color='text.secondary'>
         Click on the map to set the location
       </Typography>
-      <Map>
-        <LocationPicker
-          onLocationSelect={(loc) => {
-            const point: Point = {
-              type: 'Point',
-              coordinates: [loc.longitude, loc.latitude],
-            }
-            const feature: Feature<Point, Properties> = {
-              type: 'Feature',
-              geometry: point,
-              properties: {},
-            }
-            setLocation(feature)
-          }}
-        />
-        {location && (
-          <Marker
-            position={[
-              location.geometry.coordinates[1],
-              location.geometry.coordinates[0],
-            ]}
+      <Box>
+        <Map height='240px'>
+          <LocationPicker
+            onLocationSelect={(loc) => {
+              const point: Point = {
+                type: 'Point',
+                coordinates: [loc.longitude, loc.latitude],
+              }
+              const feature: Feature<Point, Properties> = {
+                type: 'Feature',
+                geometry: point,
+                properties: {},
+              }
+              setLocation(feature)
+            }}
           />
-        )}
-      </Map>
+          {location && (
+            <Marker
+              position={[
+                location.geometry.coordinates[1],
+                location.geometry.coordinates[0],
+              ]}
+            />
+          )}
+        </Map>
+      </Box>
       <Typography variant='caption' color='text.secondary'>
         {location
           ? formatCoordinates(
@@ -114,7 +116,7 @@ export default function CreatePost() {
       }}
     >
       <Stack component='form' onSubmit={handleSubmit} spacing={2}>
-        <Title>Report a hazard</Title>
+        <Title>REPORT A HAZARD</Title>
         <TextField label='Title' size='small' {...title} required />
         <TextField
           size='small'
