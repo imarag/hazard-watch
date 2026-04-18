@@ -3,9 +3,14 @@ export interface CurrentUser {
   email: string
 }
 
-export type CurrentUserContextType = {
+export type AuthContextType = {
   currentUser: CurrentUser | null
   setCurrentUser: React.Dispatch<React.SetStateAction<CurrentUser | null>>
+  isUserLoggedIn: boolean
+  login: (credentials: UserLogin) => Promise<void>
+  register: (userInfo: BaseUser) => Promise<void>
+  logout: () => Promise<void>
+  loading: boolean
 }
 
 type BaseUser = {

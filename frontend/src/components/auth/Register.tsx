@@ -8,7 +8,7 @@ import Title from '../ui/Title'
 import FormDescription from './FormDescription'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
-import userService from '../../services/auth'
+import { useAuth } from '@/contexts/AuthContext'
 
 export default function Register() {
   const [userInfo, setUserInfo] = useState({
@@ -17,11 +17,11 @@ export default function Register() {
     name: '',
   })
   const navigate = useNavigate()
+  const { register } = useAuth()
 
   async function handleRegister(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    console.log(userInfo)
-    await userService.register(userInfo)
+    await register(userInfo)
     navigate('/auth/login')
   }
   return (

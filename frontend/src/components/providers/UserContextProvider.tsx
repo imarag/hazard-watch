@@ -1,18 +1,68 @@
-import { useState } from 'react'
-import CurrentUserContext from '@/contexts/CurrentUserContext'
-import type { CurrentUser } from '@/types/user'
+import { useState, useEffect } from 'react'
+import AuthContext from '@/contexts/AuthContext'
+import type { CurrentUser, UserRegister } from '@/types/users'
+import authService from '../../services/auth'
+import { setToken } from '../../services/api'
+import userService from '../../services/auth'
+import type { UserLogin } from '@/types/users'
+
+interface UserContextProviderProps {
+  children: React.ReactNode
+}
 
 export default function UserContextProvider({
   children,
-}: {
-  children: React.ReactNode
-}) {
-  const [currentUser, setCurrentUser] = useState<CurrentUser | undefined>(
-    undefined,
-  )
+}: UserContextProviderProps) {
+  const [currentUser, setCurrentUser] = useState<CurrentUser | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  const isUserLoggedIn = currentUser !== null
+
+  useEffect(() => {
+    async function restoreSession() {
+      setLoading(true)
+      try {
+        const res = await authService.refreshToken()
+        setToken(res.token)
+        setCurrentUser({ id: res.id, email: res.email })
+      } catch {
+        setToken(null)
+        setCurrentUser(null)
+      } finally {
+        setLoading(false)
+      }
+    }
+    restoreSession()
+  }, [])
+
+  async function login(credentials: UserLogin) {
+    const loginResult = await userService.login(credentials)
+    setCurrentUser({ id: loginResult.id, email: loginResult.email })
+    setToken(loginResult.token)
+  }
+
+  async function register(userInfo: UserRegister) {
+    await userService.register(userInfo)
+  }
+
+  async function logout() {
+    await userService.logout()
+    setCurrentUser(null)
+  }
+
   return (
-    <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
-      {children}
-    </CurrentUserContext.Provider>
+    <AuthContext.Provider
+      value={{
+        currentUser,
+        setCurrentUser,
+        isUserLoggedIn,
+        login,
+        register,
+        logout,
+        loading,
+      }}
+    >
+      {loading ? <p>Loading...</p> : children}
+    </AuthContext.Provider>
   )
 }

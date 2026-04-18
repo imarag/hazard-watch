@@ -25,5 +25,49 @@
       "id": "9KCqJPCAwwk"
     }
   ],
+  "posts": [
+    {
+      "id": "1",
+      "title": "Earthquake near Crete",
+      "description": "A moderate earthquake of magnitude 5.2 was recorded near Crete. No major damages reported.",
+      "userId": "user_123",
+      "createdAt": "2026-04-17T10:15:00Z"
+    },
+    {
+      "id": "2",
+      "title": "Wildfire in Northern Greece",
+      "description": "A wildfire has spread across a forested area due to strong winds and high temperatures.",
+      "userId": "user_456",
+      "createdAt": "2026-04-16T14:30:00Z"
+    },
+    {
+      "id": "3",
+      "title": "Flood warnings issued",
+      "description": "Heavy rainfall has caused rivers to rise, prompting flood warnings in several regions.",
+      "userId": "user_789",
+      "createdAt": "2026-04-15T08:45:00Z"
+    },
+    {
+      "id": "4",
+      "title": "Storm approaching Athens",
+      "description": "Meteorologists warn of an incoming storm with strong winds and possible hail.",
+      "userId": "user_321",
+      "createdAt": "2026-04-14T19:20:00Z"
+    },
+    {
+      "id": "5",
+      "title": "Aftershocks continue",
+      "description": "Several aftershocks have been recorded following yesterday's earthquake, causing concern among residents.",
+      "userId": "user_654",
+      "createdAt": "2026-04-13T22:10:00Z"
+    },
+    {
+      "title": "Fire warnings issued",
+      "description": "Heavy Fire has caused rivers to rise, prompting flood warnings in several regions.",
+      "userId": "user_189",
+      "createdAt": "2026-04-15T02:45:00Z",
+      "id": "V8ouyPmsfiQ"
+    }
+  ],
   "$schema": "./node_modules/json-server/schema.json"
 }

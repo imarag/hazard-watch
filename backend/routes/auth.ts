@@ -1,7 +1,7 @@
 import express from 'express'
-import type { UserLogin, UserRegister } from '../types/user.ts'
-import { UserLoginSchema, UserRegisterSchema } from '../models/user.ts'
-import { createUser, getUserByEmail } from '../services/user.ts'
+import type { UserLogin, UserRegister } from '../types/users.ts'
+import { UserLoginSchema, UserRegisterSchema } from '../models/users.ts'
+import usersService from '../services/users.ts'
 import {
   compareHashed,
   verifyJWTToken,
@@ -13,8 +13,8 @@ import config from '../config.ts'
 const router = express.Router()
 
 router.post('/refresh', async (req, res) => {
-  const refreshToken = req.cookies.get(config.REFRESH_TOKEN_KEY)
-
+  const refreshToken = req.cookies?.[config.REFRESH_TOKEN_KEY]
+  console.log(refreshToken, 'refresh token')
   if (!refreshToken) {
     return res.status(401).json({ error: 'No refresh token' })
   }
@@ -46,7 +46,7 @@ router.post('/login', async (req, res) => {
 
   const user = UserLoginSchema.parse(body)
 
-  const existingUser = await getUserByEmail(user.email)
+  const existingUser = await usersService.getUserByEmail(user.email)
 
   if (!existingUser) {
     return res.status(401).json({ error: 'Invalid email or password.' })
@@ -74,7 +74,7 @@ router.post('/login', async (req, res) => {
 
   res.cookie(config.REFRESH_TOKEN_KEY, refreshToken, {
     httpOnly: true,
-    secure: true,
+    secure: false,
     sameSite: 'strict',
     maxAge: 7 * 24 * 60 * 60 * 1000,
   })
@@ -91,7 +91,7 @@ router.post('/register', async (req, res) => {
 
   const user = UserRegisterSchema.parse(body)
 
-  const existingUser = await getUserByEmail(user.email)
+  const existingUser = await usersService.getUserByEmail(user.email)
 
   if (existingUser) {
     return res
@@ -101,7 +101,7 @@ router.post('/register', async (req, res) => {
 
   const hashedPassword = await hashPassword(user.password)
 
-  await createUser({ ...user, password: hashedPassword })
+  await usersService.createUser({ ...user, password: hashedPassword })
 
   return res.status(201).json({ message: 'User created succesfully' })
 })

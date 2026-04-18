@@ -17,13 +17,11 @@ const theme = createTheme({
 })
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <ThemeProvider theme={theme}>
+  <ThemeProvider theme={theme}>
+    <UserContextProvider>
       <BrowserRouter>
-        <UserContextProvider>
-          <App />
-        </UserContextProvider>
+        <App />
       </BrowserRouter>
-    </ThemeProvider>
-  </StrictMode>,
+    </UserContextProvider>
+  </ThemeProvider>,
 )

@@ -5,6 +5,9 @@ import Home from '@/components/home'
 import AppLayout from './components/layouts/AppLayout'
 import MainLayout from './components/layouts/MainLayout'
 import { CssBaseline } from '@mui/material'
+import CreatePost from './components/features/posts/CreatePost'
+import EditPost from './components/features/posts/EditPost'
+import ViewPost from './components/features/posts/ViewPost'
 
 function App() {
   return (
@@ -16,6 +19,9 @@ function App() {
           <Route path='/auth/register' element={<Register />} />
           <Route element={<AppLayout />}>
             <Route path='/' element={<Home />} />
+            <Route path='/posts/create' element={<CreatePost />} />
+            <Route path='/posts/:id/edit' element={<EditPost />} />
+            <Route path='/posts/:id' element={<ViewPost />} />
           </Route>
         </Route>
       </Routes>

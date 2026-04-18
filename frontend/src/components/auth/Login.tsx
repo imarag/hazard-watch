@@ -6,20 +6,18 @@ import Button from '@mui/material/Button'
 import { Box, Stack } from '@mui/material'
 import Title from '../ui/Title'
 import FormDescription from './FormDescription'
-import userService from '../../services/auth'
 import { useState } from 'react'
-import { useCurrentUser } from '@/contexts/CurrentUserContext'
+import { useAuth } from '@/contexts/AuthContext'
 import { useNavigate } from 'react-router'
 
 export default function Login() {
-  const { setCurrentUser } = useCurrentUser()
+  const { login } = useAuth()
   const [userInfo, setUserInfo] = useState({ email: '', password: '' })
   const navigate = useNavigate()
 
   async function handleLogin(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    const loginResult = await userService.login(userInfo)
-    setCurrentUser({ id: loginResult.id, email: loginResult.email })
+    await login(userInfo)
     navigate('/')
   }
 
