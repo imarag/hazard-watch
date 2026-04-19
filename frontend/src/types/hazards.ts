@@ -1,3 +1,5 @@
+import type { SvgIconComponent } from '@mui/icons-material'
+
 export const HazardType = {
   FLOOD: 'flood',
   EARTHQUAKE: 'earthquake',
@@ -6,6 +8,13 @@ export const HazardType = {
 } as const
 
 export type HazardType = (typeof HazardType)[keyof typeof HazardType]
+
+export type HazardMeta = {
+  name: string
+  svgUrl: string
+  muiIcon: SvgIconComponent
+  color: string
+}
 
 export type Position = [number, number] // [lon, lat]
 

@@ -17,22 +17,33 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import { useAuth } from '@/contexts/AuthContext'
 import { formatCoordinates } from '@/utils/geometry'
 import { hazardIconMapping } from '@/icons'
+import { formatDate } from '@/utils/typography'
 
 interface PostProps {
   post: Post
+  onDelete: (id: string) => void
 }
 
-export default function UserPost({ post }: PostProps) {
+export default function UserPost({ post, onDelete }: PostProps) {
   const { currentUser } = useAuth()
   const [author, setAuthor] = useState('')
 
   useEffect(() => {
     async function getUser() {
-      const user = await usersService.getUserById(post.id)
+      const user = await usersService.getUserById(post.userId)
       setAuthor(user.name)
     }
     getUser()
-  }, [post.id])
+  }, [post.userId])
+
+  const handleDeleteClick = () => {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this post?',
+    )
+    if (confirmed) {
+      onDelete(post.id)
+    }
+  }
 
   const Icon = hazardIconMapping[post.hazardType]
   return (
@@ -44,7 +55,7 @@ export default function UserPost({ post }: PostProps) {
       <CardHeader
         avatar={<Avatar>{author ? author[0].toUpperCase() : ''}</Avatar>}
         title={post.title}
-        subheader={post.createdAt}
+        subheader={formatDate(post.createdAt)}
       />
       <CardContent>
         <Typography
@@ -52,7 +63,7 @@ export default function UserPost({ post }: PostProps) {
           gutterBottom
           sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
         >
-          {post.title}
+          {post.hazardType}
           <Icon fontSize='small' />
         </Typography>
         <Typography
@@ -78,7 +89,7 @@ export default function UserPost({ post }: PostProps) {
             <IconButton component={Link} to={`/posts/${post.id}/edit`}>
               <EditIcon fontSize='small' />
             </IconButton>
-            <IconButton>
+            <IconButton onClick={handleDeleteClick}>
               <DeleteIcon fontSize='small' color='error' />
             </IconButton>
           </>

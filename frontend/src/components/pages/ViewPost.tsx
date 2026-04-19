@@ -17,6 +17,8 @@ import postsService from '@/services/posts'
 import { useAuth } from '@/contexts/AuthContext'
 import Map from '../features/Map'
 import { hazardIconMapping } from '@/icons'
+import { formatDate } from '@/utils/typography'
+import { useNavigate } from 'react-router'
 
 function LocationMarker({ lat, lon }: { lat: number; lon: number }) {
   const map = useMap()
@@ -26,7 +28,7 @@ function LocationMarker({ lat, lon }: { lat: number; lon: number }) {
     map.flyTo([lat, lon], map.getZoom())
   }, [lat, lon, map])
 
-  if (lat === undefined || lon === undefined) return null
+  if (!lat || !lon) return null
 
   return <Marker position={[lat, lon]} />
 }
@@ -79,6 +81,8 @@ export default function ViewPost() {
   const [post, setPost] = useState<Post | null>(null)
   const { currentUser } = useAuth()
 
+  const navigate = useNavigate()
+
   useEffect(() => {
     async function fetchPost() {
       if (!id) return
@@ -92,9 +96,15 @@ export default function ViewPost() {
     return null
   }
 
-  async function handleDelete() {
-    if (!id) return
+  async function handleDeletePost(id: string) {
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this post?',
+    )
+    if (!confirmed) {
+      return
+    }
     await postsService.deletePost(id)
+    navigate('/')
   }
 
   return (
@@ -113,7 +123,7 @@ export default function ViewPost() {
           />
         </PostInfo>
         <PostInfo title='Report creation date'>
-          <PostInfoText text={post.createdAt} />
+          <PostInfoText text={formatDate(post.createdAt)} />
         </PostInfo>
         <PostInfo title='Location'>
           <Map height='380px'>
@@ -136,7 +146,7 @@ export default function ViewPost() {
               Edit
             </Button>
             <Button
-              onClick={handleDelete}
+              onClick={() => handleDeletePost(post.id)}
               startIcon={<DeleteIcon />}
               size='small'
               color='error'

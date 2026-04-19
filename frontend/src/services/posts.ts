@@ -1,5 +1,5 @@
 import { api } from '@/services/api'
-import type { Post, NewPost } from '@/types/posts'
+import type { Post, CreatePost } from '@/types/posts'
 
 const baseUrl = '/posts'
 
@@ -14,12 +14,12 @@ const getPostById = async (id: string): Promise<Post> => {
   return res.data
 }
 
-const createPost = async (post: NewPost): Promise<Post> => {
+const createPost = async (post: CreatePost): Promise<Post> => {
   const res = await api.post(baseUrl, post)
   return res.data
 }
 
-const updatePost = async (post: NewPost, id: string): Promise<Post> => {
+const updatePost = async (post: CreatePost, id: string): Promise<Post> => {
   const res = await api.put(`${baseUrl}/${id}`, post)
   return res.data
 }

@@ -10,6 +10,7 @@ const useField = <T>(initialValue: T) => {
   return {
     value,
     onChange,
+    setValue,
   }
 }
 

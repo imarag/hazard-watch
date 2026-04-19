@@ -67,7 +67,7 @@ export default function About() {
               </Button>
               <Button
                 component='a'
-                href='https://github.com/imarag?tab=repositories'
+                href='https://github.com/imarag/hazard-watch'
                 target='_blank'
                 size='small'
                 variant='contained'

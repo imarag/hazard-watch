@@ -13,4 +13,7 @@ export type Post = BasePost & {
   id: string
 }
 
-export type NewPost = Omit<BasePost, 'createdAt' | 'userId'>
+export type CreatePost = Omit<BasePost, 'createdAt' | 'userId'>
+
+export type SortField = 'createdAt' | 'hazardType' | 'title'
+export type SortDirection = 'asc' | 'desc'
