@@ -18,6 +18,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import { formatCoordinates } from '@/utils/geometry'
 import { hazardIconMapping } from '@/icons'
 import { formatDate } from '@/utils/typography'
+import type { UserPublic } from '@/types/users'
 
 interface PostProps {
   post: Post
@@ -26,12 +27,12 @@ interface PostProps {
 
 export default function UserPost({ post, onDelete }: PostProps) {
   const { currentUser } = useAuth()
-  const [author, setAuthor] = useState('')
+  const [user, setUser] = useState<UserPublic | null>(null)
 
   useEffect(() => {
     async function getUser() {
       const user = await usersService.getUserById(post.userId)
-      setAuthor(user.name)
+      setUser(user)
     }
     getUser()
   }, [post.userId])
@@ -53,7 +54,7 @@ export default function UserPost({ post, onDelete }: PostProps) {
       sx={{ backgroundColor: 'background.paper' }}
     >
       <CardHeader
-        avatar={<Avatar>{author ? author[0].toUpperCase() : ''}</Avatar>}
+        avatar={<Avatar>{user ? user.name[0].toUpperCase() : ''}</Avatar>}
         title={post.title}
         subheader={formatDate(post.createdAt)}
       />

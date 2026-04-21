@@ -1,62 +1,83 @@
-import { Box, Button } from '@mui/material'
-import { Link } from 'react-router'
-import PersonIcon from '@mui/icons-material/Person'
+import { Box, Divider, Typography } from '@mui/material'
+import ThemeSwitch from '../ui/ThemeSwitch'
+import { useAuth } from '@/contexts/AuthContext'
+import SideNavItem from './SideNavItem'
+import { appRoutes } from '@/constants/routes'
 import ArticleIcon from '@mui/icons-material/Article'
 import MapIcon from '@mui/icons-material/Map'
-import ThemeSwitch from '../ui/ThemeSwitch'
+import PersonIcon from '@mui/icons-material/Person'
+import LoginRoundedIcon from '@mui/icons-material/LoginRounded'
+import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded'
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 
 export default function SideNav() {
+  const { isUserLoggedIn, logout } = useAuth()
+
   return (
     <Box
       sx={{
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        gap: 1,
-        paddingTop: 12,
-        paddingBottom: 4,
+        gap: 2,
+        paddingTop: 2,
+        paddingBottom: 2,
         paddingInline: 2,
       }}
     >
-      <Box sx={{ textAlign: 'center' }}>
-        <Box
-          sx={{
-            display: 'inline-flex',
-            flexDirection: 'column',
-            alignItems: 'start',
-            gap: 1,
-            width: 'min-content',
-          }}
-        >
-          <Button
-            startIcon={<ArticleIcon />}
-            component={Link}
-            to='/'
-            size='small'
-            variant='text'
-          >
-            Posts
-          </Button>
-          <Button
-            startIcon={<MapIcon />}
-            component={Link}
-            to='/map'
-            size='small'
-            variant='text'
-          >
-            Map
-          </Button>
-          <Button
-            startIcon={<PersonIcon />}
-            component={Link}
-            to='/about'
-            size='small'
-            variant='text'
-          >
-            About
-          </Button>
-        </Box>
+      <Box sx={{ paddingBlock: 2 }}>
+        <Typography variant='h6' align='center'>
+          HAZARD
+        </Typography>
+        <Typography variant='h6' align='center'>
+          WATCH
+        </Typography>
       </Box>
+
+      <Divider variant='middle' sx={{ marginBottom: 2 }} />
+
+      <Box
+        sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 1 }}
+      >
+        <SideNavItem
+          to={appRoutes.home.path}
+          icon={<ArticleIcon />}
+          label='Posts'
+        />
+        <SideNavItem to={appRoutes.map.path} icon={<MapIcon />} label='Map' />
+        <SideNavItem
+          to={appRoutes.about.path}
+          icon={<PersonIcon />}
+          label='About'
+        />
+
+        <Divider variant='middle' sx={{ marginBlock: 2 }} />
+
+        {isUserLoggedIn ? (
+          <SideNavItem
+            link={false}
+            icon={<LogoutRoundedIcon />}
+            label='Logout'
+            onClick={logout}
+          />
+        ) : (
+          <>
+            <SideNavItem
+              to={appRoutes.login.path}
+              icon={<LoginRoundedIcon />}
+              label='Login'
+            />
+            <SideNavItem
+              to={appRoutes.register.path}
+              icon={<AppRegistrationRoundedIcon />}
+              label='Register'
+            />
+          </>
+        )}
+      </Box>
+
+      <Divider variant='middle' sx={{ marginTop: 2 }} />
+
       <Box
         sx={{
           marginTop: 'auto',

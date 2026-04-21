@@ -36,15 +36,25 @@ export default function Home() {
   }, [])
 
   return (
-    <Box>
-      <PostsToolBar
-        sortField={sortField}
-        sortDir={sortDir}
-        setSortDir={setSortDir}
-        setSortField={setSortField}
-        posts={posts}
-      />
-      <PostsList posts={sortedPosts} setPosts={setPosts} />
+    <Box
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
+      <Box sx={{ grow: 0 }}>
+        <PostsToolBar
+          sortField={sortField}
+          sortDir={sortDir}
+          setSortDir={setSortDir}
+          setSortField={setSortField}
+          posts={posts}
+        />
+      </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <PostsList posts={sortedPosts} setPosts={setPosts} />
+      </Box>
     </Box>
   )
 }

@@ -93,7 +93,7 @@ export default function ViewPost() {
   }, [id])
 
   if (!post) {
-    return null
+    return <></>
   }
 
   async function handleDeletePost(id: string) {

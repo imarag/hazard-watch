@@ -9,7 +9,6 @@ const getAllPosts = async (): Promise<Post[]> => {
 }
 
 const getPostById = async (id: string): Promise<Post> => {
-  console.log('Fetching post with id:', id, `${baseUrl}/${id}`)
   const res = await api.get(`${baseUrl}/${id}`)
   return res.data
 }

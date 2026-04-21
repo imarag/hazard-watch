@@ -1,6 +1,6 @@
 import L from 'leaflet'
 import type { HazardType } from '@/types/hazards'
-import { hazardMeta } from '../constants.ts/hazards'
+import { hazardMeta } from '../constants/hazards'
 
 export const createHazardIcon = (hazardType: HazardType) => {
   return L.icon({

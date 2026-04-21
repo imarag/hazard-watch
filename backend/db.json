@@ -7,25 +7,346 @@
       "id": "CNxJib3-yCU"
     },
     {
-      "name": "nadfdda",
-      "email": "giannis.marar@hotmail.com",
-      "password": "$2b$10$/IZ3GpmWC/KXPaj37LaiFeKcQ2/cjeRhm/04seBuygZciyODN3Lgi",
-      "id": "DR9NDJCYUDk"
+      "name": "georgia maragkaki",
+      "email": "georgia.maragkaki@hotmail.com",
+      "password": "$2b$10$lCKIfCFKYlgm2xG6jdvFF./tJAdV1o2P7q6B/4cjNUZJIPD5YL3VG",
+      "id": "WF9GoWaROyo"
     },
     {
-      "name": "giannis",
-      "email": "ioannis.maragkakis@voda.ai",
-      "password": "$2b$10$/SxMUmRfjQ9hNL3vXmRuM.y2Z6hZZBJke6NWBdhbUapvUY/xkVqlq",
-      "id": "9KCqJPCAwwk"
+      "name": "antonia marar",
+      "email": "antonia.maragkaki@gmail.com",
+      "password": "$2b$10$2EiXPIztsI37jENwU4ZseeD0CC8NEyP7Tm9/7M9iuvjDFVudRzq.u",
+      "id": "GGjDlDxsaUY"
     }
   ],
   "posts": [
     {
-      "id": "1",
-      "title": "Earthquake near Crete",
-      "description": "A moderate earthquake of magnitude 5.2 was recorded near Crete. No major damages reported.",
-      "userId": "user_123",
+      "title": "a post1",
+      "description": "a description of post",
       "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.09819030761718751,
+            51.49878009548301
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T13:34:08.098Z",
+      "userId": "CNxJib3-yCU",
+      "id": "p5QsCXdab6Y"
+    },
+    {
+      "title": "A flood coming",
+      "description": "yes this is a flood description",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.12479782104492189,
+            51.50284076861807
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T13:55:38.324Z",
+      "userId": "CNxJib3-yCU",
+      "id": "gZ7I3ag6G0I"
+    },
+    {
+      "title": "a fire here",
+      "description": "it is a fereeee",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.08909225463867188,
+            51.54460194602429
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T13:56:13.211Z",
+      "userId": "WF9GoWaROyo",
+      "id": "2M4H7H4NyIs"
+    },
+    {
+      "title": "a storm big",
+      "description": "A VERY BIG STORM",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.05887985229492188,
+            51.4999555907042
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T13:57:01.324Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "5Xo_JkMrEn8"
+    },
+    {
+      "title": "my title",
+      "description": "my description",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.11552810668945314,
+            51.509383501611595
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T21:54:39.657Z",
+      "userId": "CNxJib3-yCU",
+      "id": "4o90anshtP4"
+    },
+    {
+      "title": "small tremor detected",
+      "description": "light earthquake activity reported",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.12,
+            51.51
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T08:10:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "eq001"
+    },
+    {
+      "title": "river overflow warning",
+      "description": "flood risk increasing near river bank",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.11,
+            51.50
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T09:15:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "fl001"
+    },
+    {
+      "title": "wildfire smoke detected",
+      "description": "smoke plume visible from satellite",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.09,
+            51.52
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T10:20:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "wf001"
+    },
+    {
+      "title": "storm approaching city",
+      "description": "strong winds expected in 6 hours",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.13,
+            51.49
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T11:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "st001"
+    },
+    {
+      "title": "minor earthquake swarm",
+      "description": "multiple small quakes detected",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.10,
+            51.53
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T12:30:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "eq002"
+    },
+    {
+      "title": "urban flooding alert",
+      "description": "streets partially flooded",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.08,
+            51.51
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T14:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "fl002"
+    },
+    {
+      "title": "forest fire spreading",
+      "description": "fire expanding rapidly north area",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.14,
+            51.54
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T15:10:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "wf002"
+    },
+    {
+      "title": "storm lightning activity",
+      "description": "high lightning density detected",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.07,
+            51.48
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T16:45:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "st002"
+    },
+    {
+      "title": "earthquake aftershock",
+      "description": "aftershock following main event",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.12,
+            51.55
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T08:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "eq003"
+    },
+    {
+      "title": "flood waters rising",
+      "description": "river level continues to rise",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.06,
+            51.52
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T09:10:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "fl003"
+    },
+    {
+      "title": "athens mild earthquake",
+      "description": "small seismic activity detected near athens",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            23.7275,
+            37.9838
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-18T10:10:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "gr-eq-01"
+    },
+    {
+      "title": "thessaloniki flood alert",
+      "description": "heavy rain causing localized flooding",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            22.9444,
+            40.6401
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-19T12:00:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "gr-fl-01"
+    },
+    {
+      "title": "crete wildfire spread",
+      "description": "forest fire expanding due to wind",
+      "hazardType": "wildfire",
       "location": {
         "type": "Feature",
         "geometry": {
@@ -37,140 +358,655 @@
         },
         "properties": {}
       },
-      "createdAt": "2026-04-17T10:15:00Z"
+      "createdAt": "2026-04-20T09:30:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "gr-wf-01"
     },
     {
-      "id": "2",
-      "title": "Wildfire in Northern Greece",
-      "description": "A wildfire has spread across a forested area due to strong winds and high temperatures.",
-      "userId": "user_456",
-      "hazardType": "wildfire",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            22.9444,
-            41.1231
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-16T14:30:00Z"
-    },
-    {
-      "id": "3",
-      "title": "Flood warnings issued",
-      "description": "Heavy rainfall has caused rivers to rise, prompting flood warnings in several regions.",
-      "userId": "user_789",
-      "hazardType": "flood",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            21.7346,
-            40.6401
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-15T08:45:00Z"
-    },
-    {
-      "id": "4",
-      "title": "Storm approaching Athens",
-      "description": "Meteorologists warn of an incoming storm with strong winds and possible hail.",
-      "userId": "user_321",
+      "title": "rome storm warning",
+      "description": "strong storm approaching central italy",
       "hazardType": "storm",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            23.7275,
-            37.9838
+            12.4964,
+            41.9028
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-14T19:20:00Z"
+      "createdAt": "2026-04-21T08:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "it-st-01"
     },
     {
-      "id": "5",
-      "title": "Aftershocks continue",
-      "description": "Several aftershocks have been recorded following yesterday's earthquake.",
-      "userId": "user_654",
+      "title": "naples earthquake swarm",
+      "description": "multiple small tremors detected",
       "hazardType": "earthquake",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            26.1042,
-            38.3731
+            14.2681,
+            40.8518
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-13T22:10:00Z"
+      "createdAt": "2026-04-21T09:20:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "it-eq-01"
     },
     {
-      "id": "V8ouyPmsfiQ",
-      "title": "Fire warnings issued",
-      "description": "Heavy Fire has caused rivers to rise, prompting flood warnings in several regions.",
-      "userId": "user_189",
-      "hazardType": "wildfire",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            23.1234,
-            38.9012
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-15T02:45:00Z"
-    },
-    {
-      "id": "Tw41CaMRpSw",
-      "title": "Earthquake near Athens",
-      "description": "A strong earthquake of magnitude 5.2 was recorded near Athens. No major damages reported.",
-      "userId": "CNxJib3-yCU",
-      "hazardType": "earthquake",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            23.7275,
-            37.9838
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-18T11:02:08.607Z"
-    },
-    {
-      "id": "Vt17xaUDUNw",
-      "title": "this is a title",
-      "description": "this is description in Crete",
-      "userId": "CNxJib3-yCU",
+      "title": "istanbul flood risk",
+      "description": "river levels rising after heavy rain",
       "hazardType": "flood",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            24.8093,
-            35.3387
+            28.9784,
+            41.0082
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-18T11:06:13.912Z"
+      "createdAt": "2026-04-21T10:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "tr-fl-01"
+    },
+    {
+      "title": "ankara storm cells",
+      "description": "severe storm system moving east",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            32.8597,
+            39.9334
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T11:45:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "tr-st-01"
+    },
+    {
+      "title": "tokyo seismic activity",
+      "description": "minor tremor recorded offshore",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            139.6917,
+            35.6895
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T13:10:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "jp-eq-01"
+    },
+    {
+      "title": "osaka flood alert",
+      "description": "urban flooding in low areas",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            135.5023,
+            34.6937
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T14:30:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "jp-fl-01"
+    },
+    {
+      "title": "california wildfire zone",
+      "description": "large fire spreading in dry forest",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -119.4179,
+            36.7783
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T15:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "us-wf-01"
+    },
+    {
+      "title": "new york storm front",
+      "description": "strong winds and rain expected",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.006,
+            40.7128
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T16:00:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "us-st-01"
+    },
+    {
+      "title": "mexico city earthquake",
+      "description": "moderate seismic event detected",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -99.1332,
+            19.4326
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T08:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "mx-eq-01"
+    },
+    {
+      "title": "sao paulo flood zone",
+      "description": "street flooding after heavy rain",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -46.6333,
+            -23.5505
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T09:10:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "br-fl-01"
+    },
+    {
+      "title": "chile wildfire spread",
+      "description": "fire moving across forest region",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -70.6693,
+            -33.4489
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T10:00:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "cl-wf-01"
+    },
+    {
+      "title": "buenos aires storm system",
+      "description": "thunderstorm activity increasing",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -58.3816,
+            -34.6037
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T11:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "ar-st-01"
+    },
+    {
+      "title": "lisbon seismic reading",
+      "description": "small offshore tremor detected",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -9.1393,
+            38.7223
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T12:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "pt-eq-01"
+    },
+    {
+      "title": "madrid heatstorm warning",
+      "description": "extreme weather conditions expected",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -3.7038,
+            40.4168
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T13:00:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "es-st-01"
+    },
+    {
+      "title": "paris flood alert",
+      "description": "seine river rising rapidly",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.3522,
+            48.8566
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T14:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "fr-fl-01"
+    },
+    {
+      "title": "berlin earthquake reading",
+      "description": "minor seismic vibration detected underground",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            13.405,
+            52.52
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-16T09:15:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "de-eq-01"
+    },
+    {
+      "title": "munich flood warning",
+      "description": "river level rising after continuous rain",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            11.582,
+            48.1351
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-16T12:30:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "de-fl-01"
+    },
+    {
+      "title": "vienna storm system",
+      "description": "strong wind front moving across austria",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            16.3738,
+            48.2082
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-16T15:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "at-st-01"
+    },
+    {
+      "title": "zurich seismic signal",
+      "description": "low magnitude tremor detected",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            8.5417,
+            47.3769
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-17T08:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "ch-eq-01"
+    },
+    {
+      "title": "milan flood zone",
+      "description": "street flooding after intense rainfall",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            9.1900,
+            45.4642
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-17T10:45:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "it-fl-02"
+    },
+    {
+      "title": "barcelona heat storm",
+      "description": "extreme temperature + storm activity",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.1734,
+            41.3851
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-17T13:20:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "es-st-02"
+    },
+    {
+      "title": "london minor quake",
+      "description": "small seismic activity recorded",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -0.1276,
+            51.5074
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-18T07:10:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "uk-eq-01"
+    },
+    {
+      "title": "manchester flood alert",
+      "description": "urban drainage overflow detected",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -2.2426,
+            53.4808
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-18T09:00:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "uk-fl-02"
+    },
+    {
+      "title": "dublin storm front",
+      "description": "heavy winds approaching ireland",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -6.2603,
+            53.3498
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-18T11:30:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "ie-st-01"
+    },
+    {
+      "title": "new york seismic spike",
+      "description": "rare small underground vibration",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -74.006,
+            40.7128
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-19T06:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "us-eq-02"
+    },
+    {
+      "title": "los angeles wildfire edge",
+      "description": "fire spreading in dry hills",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.2437,
+            34.0522
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-19T08:20:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "us-wf-02"
+    },
+    {
+      "title": "chicago storm warning",
+      "description": "severe weather system incoming",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -87.6298,
+            41.8781
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-19T10:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "us-st-02"
+    },
+    {
+      "title": "toronto flood event",
+      "description": "subway stations partially flooded",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -79.3832,
+            43.6532
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-19T12:45:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "ca-fl-01"
+    },
+    {
+      "title": "tokyo earthquake wave",
+      "description": "minor seismic wave detected offshore",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            139.6503,
+            35.6762
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-19T14:00:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "jp-eq-02"
+    },
+    {
+      "title": "seoul storm alert",
+      "description": "heavy rainfall and wind gusts",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            126.978,
+            37.5665
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-19T16:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "kr-st-01"
+    },
+    {
+      "title": "brazil wildfire expansion",
+      "description": "amazon region fire spread detected",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -60.0217,
+            -3.119
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T07:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "br-wf-02"
+    },
+    {
+      "title": "argentina storm system",
+      "description": "thunderstorm activity over pampas",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -58.4173,
+            -34.6118
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T09:30:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "id": "ar-st-02"
+    },
+    {
+      "title": "lisbon flood warning",
+      "description": "coastal flooding risk rising",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -9.1393,
+            38.7223
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T11:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "id": "pt-fl-01"
+    },
+    {
+      "title": "athens seismic aftershock",
+      "description": "small aftershock recorded",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            23.7275,
+            37.9838
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T13:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "id": "gr-eq-02"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

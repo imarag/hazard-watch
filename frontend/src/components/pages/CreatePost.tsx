@@ -7,8 +7,11 @@ import Title from '@/components/ui/Title'
 import type { Location } from '@/types/hazards'
 import { HazardType } from '@/types/hazards'
 import HazardMap from '../features/HazardMap'
+import { useNotification } from '@/contexts/NotificationContext'
+import axios from 'axios'
 
 export default function CreatePost() {
+  const { showNotification, createNotification } = useNotification()
   const title = useField('')
   const description = useField('')
   const hazardType = useField<HazardType>('earthquake')
@@ -23,13 +26,27 @@ export default function CreatePost() {
       return
     }
 
-    await postsService.createPost({
-      title: title.value,
-      description: description.value,
-      hazardType: hazardType.value,
-      location: location,
-    })
-    navigate('/')
+    try {
+      await postsService.createPost({
+        title: title.value,
+        description: description.value,
+        hazardType: hazardType.value,
+        location: location,
+      })
+      showNotification(
+        createNotification('Post created succesfully.', 'success'),
+      )
+      navigate('/')
+    } catch (error: unknown) {
+      let errorMessage = 'Something went wrong'
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? errorMessage
+      }
+      showNotification({
+        message: `Cannot create post: ${errorMessage}`,
+        type: 'error',
+      })
+    }
   }
 
   return (

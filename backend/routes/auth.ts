@@ -7,6 +7,7 @@ import {
   verifyJWTToken,
   createJWTToken,
   hashPassword,
+  createErrorResponse,
 } from '../utils/auth.ts'
 import config from '../config.ts'
 
@@ -14,23 +15,20 @@ const router = express.Router()
 
 router.post('/refresh', async (req, res) => {
   const refreshToken = req.cookies?.[config.REFRESH_TOKEN_KEY]
-  console.log(refreshToken, 'refresh token')
+
   if (!refreshToken) {
-    return res.status(401).json({ error: 'No refresh token' })
+    return res.status(401).json(createErrorResponse(401, 'No refresh token'))
   }
 
   const userPayload = verifyJWTToken(refreshToken)
-
   if (!userPayload || userPayload.tokenType !== 'refresh') {
-    return res.status(401).json({ error: 'Invalid refresh token' })
+    return res
+      .status(401)
+      .json(createErrorResponse(401, 'Invalid refresh token'))
   }
 
   const accessToken = createJWTToken(
-    {
-      id: userPayload.id,
-      email: userPayload.email,
-      tokenType: 'access',
-    },
+    { id: userPayload.id, email: userPayload.email, tokenType: 'access' },
     '15m',
   )
 
@@ -43,26 +41,26 @@ router.post('/refresh', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const body: UserLogin = req.body
-
   const user = UserLoginSchema.parse(body)
 
   const existingUser = await usersService.getUserByEmail(user.email)
-
   if (!existingUser) {
-    return res.status(401).json({ error: 'Invalid email or password.' })
+    return res
+      .status(401)
+      .json(createErrorResponse(401, 'Invalid email or password.'))
   }
 
   const passwordMatch = await compareHashed(
     user.password,
     existingUser.password,
   )
-
   if (!passwordMatch) {
-    return res.status(401).json({ error: 'Invalid email or password.' })
+    return res
+      .status(401)
+      .json(createErrorResponse(401, 'Invalid email or password.'))
   }
 
   const userPayload = { email: existingUser.email, id: existingUser.id }
-
   const accessToken = createJWTToken(
     { ...userPayload, tokenType: 'access' },
     '15m',
@@ -88,22 +86,19 @@ router.post('/login', async (req, res) => {
 
 router.post('/register', async (req, res) => {
   const body: UserRegister = req.body
-
   const user = UserRegisterSchema.parse(body)
 
   const existingUser = await usersService.getUserByEmail(user.email)
-
   if (existingUser) {
     return res
-      .status(401)
-      .json({ error: 'User with that email already exists.' })
+      .status(409)
+      .json(createErrorResponse(409, 'User with that email already exists.'))
   }
 
   const hashedPassword = await hashPassword(user.password)
-
   await usersService.createUser({ ...user, password: hashedPassword })
 
-  return res.status(201).json({ message: 'User created succesfully' })
+  return res.status(201).json({ message: 'User created successfully' })
 })
 
 router.post('/logout', (_req, res) => {
@@ -112,7 +107,6 @@ router.post('/logout', (_req, res) => {
     secure: false,
     sameSite: 'strict',
   })
-
   return res.status(200).json({ message: 'Logged out' })
 })
 

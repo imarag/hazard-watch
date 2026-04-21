@@ -1,13 +1,26 @@
-import { NewPostSchema } from '../models/posts.ts'
+import { CreatePostSchema, UpdatePostSchema } from '../models/posts.ts'
 import { z } from 'zod'
+import { HazardType } from './hazards'
 
-export type Post = {
+export type BasePost = {
   title: string
   description: string
   userId: string
+  hazardType: HazardType
+  location: Location
   createdAt: string
-  updatedAt: string
+}
+
+export type PostInDb = BasePost & {
   id: string
 }
 
-export type NewPost = z.infer<typeof NewPostSchema>
+// what UI sends for create and update
+export type CreatePostInput = z.infer<typeof CreatePostSchema>
+export type UpdatePostInput = z.infer<typeof UpdatePostSchema>
+
+// what server saves to DB
+export type PostPayload = CreatePostInput & {
+  userId: string
+  createdAt: string
+}

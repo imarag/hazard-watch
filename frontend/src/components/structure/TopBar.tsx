@@ -1,17 +1,17 @@
-import { Box, Button, Container, Stack } from '@mui/material'
-import { Link } from 'react-router'
+import { Box, Container, Stack, Typography } from '@mui/material'
+import { usePageRoute } from '@/hooks/usePageRoute'
 import { useAuth } from '@/contexts/AuthContext'
-import AddIcon from '@mui/icons-material/Add'
-import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
-import LoginRoundedIcon from '@mui/icons-material/LoginRounded'
-import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded'
+import { authRequiredActions } from '@/constants/routes'
 
 export default function TopBar() {
-  const { isUserLoggedIn, logout } = useAuth()
+  const { isUserLoggedIn } = useAuth()
+  const currentRoute = usePageRoute()
 
-  async function handleLogout() {
-    await logout()
-  }
+  const visibleActions = isUserLoggedIn
+    ? currentRoute.actions
+    : currentRoute.actions.filter(
+        (Action) => !authRequiredActions.includes(Action),
+      )
 
   return (
     <Box
@@ -31,46 +31,11 @@ export default function TopBar() {
           gap: 2,
         }}
       >
-        {isUserLoggedIn && (
-          <Button
-            component={Link}
-            to='/posts/create'
-            endIcon={<AddIcon />}
-            size='small'
-            variant='contained'
-          >
-            Create Post
-          </Button>
-        )}
+        <Typography>{currentRoute.pageTitle}</Typography>
         <Stack sx={{ marginLeft: 'auto' }} direction='row' spacing={1}>
-          {isUserLoggedIn ? (
-            <Button
-              size='small'
-              endIcon={<LogoutRoundedIcon />}
-              onClick={handleLogout}
-            >
-              Logout
-            </Button>
-          ) : (
-            <>
-              <Button
-                size='small'
-                endIcon={<LoginRoundedIcon />}
-                component={Link}
-                to='/auth/login'
-              >
-                Login
-              </Button>
-              <Button
-                size='small'
-                endIcon={<AppRegistrationRoundedIcon />}
-                component={Link}
-                to='/auth/register'
-              >
-                Register
-              </Button>
-            </>
-          )}
+          {visibleActions.map((Action) => (
+            <Action />
+          ))}
         </Stack>
       </Container>
     </Box>

@@ -3,7 +3,7 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import type { SortField, SortDirection } from '@/types/posts'
 import type { Post } from '@/types/posts'
-import { sortOptions } from '@/constants.ts/hazards'
+import { sortOptions } from '@/constants/hazards'
 
 interface PostsToolBarProps {
   posts: Post[]

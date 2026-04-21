@@ -1,54 +1,57 @@
 import { TextField, Button, Stack, Container, MenuItem } from '@mui/material'
-import { useParams } from 'react-router'
+import { useParams, useNavigate } from 'react-router'
 import postsService from '@/services/posts'
-import { useNavigate } from 'react-router'
-import useField from '@/hooks/useField'
 import { useEffect, useState } from 'react'
 import Title from '@/components/ui/Title'
 import type { Location } from '@/types/hazards'
 import { HazardType } from '@/types/hazards'
-import type { Post } from '@/types/posts'
 import HazardMap from '../features/HazardMap'
+import { useNotification } from '@/contexts/NotificationContext'
+import axios from 'axios'
 
 export default function UpdatePost() {
+  const { showNotification, createNotification } = useNotification()
   const { id } = useParams()
-  const [post, setPost] = useState<Post | null>(null)
+  const navigate = useNavigate()
+
+  const [title, setTitle] = useState('')
+  const [description, setDescription] = useState('')
+  const [hazardType, setHazardType] = useState<HazardType>('earthquake')
+  const [location, setLocation] = useState<Location | null>(null)
 
   useEffect(() => {
     async function fetchPost() {
       if (!id) return
       const post = await postsService.getPostById(id)
-      setPost(post)
+      setTitle(post.title)
+      setDescription(post.description)
+      setHazardType(post.hazardType)
+      setLocation(post.location)
     }
     fetchPost()
   }, [id])
 
-  if (!post) return null
-
-  return <UpdatePostForm post={post} id={id!} />
-}
-
-function UpdatePostForm({ post, id }: { post: Post; id: string }) {
-  const navigate = useNavigate()
-
-  const title = useField(post.title)
-  const description = useField(post.description)
-  const hazardType = useField<HazardType>(post.hazardType)
-  const [location, setLocation] = useState<Location | null>(post.location)
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!location) return
-    await postsService.updatePost(
-      {
-        title: title.value,
-        description: description.value,
-        hazardType: hazardType.value,
-        location,
-      },
-      id,
-    )
-    navigate('/')
+    if (!location || !id) return
+    try {
+      await postsService.updatePost(
+        { title, description, hazardType, location },
+        id,
+      )
+      showNotification(
+        createNotification('Post updated succesfully.', 'success'),
+      )
+      navigate('/')
+    } catch (error: unknown) {
+      let errorMessage = 'Something went wrong'
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? errorMessage
+      }
+      showNotification(
+        createNotification(`Cannot create post: ${errorMessage}`, 'error'),
+      )
+    }
   }
 
   return (
@@ -58,11 +61,18 @@ function UpdatePostForm({ post, id }: { post: Post; id: string }) {
     >
       <Stack component='form' onSubmit={handleSubmit} spacing={2}>
         <Title>Update report</Title>
-        <TextField label='Title' size='small' {...title} required />
+        <TextField
+          label='Title'
+          size='small'
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
         <TextField
           label='Description'
           size='small'
-          {...description}
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
           required
           multiline
           rows={3}
@@ -71,7 +81,8 @@ function UpdatePostForm({ post, id }: { post: Post; id: string }) {
           size='small'
           select
           label='Category'
-          {...hazardType}
+          value={hazardType}
+          onChange={(e) => setHazardType(e.target.value as HazardType)}
           fullWidth
         >
           {Object.values(HazardType).map((item) => (
@@ -82,7 +93,7 @@ function UpdatePostForm({ post, id }: { post: Post; id: string }) {
         </TextField>
         <HazardMap location={location} setLocation={setLocation} />
         <Button
-          disabled={!location || !title.value || !description.value}
+          disabled={!location || !title || !description}
           type='submit'
           variant='contained'
           fullWidth

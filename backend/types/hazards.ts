@@ -1,5 +1,3 @@
-import type { SvgIconComponent } from '@mui/icons-material'
-
 export const HazardType = {
   FLOOD: 'flood',
   EARTHQUAKE: 'earthquake',
@@ -8,13 +6,6 @@ export const HazardType = {
 } as const
 
 export type HazardType = (typeof HazardType)[keyof typeof HazardType]
-
-export type HazardMeta = {
-  name: string
-  svgUrl: string
-  muiIcon: SvgIconComponent
-  color: string
-}
 
 export type Position = [number, number] // [lon, lat]
 
@@ -48,13 +39,3 @@ export type Feature<G extends Geometry = Geometry, P = Properties> = {
 
 // Your Location type
 export type Location = Feature<Point, Properties>
-
-export const DateFilter = [
-  { label: 'Last 24 hours', value: '24h' },
-  { label: 'Last 7 days', value: '7d' },
-  { label: 'All', value: 'all' },
-] as const
-
-export type DateFilterOption = (typeof DateFilter)[number]
-
-export type DateFilterValue = DateFilterOption['value']

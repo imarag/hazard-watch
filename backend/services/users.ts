@@ -1,16 +1,21 @@
 import axios from 'axios'
-import type { UserInDb, UserRegister } from '../types/users.ts'
+import { toPublicUser } from '../utils/auth.ts'
+import type { UserInDb, UserRegister, UserPublic } from '../types/users.ts'
 
 const baseUrl = 'http://localhost:3000/users'
 
-const getAllUsers = async (): Promise<UserInDb[]> => {
+const getAllUsers = async (): Promise<UserPublic[]> => {
   const res = await axios.get(baseUrl)
-  return res.data
+  const users: UserInDb[] = res.data
+  const publicUsers = users.map((user) => toPublicUser(user))
+  return publicUsers
 }
 
-const getUserById = async (id: string): Promise<UserInDb> => {
+const getUserById = async (id: string): Promise<UserPublic> => {
   const res = await axios.get(`${baseUrl}/${id}`)
-  return res.data
+  const user: UserInDb = res.data
+  const publicUser = toPublicUser(user)
+  return publicUser
 }
 
 const getUserByEmail = async (email: string): Promise<UserInDb> => {

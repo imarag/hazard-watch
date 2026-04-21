@@ -4,7 +4,6 @@ import type { UserLogin, UserRegister, LoginResponse } from '@/types/users'
 const baseUrl = '/auth'
 
 const login = async (user: UserLogin): Promise<LoginResponse> => {
-  console.log(user, '*******', `${baseUrl}/login`)
   const res = await api.post(`${baseUrl}/login`, user)
   return res.data
 }
