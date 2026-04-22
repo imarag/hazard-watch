@@ -2,32 +2,35 @@ import type { Post } from '@/types/posts'
 import {
   Card,
   CardHeader,
+  Button,
   Avatar,
   CardContent,
   Typography,
   CardActions,
-  IconButton,
+  Box,
 } from '@mui/material'
 import { Link } from 'react-router'
 import { useEffect, useState } from 'react'
 import usersService from '@/services/users'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import VisibilityIcon from '@mui/icons-material/Visibility'
+import { useNavigate } from 'react-router'
 import { useAuth } from '@/contexts/AuthContext'
 import { formatCoordinates } from '@/utils/geometry'
 import { hazardIconMapping } from '@/icons'
 import { formatDate } from '@/utils/typography'
 import type { UserPublic } from '@/types/users'
+import EditPostAction from '@/components/actions/EditPostAction'
+import DeletePostAction from '@/components/actions/DeletePostAction'
+import postsService from '@/services/posts'
+import ViewPostAction from '@/components/actions/ViewPostAction'
 
 interface PostProps {
   post: Post
-  onDelete: (id: string) => void
 }
 
-export default function UserPost({ post, onDelete }: PostProps) {
+export default function UserPost({ post }: PostProps) {
   const { currentUser } = useAuth()
   const [user, setUser] = useState<UserPublic | null>(null)
+  const navigate = useNavigate()
 
   useEffect(() => {
     async function getUser() {
@@ -37,64 +40,113 @@ export default function UserPost({ post, onDelete }: PostProps) {
     getUser()
   }, [post.userId])
 
-  const handleDeleteClick = () => {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete this post?',
-    )
-    if (confirmed) {
-      onDelete(post.id)
-    }
+  async function handleDeletePost(id: string) {
+    await postsService.deletePost(id)
+    navigate('/')
   }
 
   const Icon = hazardIconMapping[post.hazardType]
+
   return (
     <Card
-      raised={false}
       variant='outlined'
-      sx={{ backgroundColor: 'background.paper' }}
+      sx={{
+        backgroundColor: 'background.paper',
+        borderColor: 'divider',
+        borderRadius: 4,
+        padding: 2,
+        transition: 'border-color 0.15s',
+      }}
     >
       <CardHeader
-        avatar={<Avatar>{user ? user.name[0].toUpperCase() : ''}</Avatar>}
-        title={post.title}
-        subheader={formatDate(post.createdAt)}
+        avatar={
+          <Avatar
+            sx={{
+              bgcolor: 'secondary.dark',
+              color: 'secondary.contrastText',
+              width: 40,
+              height: 40,
+              fontSize: 'h6',
+              fontWeight: 500,
+            }}
+          >
+            {user ? user.name[0].toUpperCase() : ''}
+          </Avatar>
+        }
+        title={
+          <Typography
+            sx={{
+              fontSize: 'body1',
+              fontWeight: 500,
+              color: 'text.primary',
+            }}
+          >
+            {post.title}
+          </Typography>
+        }
+        subheader={
+          <Typography sx={{ fontSize: 12, color: 'text.disabled' }}>
+            {formatDate(post.createdAt)}
+          </Typography>
+        }
       />
-      <CardContent>
+
+      <CardContent sx={{ pt: 0, pb: 0 }}>
         <Typography
           variant='h6'
           gutterBottom
-          sx={{ display: 'flex', alignItems: 'center', gap: 2 }}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 1,
+            fontSize: 'body2',
+            fontWeight: 'fontWeightLight',
+            color: 'text.primary',
+            textTransform: 'capitalize',
+          }}
         >
           {post.hazardType}
-          <Icon fontSize='small' />
+          <Icon fontSize='small' sx={{ color: 'text.secondary' }} />
         </Typography>
+
         <Typography
-          variant='body2'
-          color='text.secondary'
-          sx={{ fontWeight: 'fontWeightLight' }}
+          sx={{
+            color: 'text.secondary',
+            fontWeight: 'light',
+            mb: 0.5,
+          }}
         >
           {post.description}
         </Typography>
-        <Typography variant='body2' color='text.secondary'>
+
+        <Typography
+          variant='body2'
+          sx={{
+            color: 'text.disabled',
+            fontSize: 12,
+            fontFamily: 'monospace',
+          }}
+        >
           {formatCoordinates(
             post.location.geometry.coordinates[0],
             post.location.geometry.coordinates[1],
           )}
         </Typography>
       </CardContent>
-      <CardActions>
-        <IconButton component={Link} to={`/posts/${post.id}`}>
-          <VisibilityIcon fontSize='small' />
-        </IconButton>
-        {currentUser?.id === post.userId && (
-          <>
-            <IconButton component={Link} to={`/posts/${post.id}/edit`}>
-              <EditIcon fontSize='small' />
-            </IconButton>
-            <IconButton onClick={handleDeleteClick}>
-              <DeleteIcon fontSize='small' color='error' />
-            </IconButton>
-          </>
-        )}
+
+      <CardActions sx={{ pt: 0.5, pb: 0.5, mt: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <ViewPostAction postId={post.id} />
+          {currentUser?.id === post.userId && (
+            <>
+              <EditPostAction postId={post.id} />
+              <DeletePostAction
+                postId={post.id}
+                onDeletePost={handleDeletePost}
+              />
+            </>
+          )}
+        </Box>
       </CardActions>
     </Card>
   )

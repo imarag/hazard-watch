@@ -1,59 +1,58 @@
 import {
   Card,
-  CardActions,
   CardContent,
   Typography,
-  Button,
   Box,
+  Chip,
+  Divider,
+  Grid,
 } from '@mui/material'
+import axios from 'axios'
+import { useNotification } from '@/contexts/NotificationContext'
+import { useQuery } from '@tanstack/react-query'
 import type { SvgIconComponent } from '@mui/icons-material'
-import { Marker, useMap } from 'react-leaflet'
-import type { Post } from '@/types/posts'
-import { Link, useParams } from 'react-router'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
-import { useEffect, useState } from 'react'
+import { useParams } from 'react-router'
+import { useCallback } from 'react'
 import postsService from '@/services/posts'
 import { useAuth } from '@/contexts/AuthContext'
 import Map from '../features/Map'
 import { hazardIconMapping } from '@/icons'
 import { formatDate } from '@/utils/typography'
 import { useNavigate } from 'react-router'
+import { appRoutes } from '@/constants/routes'
+import PageLayout from '../layouts/PageLayout'
+import EditPostAction from '../actions/EditPostAction'
+import DeletePostAction from '../actions/DeletePostAction'
+import MapMarker from '../features/map/MapMarker'
+import FlyToLocation from '../features/map/FlyToLocation'
+import type { Post } from '@/types/posts'
 
-function LocationMarker({ lat, lon }: { lat: number; lon: number }) {
-  const map = useMap()
-
-  useEffect(() => {
-    if (lat === undefined || lon === undefined) return
-    map.flyTo([lat, lon], map.getZoom())
-  }, [lat, lon, map])
-
-  if (!lat || !lon) return null
-
-  return <Marker position={[lat, lon]} />
-}
-
-function PostInfo({
-  title,
+function Field({
+  label,
   children,
 }: {
-  title: string
+  label: string
   children: React.ReactNode
 }) {
   return (
-    <Box>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
       <Typography
-        variant='body2'
-        sx={{ fontWeight: 'fontWeightBold', marginBottom: 0.5 }}
+        variant='caption'
+        sx={{
+          fontWeight: 500,
+          color: 'text.disabled',
+          textTransform: 'uppercase',
+          letterSpacing: '0.07em',
+        }}
       >
-        {title}
+        {label}
       </Typography>
       {children}
     </Box>
   )
 }
 
-function PostInfoText({
+function FieldText({
   text,
   icon: Icon = null,
 }: {
@@ -64,98 +63,231 @@ function PostInfoText({
     <Typography
       variant='body2'
       sx={{
-        fontWeight: 'fontWeightLight',
+        color: 'text.primary',
+        fontWeight: 300,
         display: 'flex',
         alignItems: 'center',
-        gap: 0.5,
+        gap: 0.75,
       }}
     >
       {text}
-      {Icon && <Icon fontSize='small' />}
+      {Icon && (
+        <Icon
+          fontSize='small'
+          sx={{ color: 'text.secondary', width: 16, height: 16 }}
+        />
+      )}
     </Typography>
   )
 }
 
-export default function ViewPost() {
-  const { id } = useParams()
-  const [post, setPost] = useState<Post | null>(null)
-  const { currentUser } = useAuth()
-
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    async function fetchPost() {
-      if (!id) return
-      const post = await postsService.getPostById(id)
-      setPost(post)
-    }
-    fetchPost()
-  }, [id])
-
-  if (!post) {
-    return <></>
-  }
-
-  async function handleDeletePost(id: string) {
-    const confirmed = window.confirm(
-      'Are you sure you want to delete this post?',
-    )
-    if (!confirmed) {
-      return
-    }
-    await postsService.deletePost(id)
-    navigate('/')
-  }
-
+function ViewMap({ lat, lon }: { lat: number; lon: number }) {
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent sx={{ display: 'flex', gap: 2, flexDirection: 'column' }}>
-        <Typography variant='h5' component='div'>
-          {post.title}
+    <Box
+      sx={{
+        borderRadius: 4,
+        overflow: 'hidden',
+        border: '1px solid',
+        borderColor: 'divider',
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          px: 2,
+          py: 1.25,
+          bgcolor: 'background.paper',
+          borderBottom: '1px solid',
+          borderColor: 'divider',
+        }}
+      >
+        <Typography
+          variant='caption'
+          sx={{
+            fontWeight: 500,
+            color: 'text.disabled',
+            textTransform: 'uppercase',
+            letterSpacing: '0.07em',
+          }}
+        >
+          Location
         </Typography>
-        <PostInfo title='Description'>
-          <PostInfoText text={post.description} />
-        </PostInfo>
-        <PostInfo title='Hazard Type'>
-          <PostInfoText
+      </Box>
+      <Box sx={{ flexGrow: 1 }}>
+        <Map height='100%'>
+          <FlyToLocation lat={lat} lon={lon} />
+          <MapMarker lat={lat} lon={lon} />
+        </Map>
+      </Box>
+    </Box>
+  )
+}
+
+function ViewInfo({
+  post,
+  lat,
+  lon,
+}: {
+  post: Post
+  lat: number
+  lon: number
+}) {
+  const Icon = hazardIconMapping[post.hazardType]
+  return (
+    <Card
+      variant='outlined'
+      sx={{
+        borderColor: 'divider',
+        height: '100%',
+        borderRadius: 4,
+        bgcolor: 'background.paper',
+      }}
+    >
+      <CardContent
+        sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, p: 3 }}
+      >
+        {/* Title + hazard badge */}
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
+          <Typography
+            variant='h5'
+            sx={{
+              flex: 1,
+              fontWeight: 500,
+              color: 'text.primary',
+              lineHeight: 1.3,
+            }}
+          >
+            {post.title}
+          </Typography>
+          <Chip
+            label={post.hazardType}
+            icon={<Icon style={{ fontSize: 14 }} />}
+            size='small'
+            sx={{
+              textTransform: 'capitalize',
+              bgcolor: 'error.dark',
+              color: 'error.contrastText',
+              fontWeight: 500,
+              fontSize: 12,
+              '& .MuiChip-icon': { color: 'error.contrastText' },
+            }}
+          />
+        </Box>
+
+        <Divider sx={{ borderColor: 'divider' }} />
+
+        <Field label='Description'>
+          <FieldText text={post.description} />
+        </Field>
+
+        <Field label='Hazard type'>
+          <FieldText
             text={post.hazardType}
             icon={hazardIconMapping[post.hazardType]}
           />
-        </PostInfo>
-        <PostInfo title='Report creation date'>
-          <PostInfoText text={formatDate(post.createdAt)} />
-        </PostInfo>
-        <PostInfo title='Location'>
-          <Map height='380px'>
-            <LocationMarker
-              lat={post.location.geometry.coordinates[1]}
-              lon={post.location.geometry.coordinates[0]}
-            />
-          </Map>
-        </PostInfo>
+        </Field>
+
+        <Field label='Coordinates'>
+          <Typography
+            variant='body2'
+            sx={{
+              color: 'text.secondary',
+              fontFamily: 'monospace',
+              fontSize: 12,
+            }}
+          >
+            {lat.toFixed(4)}° N, {Math.abs(lon).toFixed(4)}°{' '}
+            {lon < 0 ? 'W' : 'E'}
+          </Typography>
+        </Field>
+
+        <Field label='Report creation date'>
+          <FieldText text={formatDate(post.createdAt)} />
+        </Field>
       </CardContent>
-      <CardActions>
-        {post.userId === currentUser?.id && (
-          <>
-            <Button
-              component={Link}
-              to={`/posts/${id}/edit`}
-              startIcon={<EditIcon />}
-              size='small'
-            >
-              Edit
-            </Button>
-            <Button
-              onClick={() => handleDeletePost(post.id)}
-              startIcon={<DeleteIcon />}
-              size='small'
-              color='error'
-            >
-              Delete
-            </Button>
-          </>
-        )}
-      </CardActions>
     </Card>
+  )
+}
+
+export default function ViewPost() {
+  const { createNotification, showNotification } = useNotification()
+  const navigate = useNavigate()
+  const { id: postId } = useParams()
+  const { currentUser, isUserLoggedIn } = useAuth()
+
+  const { data: post, isLoading } = useQuery({
+    queryKey: ['post'],
+    initialData: null,
+    enabled: !!postId,
+    queryFn: () => postsService.getPostById(postId!),
+    onError: (error: unknown) => {
+      let errorMessage = 'Something went wrong'
+
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? errorMessage
+      }
+      showNotification(
+        createNotification(`Cannot fetch the post: ${errorMessage}`, 'error'),
+      )
+    },
+  })
+
+  const handleDeletePost = useCallback(async () => {
+    if (!post) return
+    try {
+      await postsService.deletePost(post.id)
+      showNotification(
+        createNotification('Post deleted succesfully.', 'success'),
+      )
+      navigate('/')
+    } catch (error: unknown) {
+      let errorMessage = 'Something went wrong'
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? errorMessage
+      }
+      showNotification(
+        createNotification(`Cannot update post: ${errorMessage}`, 'error'),
+      )
+    }
+  }, [navigate, post, showNotification, createNotification])
+
+  if (!post) return null
+
+  const lat = post.location.geometry.coordinates[1]
+  const lon = post.location.geometry.coordinates[0]
+  const isSameUser = post?.userId === currentUser?.id
+  const Action =
+    isSameUser && isUserLoggedIn ? (
+      <>
+        <EditPostAction postId={post.id} />
+        <DeletePostAction postId={post.id} onDeletePost={handleDeletePost} />
+      </>
+    ) : null
+
+  return (
+    <PageLayout pageTitle={appRoutes.viewPost.pageTitle} actions={Action}>
+      {isLoading ? (
+        <Typography>Fething the post</Typography>
+      ) : (
+        <Grid
+          container
+          rowSpacing={1}
+          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+          sx={{ height: '100%' }}
+        >
+          <Grid size={4}>
+            <ViewInfo post={post} lat={lat} lon={lon} />
+          </Grid>
+          <Grid size={8}>
+            <ViewMap lat={lat} lon={lon} />
+          </Grid>
+        </Grid>
+      )}
+    </PageLayout>
   )
 }

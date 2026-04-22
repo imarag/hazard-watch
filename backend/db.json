@@ -21,25 +21,6 @@
   ],
   "posts": [
     {
-      "title": "a post1",
-      "description": "a description of post",
-      "hazardType": "earthquake",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -0.09819030761718751,
-            51.49878009548301
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-20T13:34:08.098Z",
-      "userId": "CNxJib3-yCU",
-      "id": "p5QsCXdab6Y"
-    },
-    {
       "title": "A flood coming",
       "description": "yes this is a flood description",
       "hazardType": "flood",
@@ -144,7 +125,7 @@
           "type": "Point",
           "coordinates": [
             -0.11,
-            51.50
+            51.5
           ]
         },
         "properties": {}
@@ -200,7 +181,7 @@
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -0.10,
+            -0.1,
             51.53
           ]
         },
@@ -732,7 +713,7 @@
         "geometry": {
           "type": "Point",
           "coordinates": [
-            9.1900,
+            9.19,
             45.4642
           ]
         },

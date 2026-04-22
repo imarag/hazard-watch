@@ -10,6 +10,8 @@ import { DateFilter, HazardType, type DateFilterValue } from '@/types/hazards'
 import HardTypeFilter from '../features/map/HazardTypeFilter'
 import PostDateFilter from '../features/map/PostDateFilter'
 import { filterDate } from '@/utils/date'
+import PageLayout from '../layouts/PageLayout'
+import { appRoutes } from '@/constants/routes'
 
 function ToolTipTitle({ text }: { text: string }) {
   return (
@@ -136,30 +138,28 @@ export default function InteractiveMap() {
   )
 
   return (
-    <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <Box sx={{ flexGrow: 1 }}>
-        <Map height='100%' zoom={3}>
-          <FiltersPanel
-            posts={filteredPosts}
-            hazardTypeSelected={hazardTypeSelected}
-            setHazardTypeSelected={setHazardTypeSelected}
-            postDateSelected={postDateSelected}
-            setPostDateSelected={setPostDateSelected}
-          />
-          {filteredPosts.map((post) => (
-            <Marker
-              key={post.id}
-              icon={createHazardIcon(post.hazardType)}
-              position={[
-                post.location.geometry.coordinates[1],
-                post.location.geometry.coordinates[0],
-              ]}
-            >
-              <MarkerTooltip post={post} />
-            </Marker>
-          ))}
-        </Map>
-      </Box>
-    </Box>
+    <PageLayout pageTitle={appRoutes.map.pageTitle}>
+      <Map height='100%' zoom={3}>
+        <FiltersPanel
+          posts={filteredPosts}
+          hazardTypeSelected={hazardTypeSelected}
+          setHazardTypeSelected={setHazardTypeSelected}
+          postDateSelected={postDateSelected}
+          setPostDateSelected={setPostDateSelected}
+        />
+        {filteredPosts.map((post) => (
+          <Marker
+            key={post.id}
+            icon={createHazardIcon(post.hazardType)}
+            position={[
+              post.location.geometry.coordinates[1],
+              post.location.geometry.coordinates[0],
+            ]}
+          >
+            <MarkerTooltip post={post} />
+          </Marker>
+        ))}
+      </Map>
+    </PageLayout>
   )
 }

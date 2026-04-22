@@ -8,7 +8,7 @@ export default function CreatePostAction() {
     <Button
       component={Link}
       to={appRoutes.createPost.path}
-      endIcon={<AddIcon />}
+      startIcon={<AddIcon />}
       size='small'
       variant='contained'
     >

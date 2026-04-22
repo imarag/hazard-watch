@@ -1,32 +1,32 @@
-import { useNavigate, useParams } from 'react-router'
 import { Button } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
-import postsService from '@/services/posts'
 
-export default function DeletePostAction() {
-  const { id } = useParams()
-  const navigate = useNavigate()
+interface DeletePostActionProps {
+  onDeletePost: (id: string) => Promise<void>
+  postId: string
+}
 
-  async function handleDeletePost() {
-    if (!id) return
-
+export default function DeletePostAction({
+  onDeletePost,
+  postId,
+}: DeletePostActionProps) {
+  async function handleClickDelete() {
     const confirmed = window.confirm(
       'Are you sure you want to delete this post?',
     )
     if (!confirmed) return
-    await postsService.deletePost(id)
-    navigate('/')
+    await onDeletePost(postId)
   }
 
   return (
     <Button
-      endIcon={<DeleteIcon />}
+      onClick={handleClickDelete}
+      startIcon={<DeleteIcon />}
       size='small'
-      variant='outlined'
-      onClick={handleDeletePost}
       color='error'
+      variant='outlined'
     >
-      Delete Post
+      Delete post
     </Button>
   )
 }
