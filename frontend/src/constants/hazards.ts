@@ -38,6 +38,7 @@ export const hazardMeta: Record<HazardType, HazardMeta> = {
 
 export const sortOptions: { value: SortField; label: string }[] = [
   { value: 'createdAt', label: 'Date' },
-  { value: 'hazardType', label: 'Hazard type' },
+  { value: 'hazardType', label: 'Hazard Type' },
   { value: 'title', label: 'Title' },
+  { value: 'userName', label: 'Author' },
 ]

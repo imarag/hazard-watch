@@ -18,6 +18,7 @@ export type UserRegister = BaseUser
 
 export type UserPayload = {
   id: string
+  userName: string
   email: string
   tokenType: 'access' | 'refresh'
 }

@@ -8,7 +8,7 @@ export default function AppLayout() {
       {/* Sidebar */}
       <Box
         sx={{
-          width: 200,
+          width: 250,
           flexShrink: 0,
           backgroundColor: 'background.paper',
           borderRight: '1px solid',

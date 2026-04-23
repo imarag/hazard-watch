@@ -51,7 +51,14 @@ export default function Home() {
 
   return (
     <PageLayout pageTitle={appRoutes.home.pageTitle} actions={Actions}>
-      <Box sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Box
+        sx={{
+          height: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+        }}
+      >
         <Box sx={{ grow: 0 }}>
           <PostsToolBar
             sortField={sortField}

@@ -28,7 +28,12 @@ router.post('/refresh', async (req, res) => {
   }
 
   const accessToken = createJWTToken(
-    { id: userPayload.id, email: userPayload.email, tokenType: 'access' },
+    {
+      id: userPayload.id,
+      userName: userPayload.userName,
+      email: userPayload.email,
+      tokenType: 'access',
+    },
     '15m',
   )
 
@@ -60,7 +65,11 @@ router.post('/login', async (req, res) => {
       .json(createErrorResponse(401, 'Invalid email or password.'))
   }
 
-  const userPayload = { email: existingUser.email, id: existingUser.id }
+  const userPayload = {
+    email: existingUser.email,
+    id: existingUser.id,
+    userName: existingUser.name,
+  }
   const accessToken = createJWTToken(
     { ...userPayload, tokenType: 'access' },
     '15m',

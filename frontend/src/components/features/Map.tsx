@@ -21,7 +21,7 @@ export default function Map({
       center={center}
       zoom={zoom}
       scrollWheelZoom={scrollWheelZoom}
-      style={{ height: height, borderRadius: 8 }}
+      style={{ height: height }}
     >
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       {children}

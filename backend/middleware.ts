@@ -45,6 +45,7 @@ export const requireAuth = (
   }
 
   req.userId = user.id
+  req.userName = user.userName
   return next()
 }
 

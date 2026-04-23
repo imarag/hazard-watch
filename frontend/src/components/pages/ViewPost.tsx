@@ -6,13 +6,14 @@ import {
   Chip,
   Divider,
   Grid,
+  Stack,
 } from '@mui/material'
 import axios from 'axios'
 import { useNotification } from '@/contexts/NotificationContext'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import type { SvgIconComponent } from '@mui/icons-material'
 import { useParams } from 'react-router'
-import { useCallback } from 'react'
+import { formatCoordinates } from '@/utils/geometry'
 import postsService from '@/services/posts'
 import { useAuth } from '@/contexts/AuthContext'
 import Map from '../features/Map'
@@ -26,6 +27,21 @@ import DeletePostAction from '../actions/DeletePostAction'
 import MapMarker from '../features/map/MapMarker'
 import FlyToLocation from '../features/map/FlyToLocation'
 import type { Post } from '@/types/posts'
+import type { HazardType } from '@/types/hazards'
+
+function FieldTitle({ label }: { label: string }) {
+  return (
+    <Typography
+      variant='body1'
+      sx={{
+        color: 'text.disabled',
+        fontWeight: 'fontWeightBold',
+      }}
+    >
+      {label}
+    </Typography>
+  )
+}
 
 function Field({
   label,
@@ -36,17 +52,7 @@ function Field({
 }) {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
-      <Typography
-        variant='caption'
-        sx={{
-          fontWeight: 500,
-          color: 'text.disabled',
-          textTransform: 'uppercase',
-          letterSpacing: '0.07em',
-        }}
-      >
-        {label}
-      </Typography>
+      <FieldTitle label={label} />
       {children}
     </Box>
   )
@@ -61,23 +67,83 @@ function FieldText({
 }) {
   return (
     <Typography
-      variant='body2'
+      variant='body1'
       sx={{
-        color: 'text.primary',
-        fontWeight: 300,
         display: 'flex',
         alignItems: 'center',
         gap: 0.75,
       }}
     >
       {text}
-      {Icon && (
-        <Icon
-          fontSize='small'
-          sx={{ color: 'text.secondary', width: 16, height: 16 }}
-        />
-      )}
+      {Icon && <Icon fontSize='small' />}
     </Typography>
+  )
+}
+
+function ViewInfoTitle({
+  title,
+  hazardType,
+}: {
+  title: string
+  hazardType: HazardType
+}) {
+  const Icon = hazardIconMapping[hazardType]
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Typography
+        variant='h6'
+        sx={{
+          fontWeight: 'fontWeightBold',
+        }}
+      >
+        {title}
+      </Typography>
+      <Chip
+        label={hazardType}
+        icon={<Icon style={{ fontSize: 14 }} />}
+        color='primary'
+        size='small'
+      />
+    </Box>
+  )
+}
+
+function ViewInfoBody({
+  post,
+  lon,
+  lat,
+}: {
+  post: Post
+  lon: number
+  lat: number
+}) {
+  return (
+    <Stack spacing={2}>
+      <Field label='Description'>
+        <FieldText text={post.description} />
+      </Field>
+      <Field label='Author'>
+        <FieldText text={post.userName} />
+      </Field>
+      <Field label='Hazard type'>
+        <FieldText
+          text={post.hazardType}
+          icon={hazardIconMapping[post.hazardType]}
+        />
+      </Field>
+      <Field label='Coordinates'>
+        <FieldText text={formatCoordinates(lon, lat)} />
+      </Field>
+      <Field label='Report creation date'>
+        <FieldText text={formatDate(post.createdAt)} />
+      </Field>
+    </Stack>
   )
 }
 
@@ -106,17 +172,7 @@ function ViewMap({ lat, lon }: { lat: number; lon: number }) {
           borderColor: 'divider',
         }}
       >
-        <Typography
-          variant='caption'
-          sx={{
-            fontWeight: 500,
-            color: 'text.disabled',
-            textTransform: 'uppercase',
-            letterSpacing: '0.07em',
-          }}
-        >
-          Location
-        </Typography>
+        <FieldTitle label={'Location'} />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Map height='100%'>
@@ -137,78 +193,12 @@ function ViewInfo({
   lat: number
   lon: number
 }) {
-  const Icon = hazardIconMapping[post.hazardType]
   return (
-    <Card
-      variant='outlined'
-      sx={{
-        borderColor: 'divider',
-        height: '100%',
-        borderRadius: 4,
-        bgcolor: 'background.paper',
-      }}
-    >
-      <CardContent
-        sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, p: 3 }}
-      >
-        {/* Title + hazard badge */}
-        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
-          <Typography
-            variant='h5'
-            sx={{
-              flex: 1,
-              fontWeight: 500,
-              color: 'text.primary',
-              lineHeight: 1.3,
-            }}
-          >
-            {post.title}
-          </Typography>
-          <Chip
-            label={post.hazardType}
-            icon={<Icon style={{ fontSize: 14 }} />}
-            size='small'
-            sx={{
-              textTransform: 'capitalize',
-              bgcolor: 'error.dark',
-              color: 'error.contrastText',
-              fontWeight: 500,
-              fontSize: 12,
-              '& .MuiChip-icon': { color: 'error.contrastText' },
-            }}
-          />
-        </Box>
-
-        <Divider sx={{ borderColor: 'divider' }} />
-
-        <Field label='Description'>
-          <FieldText text={post.description} />
-        </Field>
-
-        <Field label='Hazard type'>
-          <FieldText
-            text={post.hazardType}
-            icon={hazardIconMapping[post.hazardType]}
-          />
-        </Field>
-
-        <Field label='Coordinates'>
-          <Typography
-            variant='body2'
-            sx={{
-              color: 'text.secondary',
-              fontFamily: 'monospace',
-              fontSize: 12,
-            }}
-          >
-            {lat.toFixed(4)}° N, {Math.abs(lon).toFixed(4)}°{' '}
-            {lon < 0 ? 'W' : 'E'}
-          </Typography>
-        </Field>
-
-        <Field label='Report creation date'>
-          <FieldText text={formatDate(post.createdAt)} />
-        </Field>
+    <Card variant='outlined' sx={{ height: '100%', borderRadius: 4 }}>
+      <CardContent sx={{ padding: 4 }}>
+        <ViewInfoTitle title={post.title} hazardType={post.hazardType} />
+        <Divider sx={{ borderColor: 'divider', marginBlock: 2 }} />
+        <ViewInfoBody post={post} lon={lon} lat={lat} />
       </CardContent>
     </Card>
   )
@@ -237,24 +227,26 @@ export default function ViewPost() {
     },
   })
 
-  const handleDeletePost = useCallback(async () => {
-    if (!post) return
-    try {
-      await postsService.deletePost(post.id)
+  const deleteMutation = useMutation({
+    mutationFn: async (postId: string) => {
+      return await postsService.deletePost(postId)
+    },
+    onSuccess: () => {
       showNotification(
         createNotification('Post deleted succesfully.', 'success'),
       )
       navigate('/')
-    } catch (error: unknown) {
+    },
+    onError: (error: unknown) => {
       let errorMessage = 'Something went wrong'
       if (axios.isAxiosError(error)) {
         errorMessage = error.response?.data?.message ?? errorMessage
       }
       showNotification(
-        createNotification(`Cannot update post: ${errorMessage}`, 'error'),
+        createNotification(`Cannot delete the post: ${errorMessage}`, 'error'),
       )
-    }
-  }, [navigate, post, showNotification, createNotification])
+    },
+  })
 
   if (!post) return null
 
@@ -265,7 +257,11 @@ export default function ViewPost() {
     isSameUser && isUserLoggedIn ? (
       <>
         <EditPostAction postId={post.id} />
-        <DeletePostAction postId={post.id} onDeletePost={handleDeletePost} />
+        <DeletePostAction
+          postId={post.id}
+          loading={deleteMutation.isPending}
+          onDeletePost={async () => deleteMutation.mutate(post.id)}
+        />
       </>
     ) : null
 

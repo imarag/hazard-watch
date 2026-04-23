@@ -1,15 +1,16 @@
 import type { Post } from '@/types/posts'
 import {
   Card,
-  CardHeader,
-  Button,
+  Stack,
+  Chip,
   Avatar,
-  CardContent,
   Typography,
-  CardActions,
   Box,
+  Divider,
 } from '@mui/material'
-import { Link } from 'react-router'
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
+import RoomIcon from '@mui/icons-material/Room'
 import { useEffect, useState } from 'react'
 import usersService from '@/services/users'
 import { useNavigate } from 'react-router'
@@ -22,15 +23,162 @@ import EditPostAction from '@/components/actions/EditPostAction'
 import DeletePostAction from '@/components/actions/DeletePostAction'
 import postsService from '@/services/posts'
 import ViewPostAction from '@/components/actions/ViewPostAction'
+import { useNotification } from '@/contexts/NotificationContext'
+
+function PostCardTitle({
+  user,
+  post,
+}: {
+  user: UserPublic | null
+  post: Post
+}) {
+  const Icon = hazardIconMapping[post.hazardType]
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 2,
+        }}
+      >
+        <Avatar
+          sx={{
+            bgcolor: 'primary',
+            color: 'secondary.contrastText',
+            width: 40,
+            height: 40,
+            fontSize: 'h6',
+          }}
+        >
+          {user ? user.name[0].toUpperCase() : ''}
+        </Avatar>
+        <Stack direction='column'>
+          <Typography
+            variant='body1'
+            sx={{
+              color: 'text.primary',
+            }}
+          >
+            {post.userName}
+          </Typography>
+          <Typography variant='caption' sx={{ color: 'text.disabled' }}>
+            {formatDate(post.createdAt)}
+          </Typography>
+        </Stack>
+      </Box>
+      <Box>
+        <Chip
+          label={post.hazardType}
+          icon={<Icon style={{ fontSize: 14 }} />}
+          color='primary'
+          size='small'
+        />
+      </Box>
+    </Box>
+  )
+}
+
+function PostCardBody({ post }: { post: Post }) {
+  return (
+    <Stack spacing={1}>
+      <Typography
+        variant='body2'
+        gutterBottom
+        sx={{
+          fontWeight: 'fontWeightBold',
+          color: 'text.primary',
+          textTransform: 'capitalize',
+        }}
+      >
+        {post.title}
+      </Typography>
+      <Typography
+        sx={{
+          color: 'text.secondary',
+          fontWeight: 'fontWeightLight',
+        }}
+      >
+        {post.description}
+      </Typography>
+      <Typography
+        variant='caption'
+        sx={{
+          color: 'text.disabled',
+          fontFamily: 'monospace',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 1,
+        }}
+      >
+        <RoomIcon style={{ fontSize: 14 }} />
+        {formatCoordinates(
+          post.location.geometry.coordinates[0],
+          post.location.geometry.coordinates[1],
+        )}
+      </Typography>
+    </Stack>
+  )
+}
+
+function PostCardActions({ post }: { post: Post }) {
+  const { currentUser } = useAuth()
+  const { createNotification, showNotification } = useNotification()
+  const navigate = useNavigate()
+
+  const deleteMutation = useMutation({
+    mutationFn: async (postId: string) => {
+      return await postsService.deletePost(postId)
+    },
+    onSuccess: () => {
+      showNotification(
+        createNotification('Post deleted succesfully.', 'success'),
+      )
+      navigate('/')
+    },
+    onError: (error: unknown) => {
+      let errorMessage = 'Something went wrong'
+      if (axios.isAxiosError(error)) {
+        errorMessage = error.response?.data?.message ?? errorMessage
+      }
+      showNotification(
+        createNotification(`Cannot delete the post: ${errorMessage}`, 'error'),
+      )
+    },
+  })
+
+  return (
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <ViewPostAction postId={post.id} />
+      {currentUser?.id === post.userId && (
+        <>
+          <EditPostAction postId={post.id} />
+          <Box sx={{ marginLeft: 'auto' }}>
+            <DeletePostAction
+              postId={post.id}
+              loading={deleteMutation.isPending}
+              onDeletePost={async () => deleteMutation.mutate(post.id)}
+            />
+          </Box>
+        </>
+      )}
+    </Box>
+  )
+}
 
 interface PostProps {
   post: Post
 }
 
 export default function UserPost({ post }: PostProps) {
-  const { currentUser } = useAuth()
   const [user, setUser] = useState<UserPublic | null>(null)
-  const navigate = useNavigate()
 
   useEffect(() => {
     async function getUser() {
@@ -40,114 +188,22 @@ export default function UserPost({ post }: PostProps) {
     getUser()
   }, [post.userId])
 
-  async function handleDeletePost(id: string) {
-    await postsService.deletePost(id)
-    navigate('/')
-  }
-
-  const Icon = hazardIconMapping[post.hazardType]
-
   return (
     <Card
       variant='outlined'
       sx={{
-        backgroundColor: 'background.paper',
         borderColor: 'divider',
         borderRadius: 4,
-        padding: 2,
-        transition: 'border-color 0.15s',
+        padding: 4,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
       }}
     >
-      <CardHeader
-        avatar={
-          <Avatar
-            sx={{
-              bgcolor: 'secondary.dark',
-              color: 'secondary.contrastText',
-              width: 40,
-              height: 40,
-              fontSize: 'h6',
-              fontWeight: 500,
-            }}
-          >
-            {user ? user.name[0].toUpperCase() : ''}
-          </Avatar>
-        }
-        title={
-          <Typography
-            sx={{
-              fontSize: 'body1',
-              fontWeight: 500,
-              color: 'text.primary',
-            }}
-          >
-            {post.title}
-          </Typography>
-        }
-        subheader={
-          <Typography sx={{ fontSize: 12, color: 'text.disabled' }}>
-            {formatDate(post.createdAt)}
-          </Typography>
-        }
-      />
-
-      <CardContent sx={{ pt: 0, pb: 0 }}>
-        <Typography
-          variant='h6'
-          gutterBottom
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 1,
-            fontSize: 'body2',
-            fontWeight: 'fontWeightLight',
-            color: 'text.primary',
-            textTransform: 'capitalize',
-          }}
-        >
-          {post.hazardType}
-          <Icon fontSize='small' sx={{ color: 'text.secondary' }} />
-        </Typography>
-
-        <Typography
-          sx={{
-            color: 'text.secondary',
-            fontWeight: 'light',
-            mb: 0.5,
-          }}
-        >
-          {post.description}
-        </Typography>
-
-        <Typography
-          variant='body2'
-          sx={{
-            color: 'text.disabled',
-            fontSize: 12,
-            fontFamily: 'monospace',
-          }}
-        >
-          {formatCoordinates(
-            post.location.geometry.coordinates[0],
-            post.location.geometry.coordinates[1],
-          )}
-        </Typography>
-      </CardContent>
-
-      <CardActions sx={{ pt: 0.5, pb: 0.5, mt: 1 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-          <ViewPostAction postId={post.id} />
-          {currentUser?.id === post.userId && (
-            <>
-              <EditPostAction postId={post.id} />
-              <DeletePostAction
-                postId={post.id}
-                onDeletePost={handleDeletePost}
-              />
-            </>
-          )}
-        </Box>
-      </CardActions>
+      <PostCardTitle user={user} post={post} />{' '}
+      <Divider sx={{ borderColor: 'divider' }} />
+      <PostCardBody post={post} />
+      <PostCardActions post={post} />
     </Card>
   )
 }

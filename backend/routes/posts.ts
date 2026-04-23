@@ -24,6 +24,7 @@ router.post('/', requireAuth, async (req, res) => {
     ...parsedPost,
     createdAt: new Date().toISOString(),
     userId: req.userId!,
+    userName: req.userName!,
   }
   const post = await postService.createPost(newPost)
   return res.status(201).json(post)
