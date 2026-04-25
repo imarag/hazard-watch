@@ -1,34 +1,27 @@
-import { Box, IconButton } from '@mui/material'
 import FilterListIcon from '@mui/icons-material/FilterList'
+import MapButton from '@/components/features/map/MapButton'
+import type { MapPosition } from '@/types/map'
+import { Box } from '@mui/material'
+import { getPositionProps } from '@/constants/map'
+
+interface OpenFilterPanelButtonProps {
+  onClick: () => void
+  position: MapPosition
+}
 
 export default function OpenFilterPanelButton({
-  open,
   onClick,
-}: {
-  open: boolean
-  onClick: () => void
-}) {
+  position,
+}: OpenFilterPanelButtonProps) {
+  const positionProps = getPositionProps(position)
+
   return (
     <Box
-      sx={{
-        position: 'absolute',
-        right: 0,
-        marginRight: 2,
-        top: '50%',
-        translateY: '-50%',
-        zIndex: 1000,
-      }}
+      sx={{ display: 'flex', flexDirection: 'column' }}
+      className={positionProps.className}
+      style={positionProps.style}
     >
-      <IconButton
-        sx={{
-          backgroundColor: 'white',
-          color: 'common.black',
-          boxShadow: 3,
-        }}
-        onClick={onClick}
-      >
-        <FilterListIcon fontSize='large' />
-      </IconButton>
+      <MapButton onClick={onClick} icon={<FilterListIcon />} />
     </Box>
   )
 }

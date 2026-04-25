@@ -17,308 +17,1014 @@
       "email": "antonia.maragkaki@gmail.com",
       "password": "$2b$10$2EiXPIztsI37jENwU4ZseeD0CC8NEyP7Tm9/7M9iuvjDFVudRzq.u",
       "id": "GGjDlDxsaUY"
+    },
+    {
+      "name": "antonios Maragkakis",
+      "email": "antonis.maragkakis@hotmail.com",
+      "password": "$2b$10$9E55w2MVGMBdi4SXx4wSmO4hpVP5I2dDY5gXgM6TYDwt1UPmLWQg2",
+      "id": "gqSFjlWzaMs"
     }
   ],
   "posts": [
     {
-      "title": "A flood coming",
-      "description": "yes this is a flood description",
-      "hazardType": "flood",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -0.12479782104492189,
-            51.50284076861807
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-20T13:55:38.324Z",
-      "userId": "CNxJib3-yCU",
-      "userName": "giannis maragkakis",
-      "id": "gZ7I3ag6G0I"
-    },
-    {
-      "title": "a fire here",
-      "description": "it is a fereeee",
+      "title": "volcano eruption warning",
+      "description": "lava flow detected on southern slope",
       "hazardType": "wildfire",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -0.08909225463867188,
-            51.54460194602429
+            145.0,
+            40.65
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-20T13:56:13.211Z",
-      "userId": "WF9GoWaROyo",
-      "userName": "georgia maragkaki",
-      "id": "2M4H7H4NyIs"
-    },
-    {
-      "title": "a storm big",
-      "description": "A VERY BIG STORM",
-      "hazardType": "storm",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -0.05887985229492188,
-            51.4999555907042
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-20T13:57:01.324Z",
-      "userId": "GGjDlDxsaUY",
-      "userName": "antonia marar",
-      "id": "5Xo_JkMrEn8"
-    },
-    {
-      "title": "my title",
-      "description": "my description",
-      "hazardType": "earthquake",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -0.11552810668945314,
-            51.509383501611595
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-20T21:54:39.657Z",
+      "createdAt": "2026-01-03T06:00:00.000Z",
       "userId": "CNxJib3-yCU",
       "userName": "giannis maragkakis",
-      "id": "4o90anshtP4"
+      "id": "p001"
     },
     {
-      "title": "small tremor detected",
-      "description": "light earthquake activity reported",
-      "hazardType": "earthquake",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -0.12,
-            51.51
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-21T08:10:00.000Z",
-      "userId": "CNxJib3-yCU",
-      "userName": "giannis maragkakis",
-      "id": "eq001"
-    },
-    {
-      "title": "river overflow warning",
-      "description": "flood risk increasing near river bank",
+      "title": "tsunami alert coastal area",
+      "description": "wave height exceeding 3 meters reported",
       "hazardType": "flood",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -0.11,
-            51.5
+            139.6917,
+            35.6895
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-21T09:15:00.000Z",
+      "createdAt": "2026-01-10T14:30:00.000Z",
       "userId": "WF9GoWaROyo",
       "userName": "georgia maragkaki",
-      "id": "fl001"
+      "id": "p002"
     },
     {
-      "title": "wildfire smoke detected",
-      "description": "smoke plume visible from satellite",
+      "title": "amazon wildfire spreading",
+      "description": "large wildfire consuming forest area",
       "hazardType": "wildfire",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -0.09,
-            51.52
+            -60.0261,
+            -3.1019
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-21T10:20:00.000Z",
+      "createdAt": "2026-01-15T09:20:00.000Z",
       "userId": "GGjDlDxsaUY",
       "userName": "antonia marar",
-      "id": "wf001"
+      "id": "p003"
     },
     {
-      "title": "storm approaching city",
-      "description": "strong winds expected in 6 hours",
+      "title": "blizzard warning northeast USA",
+      "description": "heavy snowfall and whiteout conditions expected",
       "hazardType": "storm",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -0.13,
-            51.49
+            -74.006,
+            40.7128
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-21T11:00:00.000Z",
-      "userId": "CNxJib3-yCU",
-      "userName": "giannis maragkakis",
-      "id": "st001"
+      "createdAt": "2026-01-20T18:00:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p004"
     },
     {
-      "title": "minor earthquake swarm",
-      "description": "multiple small quakes detected",
-      "hazardType": "earthquake",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -0.1,
-            51.53
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-21T12:30:00.000Z",
-      "userId": "WF9GoWaROyo",
-      "userName": "georgia maragkaki",
-      "id": "eq002"
-    },
-    {
-      "title": "urban flooding alert",
-      "description": "streets partially flooded",
+      "title": "flash flood in cape town",
+      "description": "streets submerged after heavy rainfall",
       "hazardType": "flood",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -0.08,
-            51.51
+            18.4241,
+            -33.9249
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-21T14:00:00.000Z",
-      "userId": "GGjDlDxsaUY",
-      "userName": "antonia marar",
-      "id": "fl002"
+      "createdAt": "2026-01-28T11:45:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p005"
     },
     {
-      "title": "forest fire spreading",
-      "description": "fire expanding rapidly north area",
+      "title": "earthquake near tehran",
+      "description": "magnitude 5.8 earthquake shakes capital",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            51.3890,
+            35.6892
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-02-04T03:15:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p006"
+    },
+    {
+      "title": "cyclone warning australia",
+      "description": "category 4 cyclone approaching queensland coast",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            153.0251,
+            -27.4698
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-02-10T08:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p007"
+    },
+    {
+      "title": "wildfire near athens",
+      "description": "fire spreading through pine forest outside city",
       "hazardType": "wildfire",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -0.14,
-            51.54
+            23.8,
+            38.1
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-21T15:10:00.000Z",
-      "userId": "CNxJib3-yCU",
-      "userName": "giannis maragkakis",
-      "id": "wf002"
+      "createdAt": "2026-02-14T13:00:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p008"
     },
     {
-      "title": "storm lightning activity",
-      "description": "high lightning density detected",
-      "hazardType": "storm",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -0.07,
-            51.48
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-21T16:45:00.000Z",
-      "userId": "WF9GoWaROyo",
-      "userName": "georgia maragkaki",
-      "id": "st002"
-    },
-    {
-      "title": "earthquake aftershock",
-      "description": "aftershock following main event",
-      "hazardType": "earthquake",
-      "location": {
-        "type": "Feature",
-        "geometry": {
-          "type": "Point",
-          "coordinates": [
-            -0.12,
-            51.55
-          ]
-        },
-        "properties": {}
-      },
-      "createdAt": "2026-04-22T08:00:00.000Z",
-      "userId": "GGjDlDxsaUY",
-      "userName": "antonia marar",
-      "id": "eq003"
-    },
-    {
-      "title": "flood waters rising",
-      "description": "river level continues to rise",
+      "title": "flooding in bangladesh",
+      "description": "monsoon floods displace thousands",
       "hazardType": "flood",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            -0.06,
-            51.52
+            90.4125,
+            23.8103
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-22T09:10:00.000Z",
+      "createdAt": "2026-02-20T07:30:00.000Z",
       "userId": "CNxJib3-yCU",
       "userName": "giannis maragkakis",
-      "id": "fl003"
+      "id": "p009"
     },
     {
-      "title": "athens seismic aftershock",
-      "description": "small aftershock recorded",
+      "title": "earthquake off coast of chile",
+      "description": "magnitude 6.2 offshore quake, tsunami watch issued",
       "hazardType": "earthquake",
       "location": {
         "type": "Feature",
         "geometry": {
           "type": "Point",
           "coordinates": [
-            23.7275,
-            37.9838
+            -71.5430,
+            -33.4569
           ]
         },
         "properties": {}
       },
-      "createdAt": "2026-04-20T13:00:00.000Z",
+      "createdAt": "2026-02-27T22:10:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p010"
+    },
+    {
+      "title": "sandstorm hits cairo",
+      "description": "visibility near zero across the city",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            31.2357,
+            30.0444
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-05T10:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p011"
+    },
+    {
+      "title": "wildfire california coast",
+      "description": "fast moving fire driven by santa ana winds",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -118.2437,
+            34.0522
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-11T16:20:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p012"
+    },
+    {
+      "title": "river flooding in paris",
+      "description": "seine river overflows banks near city center",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            2.3522,
+            48.8566
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-18T05:45:00.000Z",
       "userId": "CNxJib3-yCU",
       "userName": "giannis maragkakis",
-      "id": "gr-eq-02"
+      "id": "p013"
+    },
+    {
+      "title": "earthquake in istanbul",
+      "description": "magnitude 5.4 quake felt across the city",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            28.9784,
+            41.0082
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-22T19:30:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p014"
+    },
+    {
+      "title": "typhoon approaching philippines",
+      "description": "super typhoon with 200km/h winds incoming",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            120.9842,
+            14.5995
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-28T12:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p015"
+    },
+    {
+      "title": "wildfire in siberia",
+      "description": "unusually early wildfire in taiga forest",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            104.2964,
+            52.2855
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-02T08:15:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p016"
+    },
+    {
+      "title": "flood warning in nigeria",
+      "description": "niger river flooding villages downstream",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            3.3792,
+            6.5244
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-05T14:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p017"
+    },
+    {
+      "title": "earthquake in mexico city",
+      "description": "magnitude 6.0 quake causes building damage",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -99.1332,
+            19.4326
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-08T04:50:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p018"
+    },
+    {
+      "title": "storm surge in miami",
+      "description": "coastal flooding from tropical storm",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -80.1918,
+            25.7617
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-10T20:00:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p019"
+    },
+    {
+      "title": "wildfire in portugal",
+      "description": "dry conditions fueling rapid spread",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -8.6291,
+            41.1579
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-12T11:30:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p020"
+    },
+    {
+      "title": "flooding in venice",
+      "description": "acqua alta reaching record levels",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            12.3155,
+            45.4408
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-14T09:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p021"
+    },
+    {
+      "title": "earthquake in new zealand",
+      "description": "magnitude 5.9 near wellington",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            174.7762,
+            -41.2865
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-16T01:20:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p022"
+    },
+    {
+      "title": "hailstorm in madrid",
+      "description": "large hailstones damaging vehicles and roofs",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -3.7038,
+            40.4168
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-17T15:10:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p023"
+    },
+    {
+      "title": "wildfire in canada rockies",
+      "description": "evacuations ordered in mountain communities",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -115.5708,
+            51.1784
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-18T13:40:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p024"
+    },
+    {
+      "title": "flood in mumbai",
+      "description": "heavy monsoon rains causing widespread flooding",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            72.8777,
+            19.0760
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-19T07:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p025"
+    },
+    {
+      "title": "earthquake in indonesia",
+      "description": "magnitude 6.5 quake off sumatra coast",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.8456,
+            -6.2088
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T02:30:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p026"
+    },
+    {
+      "title": "tornado warning oklahoma",
+      "description": "multiple tornadoes spotted on ground",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -97.5164,
+            35.4676
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-21T17:50:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p027"
+    },
+    {
+      "title": "wildfire in south korea",
+      "description": "forest fire approaching residential area",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            126.9780,
+            37.5665
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T10:15:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p028"
+    },
+    {
+      "title": "flooding in amsterdam",
+      "description": "canal system overwhelmed by rainfall",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            4.9041,
+            52.3676
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-23T06:30:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p029"
+    },
+    {
+      "title": "earthquake in thessaloniki",
+      "description": "magnitude 4.8 quake felt across northern greece",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            22.9444,
+            40.6401
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-24T21:00:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p030"
+    },
+    {
+      "title": "hurricane hitting havana",
+      "description": "category 3 hurricane making landfall",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -82.3666,
+            23.1136
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2025-11-05T08:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p031"
+    },
+    {
+      "title": "wildfire in sicily",
+      "description": "dry summer fueling coastal fire",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            13.3615,
+            38.1157
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2025-11-18T14:20:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p032"
+    },
+    {
+      "title": "earthquake in pakistan",
+      "description": "magnitude 6.1 quake near islamabad",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            73.0479,
+            33.6844
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2025-12-01T05:30:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p033"
+    },
+    {
+      "title": "flooding in jakarta",
+      "description": "annual flooding worse than previous years",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            106.8650,
+            -6.1751
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2025-12-15T10:00:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p034"
+    },
+    {
+      "title": "blizzard in moscow",
+      "description": "record snowfall paralyzing the city",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            37.6173,
+            55.7558
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2025-12-28T16:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p035"
+    },
+    {
+      "title": "wildfire in kenya",
+      "description": "savanna fire threatening wildlife reserve",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            36.8219,
+            -1.2921
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-01-08T09:45:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p036"
+    },
+    {
+      "title": "earthquake in peru",
+      "description": "magnitude 5.7 quake near lima",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -77.0428,
+            -12.0464
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-01-22T23:10:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p037"
+    },
+    {
+      "title": "flood in new orleans",
+      "description": "levee overflow following heavy storm",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -90.0715,
+            29.9511
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-02-03T18:30:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p038"
+    },
+    {
+      "title": "storm in hong kong",
+      "description": "typhoon signal 8 raised across territory",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            114.1694,
+            22.3193
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-02-17T07:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p039"
+    },
+    {
+      "title": "wildfire in algeria",
+      "description": "fire spreading through kabyle mountain region",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            3.0588,
+            36.7372
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-02T12:40:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p040"
+    },
+    {
+      "title": "earthquake in romania",
+      "description": "magnitude 5.2 quake in vrancea zone",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            26.1025,
+            44.4268
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-09T03:20:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p041"
+    },
+    {
+      "title": "flooding in prague",
+      "description": "vltava river flooding old town streets",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            14.4378,
+            50.0755
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-16T08:50:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p042"
+    },
+    {
+      "title": "dust storm in riyadh",
+      "description": "severe dust storm reducing visibility to zero",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            46.6753,
+            24.7136
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-03-25T11:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p043"
+    },
+    {
+      "title": "wildfire in tasmania",
+      "description": "bushfire threatening heritage forest area",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            147.3257,
+            -42.8821
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-01T15:30:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p044"
+    },
+    {
+      "title": "earthquake in crete",
+      "description": "magnitude 5.1 quake off southern coast",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            25.1442,
+            35.2401
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-06T22:15:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p045"
+    },
+    {
+      "title": "flooding in houston",
+      "description": "bayou overflow after record rainfall",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -95.3698,
+            29.7604
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-13T06:00:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p046"
+    },
+    {
+      "title": "storm in buenos aires",
+      "description": "severe thunderstorm with large hail",
+      "hazardType": "storm",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -58.3816,
+            -34.6037
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-20T19:00:00.000Z",
+      "userId": "CNxJib3-yCU",
+      "userName": "giannis maragkakis",
+      "id": "p047"
+    },
+    {
+      "title": "wildfire in cyprus",
+      "description": "fire spreading near troodos mountains",
+      "hazardType": "wildfire",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            33.3823,
+            35.1264
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-22T13:00:00.000Z",
+      "userId": "WF9GoWaROyo",
+      "userName": "georgia maragkaki",
+      "id": "p048"
+    },
+    {
+      "title": "earthquake in morocco",
+      "description": "magnitude 5.5 quake near marrakech",
+      "hazardType": "earthquake",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            -7.9811,
+            31.6295
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-24T04:40:00.000Z",
+      "userId": "GGjDlDxsaUY",
+      "userName": "antonia marar",
+      "id": "p049"
+    },
+    {
+      "title": "flood in thessaloniki port",
+      "description": "heavy rain flooding port and coastal road",
+      "hazardType": "flood",
+      "location": {
+        "type": "Feature",
+        "geometry": {
+          "type": "Point",
+          "coordinates": [
+            22.9444,
+            40.6401
+          ]
+        },
+        "properties": {}
+      },
+      "createdAt": "2026-04-25T08:30:00.000Z",
+      "userId": "gqSFjlWzaMs",
+      "userName": "antonios Maragkakis",
+      "id": "p050"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

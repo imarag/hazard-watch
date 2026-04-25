@@ -15,6 +15,8 @@ import MapLoading from '@/components/features/map/MapLoading'
 import MapFilterPanel from '@/components/features/map/MapFilterPanel'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import OpenFilterPanelButton from '../features/interactive-map/OpenFilterPanelButton'
+import GetCurrentPosition from '../features/map/GeCurrentPosition'
+import ZoomControlButtons from '../features/map/ZoomControlButtons'
 
 export default function InteractiveMap() {
   const { createNotification, showNotification } = useNotification()
@@ -60,13 +62,16 @@ export default function InteractiveMap() {
     <PageLayout pageTitle={appRoutes.map.pageTitle}>
       <Box sx={{ height: '100%', position: 'relative' }}>
         <Map height='100%' zoom={3}>
+          <ZoomControlButtons position='topleft' />
+          <GetCurrentPosition position='bottomright' />
           <MapLoading text='Loading posts...' open={isLoading} />
           {!openFilterPanel && (
             <OpenFilterPanelButton
-              open={openFilterPanel}
+              position='centerright'
               onClick={() => setOpenFilterPanel(!openFilterPanel)}
             />
           )}
+
           {openFilterPanel && (
             <MapFilterPanel
               posts={filteredPosts}

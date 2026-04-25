@@ -1,4 +1,5 @@
-import { MapContainer, TileLayer } from 'react-leaflet'
+import { MapContainer, TileLayer, AttributionControl } from 'react-leaflet'
+
 import React from 'react'
 
 interface MapProps {
@@ -6,6 +7,8 @@ interface MapProps {
   zoom?: number
   scrollWheelZoom?: boolean
   height?: string
+  zoomControl?: boolean
+  zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright'
   children: React.ReactNode
 }
 
@@ -22,8 +25,11 @@ export default function Map({
       zoom={zoom}
       scrollWheelZoom={scrollWheelZoom}
       style={{ height: height }}
+      zoomControl={false}
+      attributionControl={false}
     >
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
+      <AttributionControl position='bottomleft' />
       {children}
     </MapContainer>
   )
