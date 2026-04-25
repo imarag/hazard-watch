@@ -1,82 +1,11 @@
-import {
-  Box,
-  Stack,
-  Typography,
-  Divider,
-  Button,
-  IconButton,
-} from '@mui/material'
+import { Box, Divider } from '@mui/material'
 import type { Post } from '@/types/posts'
 import { HazardType, type DateFilterValue } from '@/types/hazards'
 import HazardTypeFilter from '@/components/features/map/HazardTypeFilter'
 import PostDateFilter from '@/components/features/map/PostDateFilter'
-import CloseIcon from '@mui/icons-material/Close'
-
-function FilterPanelHeader({ onClosePanel }: { onClosePanel: () => void }) {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <IconButton onClick={onClosePanel}>
-        <CloseIcon />
-      </IconButton>
-      <Typography sx={{ fontWeight: 'fontWeightBold' }} variant='subtitle1'>
-        Filters
-      </Typography>
-    </Box>
-  )
-}
-
-function FilterPanelFooter({ onClearFilters }: { onClearFilters: () => void }) {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      }}
-    >
-      <Typography variant='body2'>
-        Found{' '}
-        <Typography
-          component='span'
-          variant='body2'
-          sx={{ fontWeight: 'fontWeightBold' }}
-        >
-          X
-        </Typography>{' '}
-        reports.
-      </Typography>
-      <Button size='small' variant='text' onClick={onClearFilters}>
-        Clear filters
-      </Button>
-    </Box>
-  )
-}
-
-function FilterPanelSection({
-  title,
-  children,
-}: {
-  title: string
-  children: React.ReactNode
-}) {
-  return (
-    <Stack direction='column' spacing={1}>
-      <Typography
-        variant='subtitle1'
-        sx={{ fontWeight: 'fontWeightMedium', color: 'text.secondary' }}
-      >
-        {title}
-      </Typography>
-      {children}
-    </Stack>
-  )
-}
+import FilterPanelHeader from '../interactive-map/FilterPanelHeader'
+import FilterPanelFooter from '../interactive-map/FilterPanelFooter'
+import FilterPanelSection from '../interactive-map/FilterPanelSection'
 
 interface FiltersPanelProps {
   posts: Post[]
@@ -97,6 +26,7 @@ export default function MapFilterPanel({
   onClosePanel,
   onClearFilters,
 }: FiltersPanelProps) {
+  const totalPosts = posts.length
   return (
     <Box
       sx={{
@@ -108,6 +38,8 @@ export default function MapFilterPanel({
         right: 0,
         top: 0,
         bottom: 0,
+        zIndex: 1500, // above map layers
+        pointerEvents: 'all',
         borderRadius: 1,
         boxShadow: 3,
         display: 'flex',
@@ -142,7 +74,10 @@ export default function MapFilterPanel({
         </FilterPanelSection>
       </Box>
       <Divider />
-      <FilterPanelFooter onClearFilters={onClearFilters} />
+      <FilterPanelFooter
+        totalPosts={totalPosts}
+        onClearFilters={onClearFilters}
+      />
     </Box>
   )
 }

@@ -14,11 +14,6 @@ import config from '../config.ts'
 const router = express.Router()
 
 router.post('/refresh', async (req, res) => {
-  await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('foo')
-    }, 3000)
-  })
   const refreshToken = req.cookies?.[config.REFRESH_TOKEN_KEY]
 
   if (!refreshToken) {
@@ -91,12 +86,6 @@ router.post('/login', async (req, res) => {
     maxAge: 7 * 24 * 60 * 60 * 1000,
   })
 
-  await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('foo')
-    }, 3000)
-  })
-
   return res.status(200).json({
     id: existingUser.id,
     email: existingUser.email,
@@ -117,12 +106,6 @@ router.post('/register', async (req, res) => {
 
   const hashedPassword = await hashPassword(user.password)
   await usersService.createUser({ ...user, password: hashedPassword })
-
-  await new Promise((resolve, reject) => {
-    setTimeout(() => {
-      resolve('foo')
-    }, 3000)
-  })
 
   return res.status(201).json({ message: 'User created successfully' })
 })

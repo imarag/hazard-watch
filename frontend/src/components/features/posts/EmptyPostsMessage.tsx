@@ -20,19 +20,19 @@ export default function EmptyPostsMessage() {
         }}
       >
         <Typography variant='h6' color='text.secondary' align='center'>
-          No posts yet
+          No posts found
         </Typography>
-        <Typography variant='body2' color='text.secondary' align='center'>
-          Create your first post to get started.
+        <Typography variant='body2' color='text.disabled' align='center'>
+          Try adjusting your search or create a new report.
         </Typography>
         <Button
           component={Link}
           to='/posts/create'
           size='small'
           variant='outlined'
-          sx={{ marginTop: 1 }}
+          sx={{ mt: 1 }}
         >
-          Create Post
+          Create Report
         </Button>
       </Box>
     </Box>

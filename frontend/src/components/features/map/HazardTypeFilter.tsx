@@ -1,4 +1,4 @@
-import { ToggleButton, ToggleButtonGroup } from '@mui/material'
+import { Stack, Chip } from '@mui/material'
 import { HazardType } from '@/types/hazards'
 import { hazardMeta } from '@/constants/hazards'
 
@@ -13,43 +13,39 @@ export default function HazardTypeFilter({
 }: HazardTypeFilterProps) {
   const allHazards: HazardType[] = Object.values(HazardType)
 
-  const handleChange = (
-    _event: React.MouseEvent<HTMLElement>,
-    newFormats: HazardType[],
-  ) => {
-    setHazardTypeSelected(newFormats)
+  const toggle = (hazard: HazardType) => {
+    setHazardTypeSelected((prev) =>
+      prev.includes(hazard)
+        ? prev.filter((h) => h !== hazard)
+        : [...prev, hazard],
+    )
   }
 
   return (
-    <ToggleButtonGroup
-      orientation='vertical'
-      value={hazardTypeSelected}
-      onChange={handleChange}
-      aria-label='text formatting'
-      size='small'
-      sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
-    >
+    <Stack direction='column' spacing={0.75}>
       {allHazards.map((hazardName) => {
         const Icon = hazardMeta[hazardName].muiIcon
+        const isSelected = hazardTypeSelected.includes(hazardName)
         return (
-          <ToggleButton
-            fullWidth
-            value={hazardName}
-            aria-label={hazardName}
+          <Chip
+            key={hazardName}
+            icon={<Icon sx={{ fontSize: '16px !important' }} />}
+            label={hazardName.charAt(0).toUpperCase() + hazardName.slice(1)}
+            onClick={() => toggle(hazardName)}
+            variant={isSelected ? 'filled' : 'outlined'}
+            color={isSelected ? 'primary' : 'default'}
             sx={{
-              display: 'flex',
-              alignItems: 'stretch',
               justifyContent: 'flex-start',
-              gap: 1,
-              fontSize: 10,
-              backgroundColor: 'background.paper',
+              px: 1,
+              height: 36,
+              borderRadius: 2,
+              fontWeight: isSelected ? 600 : 400,
+              transition: 'all 0.15s ease',
+              '& .MuiChip-label': { p: 2 },
             }}
-          >
-            <Icon sx={{ fontSize: 18 }} />
-            {hazardName}
-          </ToggleButton>
+          />
         )
       })}
-    </ToggleButtonGroup>
+    </Stack>
   )
 }

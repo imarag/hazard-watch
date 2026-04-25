@@ -15,6 +15,9 @@ export default function PostDateFilter({
     <FormControl>
       <InputLabel id='date-filter-label'>Post Date</InputLabel>
       <Select
+        MenuProps={{
+          sx: { zIndex: 2000 }, // keep it because select appears behind panel
+        }}
         labelId='date-filter-label'
         id='date-filter'
         value={postDateSelected}
