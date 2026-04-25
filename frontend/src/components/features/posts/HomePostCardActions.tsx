@@ -42,7 +42,7 @@ export default function HomePostCardActions({
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
       <ViewPostAction postId={post.id} />
-      {currentUser?.id === post.userId && (
+      {currentUser?.id === post.user.id && (
         <>
           <EditPostAction postId={post.id} />
           <Box sx={{ marginLeft: 'auto' }}>

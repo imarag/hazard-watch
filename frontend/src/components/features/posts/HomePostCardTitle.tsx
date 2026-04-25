@@ -48,7 +48,7 @@ export default function HomePostCardTitle({
               color: 'text.primary',
             }}
           >
-            {post.userName}
+            {post.user.name}
           </Typography>
           <Typography variant='caption' sx={{ color: 'text.disabled' }}>
             {formatDate(post.createdAt)}

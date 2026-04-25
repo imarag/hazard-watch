@@ -30,12 +30,6 @@ export const verifyJWTToken = (token: string): UserPayload | null => {
   }
 }
 
-export const toPublicUser = (user: UserInDb): UserPublic => ({
-  id: user.id,
-  email: user.email,
-  name: user.name,
-})
-
 export const createErrorResponse = (
   status: number,
   message: string,

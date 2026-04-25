@@ -19,7 +19,7 @@ export default function ViewInfoBody({ post, lon, lat }: ViewInfoBodyProps) {
         <PostCardText text={post.description} />
       </PostCardItem>
       <PostCardItem label='Author'>
-        <PostCardText text={post.userName} />
+        <PostCardText text={post.user.name} />
       </PostCardItem>
       <PostCardItem label='Hazard type'>
         <PostCardText

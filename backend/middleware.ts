@@ -61,7 +61,7 @@ export const requireOwnership = async (
     return res.status(404).json(createErrorResponse(404, 'Post not found'))
   }
 
-  if (existingPost.userId !== req.userId) {
+  if (existingPost.user.id !== req.userId) {
     return res.status(403).json(createErrorResponse(403, 'Unauthorized'))
   }
 

@@ -1,34 +1,39 @@
-import axios from 'axios'
 import type { PostInDb, PostPayload } from '../types/posts.ts'
 import type { UpdatePostInput } from '../types/posts.ts'
-
-const baseUrl = 'http://localhost:3000/posts'
+import { PostModel } from '../models/posts.ts'
 
 const getAllPosts = async (): Promise<PostInDb[]> => {
-  const res = await axios.get(baseUrl)
-  return res.data
+  const posts = await PostModel.find().populate('user')
+  return posts
 }
 
 const getPostById = async (id: string): Promise<PostInDb> => {
-  const res = await axios.get(`${baseUrl}/${id}`)
-  return res.data
+  const post = await PostModel.findById(id).populate('user')
+  if (!post) throw new Error('Post not found')
+  return post
 }
 
 const createPost = async (post: PostPayload): Promise<PostInDb> => {
-  const res = await axios.post(baseUrl, post)
-  return res.data
+  const newPost = new PostModel(post)
+  await newPost.save()
+  return newPost.populate('user')
 }
 
 const updatePost = async (
   post: UpdatePostInput,
   id: string,
 ): Promise<PostInDb> => {
-  const res = await axios.patch(`${baseUrl}/${id}`, post)
-  return res.data
+  const updated = await PostModel.findByIdAndUpdate(
+    id,
+    { $set: post },
+    { new: true },
+  )
+  if (!updated) throw new Error('Post not found')
+  return updated.populate('user')
 }
 
 const deletePost = async (id: string): Promise<void> => {
-  await axios.delete(`${baseUrl}/${id}`)
+  await PostModel.findByIdAndDelete(id)
 }
 
 export default { getAllPosts, getPostById, createPost, updatePost, deletePost }

@@ -66,7 +66,7 @@ export default function ViewPost() {
     },
   })
 
-  const isSameUser = post?.userId === currentUser?.id
+  const isSameUser = post?.user.id === currentUser?.id
   const Action =
     isSameUser && isUserLoggedIn && post ? (
       <>

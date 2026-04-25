@@ -7,8 +7,13 @@ import morgan from 'morgan'
 import cors from 'cors'
 import config from './config.ts'
 import { extractToken, errorHandler, routeNotFound } from './middleware.ts'
+import { connectDb } from './server.ts'
 
 const app = express()
+
+connectDb()
+  .then(() => console.log('Connected to Mongo DB'))
+  .catch((err) => console.error('Cannot connect to Mongo DB'))
 
 if (config.NODE_ENV === 'development') {
   app.use(

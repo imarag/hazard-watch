@@ -22,9 +22,7 @@ router.post('/', requireAuth, async (req, res) => {
   const parsedPost = CreatePostSchema.parse(body)
   const newPost: PostPayload = {
     ...parsedPost,
-    createdAt: new Date().toISOString(),
     userId: req.userId!,
-    userName: req.userName!,
   }
   const post = await postService.createPost(newPost)
   return res.status(201).json(post)

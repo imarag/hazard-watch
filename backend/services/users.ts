@@ -1,31 +1,27 @@
-import axios from 'axios'
-import { toPublicUser } from '../utils/auth.ts'
-import type { UserInDb, UserRegister, UserPublic } from '../types/users.ts'
+import type { UserInDb, UserRegister } from '../types/users.ts'
+import { UserModel } from '../models/users.ts'
 
-const baseUrl = 'http://localhost:3000/users'
-
-const getAllUsers = async (): Promise<UserPublic[]> => {
-  const res = await axios.get(baseUrl)
-  const users: UserInDb[] = res.data
-  const publicUsers = users.map((user) => toPublicUser(user))
-  return publicUsers
+const getAllUsers = async (): Promise<UserInDb[]> => {
+  const users = await UserModel.find()
+  return users
 }
 
-const getUserById = async (id: string): Promise<UserPublic> => {
-  const res = await axios.get(`${baseUrl}/${id}`)
-  const user: UserInDb = res.data
-  const publicUser = toPublicUser(user)
-  return publicUser
+const getUserById = async (id: string): Promise<UserInDb> => {
+  const user = await UserModel.findById(id)
+  if (!user) throw new Error('User not found')
+  return user
 }
 
-const getUserByEmail = async (email: string): Promise<UserInDb> => {
-  const res = await axios.get(`${baseUrl}?email=${email}`)
-  return res.data[0]
+const getUserByEmail = async (email: string): Promise<UserInDb | null> => {
+  const user = await UserModel.findOne({ email })
+  if (!user) return null
+  return user
 }
 
 const createUser = async (user: UserRegister): Promise<UserInDb> => {
-  const res = await axios.post(`${baseUrl}`, user)
-  return res.data
+  const newUser = new UserModel(user)
+  await newUser.save()
+  return newUser.toJSON() as UserInDb
 }
 
 export default {

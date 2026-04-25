@@ -10,6 +10,8 @@ const configSchema = z.object({
   REFRESH_TOKEN_KEY: z.string(),
   NODE_ENV: z.enum(['production', 'development']),
   PORT: z.coerce.number().int(),
+  MONGO_DB_USERNAME: z.string(),
+  MONGO_DB_PASSWORD: z.string(),
 })
 
 const config = configSchema.parse({
@@ -17,6 +19,8 @@ const config = configSchema.parse({
   REFRESH_TOKEN_KEY: REFRESH_TOKEN_KEY,
   NODE_ENV: process.env['NODE_ENV'],
   PORT: process.env['PORT'],
+  MONGO_DB_USERNAME: process.env['MONGO_DB_USERNAME'],
+  MONGO_DB_PASSWORD: process.env['MONGO_DB_PASSWORD'],
 })
 
 export default config
