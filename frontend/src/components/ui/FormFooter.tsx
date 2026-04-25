@@ -2,17 +2,17 @@ import { Typography, Link } from '@mui/material'
 import { Link as RouterLink } from 'react-router'
 import type React from 'react'
 
-type FormDescriptionProps = {
+type FormFooterProps = {
   children?: React.ReactNode
   to: string
   linkText: string
 }
 
-export default function FormDescription({
+export default function FormFooter({
   children,
   to,
   linkText,
-}: FormDescriptionProps) {
+}: FormFooterProps) {
   return (
     <Typography variant='caption' align='center'>
       {children}{' '}

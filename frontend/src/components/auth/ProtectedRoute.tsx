@@ -2,14 +2,15 @@ import { useEffect } from 'react'
 import { useNavigate, Outlet } from 'react-router'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNotification } from '@/contexts/NotificationContext'
+import Loading from '@/components/ui/Loading'
 
-const ProtectedRoute = () => {
+export default function ProtectedRoute() {
   const { showNotification, createNotification } = useNotification()
-  const { currentUser, loading } = useAuth()
+  const { currentUser, loading, isLoggingOut } = useAuth()
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!loading && !currentUser) {
+    if (!loading && !currentUser && !isLoggingOut.current) {
       showNotification(
         createNotification(
           'You must be logged in to access this page.',
@@ -18,11 +19,16 @@ const ProtectedRoute = () => {
       )
       navigate('/')
     }
-  }, [loading, currentUser, showNotification, navigate, createNotification])
+  }, [
+    loading,
+    currentUser,
+    showNotification,
+    navigate,
+    createNotification,
+    isLoggingOut,
+  ])
 
-  if (loading) return <div>Loading...</div>
+  if (loading) return <Loading text='Checking authentication...' />
   if (!currentUser) return null
   return <Outlet />
 }
-
-export default ProtectedRoute

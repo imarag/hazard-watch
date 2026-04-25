@@ -14,7 +14,7 @@ export type Post = BasePost & {
   id: string
 }
 
-export type CreatePost = Omit<BasePost, 'createdAt' | 'userId'>
+export type CreatePost = Omit<BasePost, 'createdAt' | 'userId' | 'userName'>
 
 export type SortField = 'createdAt' | 'hazardType' | 'title' | 'userName'
 export type SortDirection = 'asc' | 'desc'

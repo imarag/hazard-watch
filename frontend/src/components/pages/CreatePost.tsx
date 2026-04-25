@@ -1,18 +1,18 @@
-import { TextField, Button, Stack, Container, MenuItem } from '@mui/material'
+import { TextField, Button, MenuItem } from '@mui/material'
 import postsService from '@/services/posts'
 import { useNavigate } from 'react-router'
 import useField from '@/hooks/useField'
 import { useState } from 'react'
-import Title from '@/components/ui/Title'
 import type { Location } from '@/types/hazards'
 import { HazardType } from '@/types/hazards'
-import HazardMap from '../features/HazardMap'
+import HazardMap from '../features/map/HazardMap'
 import { useNotification } from '@/contexts/NotificationContext'
-import axios from 'axios'
+import { getErrorMessage } from '@/utils/auth'
 import type { CreatePost } from '@/types/posts'
 import { appRoutes } from '@/constants/routes'
 import PageLayout from '../layouts/PageLayout'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import FormContainer from '../ui/FormContainer'
 
 export default function CreatePost() {
   const { showNotification, createNotification } = useNotification()
@@ -33,10 +33,7 @@ export default function CreatePost() {
       navigate('/')
     },
     onError: (error: unknown) => {
-      let errorMessage = 'Something went wrong'
-      if (axios.isAxiosError(error)) {
-        errorMessage = error.response?.data?.message ?? errorMessage
-      }
+      const errorMessage = getErrorMessage(error)
       showNotification(
         createNotification(`Cannot create post: ${errorMessage}`, 'error'),
       )
@@ -56,16 +53,19 @@ export default function CreatePost() {
 
   return (
     <PageLayout pageTitle={appRoutes.createPost.pageTitle}>
-      <Container
+      <FormContainer
+        title='REPORT A HAZARD'
+        onSubmit={handleSubmit}
         maxWidth='sm'
-        sx={{
-          backgroundColor: 'background.paper',
-          paddingBlock: 4,
-        }}
       >
-        <Stack component='form' onSubmit={handleSubmit} spacing={2}>
-          <Title>REPORT A HAZARD</Title>
-          <TextField label='Title' size='small' {...title} required />
+        <>
+          <TextField
+            label='Title'
+            size='small'
+            value={title.value}
+            onChange={title.onChange}
+            required
+          />
           <TextField
             size='small'
             label='Description'
@@ -89,7 +89,11 @@ export default function CreatePost() {
               </MenuItem>
             ))}
           </TextField>
-          <HazardMap location={location} setLocation={setLocation} />
+          <HazardMap
+            location={location}
+            setLocation={setLocation}
+            isLoading={isPending}
+          />
           <Button
             disabled={
               !location || !title.value || !description.value || isPending
@@ -100,8 +104,8 @@ export default function CreatePost() {
           >
             {isPending ? 'Submitting...' : 'Report'}
           </Button>
-        </Stack>
-      </Container>
+        </>
+      </FormContainer>
     </PageLayout>
   )
 }

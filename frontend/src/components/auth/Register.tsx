@@ -1,57 +1,64 @@
-import Container from '@mui/material/Container'
 import Button from '@mui/material/Button'
-import { Box, Stack, TextField } from '@mui/material'
-import Title from '@/components/ui/Title'
-import FormDescription from '@/components/auth/FormDescription'
+import { TextField } from '@mui/material'
+import FormFooter from '@/components/ui/FormFooter'
+import FormContainer from '../ui/FormContainer'
 import { useNavigate } from 'react-router'
 import { useAuth } from '@/contexts/AuthContext'
 import useField from '@/hooks/useField'
+import { useMutation } from '@tanstack/react-query'
+import type { UserRegister } from '@/types/users'
+import { useNotification } from '@/contexts/NotificationContext'
+import { getErrorMessage } from '@/utils/auth'
 
 export default function Register() {
+  const { showNotification, createNotification } = useNotification()
   const email = useField('')
   const password = useField('')
   const name = useField('')
   const navigate = useNavigate()
   const { register } = useAuth()
 
+  const formFooter = (
+    <FormFooter to='/auth/login' linkText='Sign in'>
+      Already have an account?
+    </FormFooter>
+  )
+
   async function handleRegister(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    await register({
-      email: email.value,
-      password: password.value,
-      name: name.value,
-    })
-    navigate('/auth/login')
+    mutate({ email: email.value, password: password.value, name: name.value })
   }
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: async ({ email, password, name }: UserRegister) => {
+      await register({ email, password, name })
+    },
+    onSuccess: () => {
+      showNotification(
+        createNotification('You have succesfully register.', 'success'),
+      )
+      navigate('/')
+    },
+    onError: (error: unknown) => {
+      const errorMessage = getErrorMessage(error)
+      showNotification(createNotification(errorMessage, 'error'))
+    },
+  })
+
   return (
-    <Box
-      sx={{
-        height: '100%',
-        alignItems: 'center',
-        display: 'flex',
-      }}
+    <FormContainer
+      title='Join HazardWatch'
+      onSubmit={handleRegister}
+      footer={formFooter}
     >
-      <Container
-        maxWidth='sm'
-        sx={{
-          mt: 4,
-          backgroundColor: 'background.paper',
-          paddingBlock: 4,
-        }}
-      >
-        <Stack component='form' onSubmit={handleRegister} spacing={2}>
-          <Title>Create an account</Title>
-          <TextField label='Email' {...email} required />
-          <TextField label='Name' {...name} required />
-          <TextField label='Password' type='password' {...password} required />
-          <Button type='submit' variant='contained' fullWidth>
-            submit
-          </Button>
-          <FormDescription to='/auth/login' linkText='Sign in'>
-            Already have an account?
-          </FormDescription>
-        </Stack>
-      </Container>
-    </Box>
+      <>
+        <TextField label='Email' {...email} required />
+        <TextField label='Name' {...name} required />
+        <TextField label='Password' type='password' {...password} required />
+        <Button loading={isPending} type='submit' variant='contained' fullWidth>
+          submit
+        </Button>
+      </>
+    </FormContainer>
   )
 }

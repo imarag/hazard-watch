@@ -1,17 +1,19 @@
 import { useState, useMemo } from 'react'
 import postsService from '@/services/posts'
-import { Box, Typography } from '@mui/material'
-import PostsList from '../features/posts/PostsList'
-import PostsToolBar from '../features/posts/PostsToolBar'
+import { Box } from '@mui/material'
+import PostsList from '@/components/features/posts/PostsList'
 import type { SortField, SortDirection } from '@/types/posts'
 import { sortPosts } from '@/utils/posts'
 import { appRoutes } from '@/constants/routes'
-import CreatePostAction from '../actions/CreatePostAction'
+import CreatePostAction from '@/components/actions/CreatePostAction'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useQuery } from '@tanstack/react-query'
-import axios from 'axios'
-import PageLayout from '../layouts/PageLayout'
+import { getErrorMessage } from '@/utils/auth'
+import PageLayout from '@/components/layouts/PageLayout'
+import PostSearchBar from '@/components/features/home/PostSearchBar.tsx'
+import PostToolBar from '@/components/features/home/PostToolBar'
+import Loading from '@/components/ui/Loading'
 
 export default function Home() {
   const { createNotification, showNotification } = useNotification()
@@ -19,20 +21,17 @@ export default function Home() {
 
   const [sortField, setSortField] = useState<SortField>('createdAt')
   const [sortDir, setSortDir] = useState<SortDirection>('desc')
+  const [searchText, setSearchText] = useState('')
 
   const Actions = isUserLoggedIn ? <CreatePostAction /> : null
 
-  const { data: posts, isLoading } = useQuery({
+  const { data: posts = [], isLoading } = useQuery({
     queryKey: ['posts'],
-    initialData: [],
     queryFn: async () => {
       try {
         return await postsService.getAllPosts()
       } catch (error: unknown) {
-        let errorMessage = 'Something went wrong'
-        if (axios.isAxiosError(error)) {
-          errorMessage = error.response?.data?.message ?? errorMessage
-        }
+        const errorMessage = getErrorMessage(error)
         showNotification(
           createNotification(
             `Cannot fetch the posts: ${errorMessage}`,
@@ -44,10 +43,23 @@ export default function Home() {
     },
   })
 
+  const filteredPosts = useMemo(() => {
+    return searchText
+      ? posts.filter((p) =>
+          Object.values(p).some((val) =>
+            String(val).toLowerCase().includes(searchText.toLowerCase()),
+          ),
+        )
+      : posts
+  }, [searchText, posts])
+
   const sortedPosts = useMemo(
-    () => sortPosts(posts, sortField, sortDir),
-    [posts, sortField, sortDir],
+    () => sortPosts(filteredPosts, sortField, sortDir),
+    [filteredPosts, sortField, sortDir],
   )
+
+  const totalPosts = posts.length
+  const totalFilteredPosts = filteredPosts.length
 
   return (
     <PageLayout pageTitle={appRoutes.home.pageTitle} actions={Actions}>
@@ -59,18 +71,27 @@ export default function Home() {
           gap: 2,
         }}
       >
-        <Box sx={{ grow: 0 }}>
-          <PostsToolBar
-            sortField={sortField}
-            sortDir={sortDir}
-            setSortDir={setSortDir}
-            setSortField={setSortField}
-            posts={sortedPosts}
-          />
-        </Box>
-        <Box sx={{ flexGrow: 1 }}>
+        <PostSearchBar
+          disabled={isLoading}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
+        <PostToolBar
+          isLoading={isLoading}
+          sortField={sortField}
+          sortDir={sortDir}
+          setSortDir={setSortDir}
+          setSortField={setSortField}
+          totalPosts={totalPosts}
+          totalFilteredPosts={totalFilteredPosts}
+        />
+        <Box
+          sx={{
+            flexGrow: 1,
+          }}
+        >
           {isLoading ? (
-            <Typography>Loading posts...</Typography>
+            <Loading text='Loading posts' />
           ) : (
             <PostsList posts={sortedPosts} />
           )}

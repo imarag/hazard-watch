@@ -20,9 +20,12 @@ export default function NotificationContextProvider({
     setNotification(notification)
   }, [])
 
-  const createNotification = (message: string, type: NotificationType) => {
-    return { message, type }
-  }
+  const createNotification = useCallback(
+    (message: string, type: NotificationType) => {
+      return { message, type }
+    },
+    [],
+  )
 
   return (
     <NotificationContext.Provider

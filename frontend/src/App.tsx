@@ -7,10 +7,13 @@ import MainLayout from '@/components/layouts/MainLayout'
 import { CssBaseline } from '@mui/material'
 import CreatePost from '@/components/pages/CreatePost'
 import ViewPost from '@/components/pages/ViewPost'
-import UpdatePost from './components/pages/UpdatePost'
+import EditPost from './components/pages/EditPost'
 import InteractiveMap from '@/components/pages/InteractiveMap'
 import About from './components/pages/About'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
+import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
 
 function App() {
   return (
@@ -24,7 +27,7 @@ function App() {
             <Route index element={<Home />} />
             <Route element={<ProtectedRoute />}>
               <Route path='/posts/create' element={<CreatePost />} />
-              <Route path='/posts/:id/edit' element={<UpdatePost />} />
+              <Route path='/posts/:id/edit' element={<EditPost />} />
             </Route>
             <Route path='/posts/:id' element={<ViewPost />} />
             <Route path='/map' element={<InteractiveMap />} />

@@ -19,7 +19,7 @@ export default function AppLayout() {
       </Box>
 
       {/* Right side */}
-      <Box sx={{ flex: 1, overflow: 'scroll' }}>
+      <Box sx={{ flex: 1, overflow: 'auto' }}>
         <Outlet />
       </Box>
     </Box>

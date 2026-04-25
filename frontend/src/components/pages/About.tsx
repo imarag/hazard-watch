@@ -10,10 +10,9 @@ import {
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import { appRoutes } from '@/constants/routes'
-import TopBar from '../structure/TopBar'
 import { techStack, aboutApp } from '@/constants/about'
 import type { SxProps } from '@mui/material'
-import PageLayout from '../layouts/PageLayout'
+import PageLayout from '@/components/layouts/PageLayout'
 
 function SectionContainer({
   sx,
@@ -41,7 +40,7 @@ function SectionContainer({
 function SectionTitle({ title }: { title: string }) {
   return (
     <Typography
-      variant='subtitle2'
+      variant='subtitle1'
       sx={{
         fontWeight: 'fontWeightBold',
         marginBottom: 1,
@@ -122,15 +121,7 @@ function TechStackSection() {
 function AboutProjectSection() {
   return (
     <SectionContainer>
-      <Typography
-        variant='subtitle2'
-        sx={{
-          fontWeight: 'fontWeightBold',
-          marginBottom: 1,
-        }}
-      >
-        <SectionTitle title='About this project' />
-      </Typography>
+      <SectionTitle title='About this project' />
       <Typography
         variant='body2'
         sx={{ fontWeight: 'fontWeightLight' }}

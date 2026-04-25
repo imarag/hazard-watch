@@ -11,6 +11,7 @@ export type AuthContextType = {
   register: (userInfo: BaseUser) => Promise<void>
   logout: () => Promise<void>
   loading: boolean
+  isLoggingOut: React.RefObject<boolean>
 }
 
 type BaseUser = {

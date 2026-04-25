@@ -50,8 +50,11 @@ export type Feature<G extends Geometry = Geometry, P = Properties> = {
 export type Location = Feature<Point, Properties>
 
 export const DateFilter = [
-  { label: 'Last 24 hours', value: '24h' },
+  { label: 'Last hour', value: '1h' },
+  { label: 'Last 24 hours', value: '1d' },
   { label: 'Last 7 days', value: '7d' },
+  { label: 'Last 30 days', value: '1m' },
+  { label: 'Last 3 months', value: '3m' },
   { label: 'All', value: 'all' },
 ] as const
 
