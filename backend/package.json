@@ -7,7 +7,8 @@
     "start": "node index.ts",
     "dev": "node --watch index.ts",
     "server": "json-server db.json",
-    "seed": "node seed.ts"
+    "seed": "node seed.ts",
+    "lint": "eslint . --fix"
   },
   "keywords": [],
   "author": "",

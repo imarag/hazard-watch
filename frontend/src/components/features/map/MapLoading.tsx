@@ -1,10 +1,4 @@
-import {
-  Box,
-  Backdrop,
-  CircularProgress,
-  Typography,
-  Stack,
-} from '@mui/material'
+import { Box, Backdrop, CircularProgress, Typography } from '@mui/material'
 
 interface MapLoadingProps {
   open?: boolean

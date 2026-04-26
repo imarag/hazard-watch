@@ -13,7 +13,7 @@ const app = express()
 
 connectDb()
   .then(() => console.log('Connected to Mongo DB'))
-  .catch((err) => console.error('Cannot connect to Mongo DB'))
+  .catch(() => console.error('Cannot connect to Mongo DB'))
 
 if (config.NODE_ENV === 'development') {
   app.use(
@@ -24,6 +24,7 @@ if (config.NODE_ENV === 'development') {
   )
 }
 
+app.use(express.static('dist'))
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(cookieParser())

@@ -12,6 +12,12 @@ export function sortPosts(
       const bVal = new Date(b.createdAt).getTime()
       return sortDir === 'asc' ? aVal - bVal : bVal - aVal
     }
+    if (sortField === 'author') {
+      const aVal = String(a['user']['name']).toLowerCase()
+      const bVal = String(b['user']['name']).toLowerCase()
+      const result = aVal > bVal ? 1 : aVal < bVal ? -1 : 0
+      return sortDir === 'asc' ? result : -result
+    }
     const aVal = String(a[sortField]).toLowerCase()
     const bVal = String(b[sortField]).toLowerCase()
     const result = aVal > bVal ? 1 : aVal < bVal ? -1 : 0

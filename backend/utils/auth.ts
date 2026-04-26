@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import config from '../config.ts'
-import type { UserInDb, UserPublic, UserPayload } from '../types/users.ts'
+import type { UserPayload } from '../types/users.ts'
 import type { ErrorResponse } from '../types/auth.ts'
 
 export const hashPassword = async (password: string, saltRounds = 10) => {

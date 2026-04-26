@@ -5,7 +5,7 @@ import { HazardType } from './hazards.ts'
 export type BasePost = {
   title: string
   description: string
-  user: string
+  user: { name: string; email: string; id: string }
   hazardType: HazardType
   location: Location
   createdAt: string

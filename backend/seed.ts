@@ -35,6 +35,10 @@ async function seed() {
 
   const [giannis, georgia, antonia] = users
 
+  if (!giannis || !georgia || !antonia) {
+    throw new Error('Users do not exist')
+  }
+
   await PostModel.insertMany([
     {
       title: 'flood in thessaloniki port',

@@ -4,7 +4,6 @@ type BasePost = {
   title: string
   description: string
   user: { name: string; id: string; email: string }
-  userName: string
   hazardType: HazardType
   location: Location
   createdAt: string
@@ -16,5 +15,5 @@ export type Post = BasePost & {
 
 export type CreatePost = Omit<BasePost, 'createdAt' | 'user'>
 
-export type SortField = 'createdAt' | 'hazardType' | 'title' | 'userName'
+export type SortField = 'createdAt' | 'hazardType' | 'title' | 'author'
 export type SortDirection = 'asc' | 'desc'

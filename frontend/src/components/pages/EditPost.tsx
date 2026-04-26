@@ -46,6 +46,7 @@ export default function EditPost() {
     titleSetValue(post.title)
     descriptionSetValue(post.description)
     hazardTypeSetValue(post.hazardType)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLocation(post.location)
   }, [post, descriptionSetValue, titleSetValue, hazardTypeSetValue])
 

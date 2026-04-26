@@ -40,5 +40,5 @@ export const sortOptions: { value: SortField; label: string }[] = [
   { value: 'createdAt', label: 'Date' },
   { value: 'hazardType', label: 'Hazard Type' },
   { value: 'title', label: 'Title' },
-  { value: 'userName', label: 'Author' },
+  { value: 'author', label: 'Author' },
 ]
