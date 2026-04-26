@@ -30,7 +30,7 @@ export default function CreatePost() {
       showNotification(
         createNotification('Post created successfully.', 'success'),
       )
-      navigate('/')
+      navigate(appRoutes.home.path)
     },
     onError: (error: unknown) => {
       const errorMessage = getErrorMessage(error)

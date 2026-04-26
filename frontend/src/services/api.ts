@@ -1,5 +1,6 @@
 import axios from 'axios'
 import authService from '@/services/auth.ts'
+import { appRoutes } from '@/constants/routes'
 
 let accessToken: string | null = null
 
@@ -39,7 +40,17 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config
-    if (error.response?.status === 401 && !originalRequest?._retry) {
+
+    // skip refresh for auth routes
+    const isAuthRoute =
+      originalRequest?.url?.includes(appRoutes.login.path) ||
+      originalRequest?.url?.includes(appRoutes.register.path)
+
+    if (
+      error.response?.status === 401 &&
+      !originalRequest?._retry &&
+      !isAuthRoute
+    ) {
       originalRequest._retry = true
       try {
         const res = await authService.refreshToken()
@@ -48,7 +59,7 @@ api.interceptors.response.use(
         return api(originalRequest)
       } catch (refreshError) {
         clearToken()
-        window.location.href = '/auth/login'
+        // window.location.href = '/auth/login'
         return Promise.reject(refreshError)
       }
     }

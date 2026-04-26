@@ -34,7 +34,7 @@ router.post('/refresh', async (req, res) => {
       email: userPayload.email,
       tokenType: 'access',
     },
-    '15m',
+    config.ACCESS_TOKEN_DUR,
   )
 
   return res.status(200).json({
@@ -72,18 +72,18 @@ router.post('/login', async (req, res) => {
   }
   const accessToken = createJWTToken(
     { ...userPayload, tokenType: 'access' },
-    '15m',
+    config.ACCESS_TOKEN_DUR,
   )
   const refreshToken = createJWTToken(
     { ...userPayload, tokenType: 'refresh' },
-    '7d',
+    config.REFRESH_TOKEN_DUR,
   )
 
   res.cookie(config.REFRESH_TOKEN_KEY, refreshToken, {
     httpOnly: true,
     secure: false,
     sameSite: 'strict',
-    maxAge: 7 * 24 * 60 * 60 * 1000,
+    maxAge: config.REFRESH_TOKEN_DUR,
   })
 
   return res.status(200).json({

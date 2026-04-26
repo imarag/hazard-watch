@@ -36,7 +36,7 @@ export default function ViewPost() {
   const { id: postId } = useParams()
   const { currentUser, isUserLoggedIn } = useAuth()
 
-  const { data: post = null, isLoading } = useQuery({
+  const { data: post = null, isFetching } = useQuery({
     queryKey: ['post', postId],
     enabled: !!postId,
     queryFn: () => postsService.getPostById(postId!),
@@ -56,8 +56,9 @@ export default function ViewPost() {
       showNotification(
         createNotification('Post deleted succesfully.', 'success'),
       )
-      navigate('/')
+      navigate(appRoutes.home.path)
     },
+
     onError: (error: unknown) => {
       const errorMessage = getErrorMessage(error)
       showNotification(
@@ -81,7 +82,7 @@ export default function ViewPost() {
 
   return (
     <PageLayout pageTitle={appRoutes.viewPost.pageTitle} actions={Action}>
-      {isLoading ? (
+      {isFetching ? (
         <Loading text='Loading post' />
       ) : !post ? (
         <Typography>Post not found.</Typography>

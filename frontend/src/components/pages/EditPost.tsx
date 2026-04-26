@@ -58,7 +58,7 @@ export default function EditPost() {
       showNotification(
         createNotification('Post updated successfully.', 'success'),
       )
-      navigate('/')
+      navigate(appRoutes.home.path)
     },
     onError: (error: unknown) => {
       const errorMessage = getErrorMessage(error)

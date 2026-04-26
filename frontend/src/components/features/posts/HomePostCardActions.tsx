@@ -9,6 +9,7 @@ import DeletePostAction from '@/components/actions/DeletePostAction'
 import postsService from '@/services/posts'
 import ViewPostAction from '@/components/actions/ViewPostAction'
 import { useNotification } from '@/contexts/NotificationContext'
+import { appRoutes } from '@/constants/routes'
 
 interface HomePostCardActionsProps {
   post: Post
@@ -29,7 +30,7 @@ export default function HomePostCardActions({
       showNotification(
         createNotification('Post deleted succesfully.', 'success'),
       )
-      navigate('/')
+      navigate(appRoutes.home.path)
     },
     onError: (error: unknown) => {
       const errorMessage = getErrorMessage(error)

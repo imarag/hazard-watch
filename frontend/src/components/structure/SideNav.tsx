@@ -9,9 +9,21 @@ import PersonIcon from '@mui/icons-material/Person'
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded'
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
+import { useNotification } from '@/contexts/NotificationContext'
+import { useNavigate } from 'react-router'
 
 export default function SideNav() {
   const { isUserLoggedIn, logout } = useAuth()
+  const { showNotification, createNotification } = useNotification()
+  const navigate = useNavigate()
+
+  async function handleLogoutUser() {
+    await logout()
+    showNotification(
+      createNotification('You have successfully logged out.', 'success'),
+    )
+    navigate(appRoutes.home.path)
+  }
 
   return (
     <Box
@@ -58,7 +70,7 @@ export default function SideNav() {
             link={false}
             icon={<LogoutRoundedIcon />}
             label='Logout'
-            onClick={logout}
+            onClick={handleLogoutUser}
           />
         ) : (
           <>

@@ -3,6 +3,7 @@ import { useNavigate, Outlet } from 'react-router'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNotification } from '@/contexts/NotificationContext'
 import Loading from '@/components/ui/Loading'
+import { appRoutes } from '@/constants/routes'
 
 export default function ProtectedRoute() {
   const { showNotification, createNotification } = useNotification()
@@ -17,7 +18,7 @@ export default function ProtectedRoute() {
           'error',
         ),
       )
-      navigate('/')
+      navigate(appRoutes.login.path)
     }
   }, [
     loading,

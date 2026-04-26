@@ -9,6 +9,7 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import FormFooter from '@/components/ui/FormFooter'
+import { appRoutes } from '@/constants/routes'
 
 export default function Login() {
   const { showNotification, createNotification } = useNotification()
@@ -28,7 +29,7 @@ export default function Login() {
     },
     onSuccess: () => {
       showNotification(createNotification('Welcome back.', 'success'))
-      navigate('/')
+      navigate(appRoutes.home.path)
     },
     onError: (error: unknown) => {
       const errorMessage = getErrorMessage(error)
@@ -37,7 +38,7 @@ export default function Login() {
   })
 
   const formFooter = (
-    <FormFooter to='/auth/register' linkText='Register now'>
+    <FormFooter to={appRoutes.register.path} linkText='Register now'>
       Don’t have an account?
     </FormFooter>
   )

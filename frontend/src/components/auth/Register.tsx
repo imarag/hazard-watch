@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query'
 import type { UserRegister } from '@/types/users'
 import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
+import { appRoutes } from '@/constants/routes'
 
 export default function Register() {
   const { showNotification, createNotification } = useNotification()
@@ -35,9 +36,9 @@ export default function Register() {
     },
     onSuccess: () => {
       showNotification(
-        createNotification('You have succesfully register.', 'success'),
+        createNotification('Account created successfully!', 'success'),
       )
-      navigate('/')
+      navigate(appRoutes.login.path)
     },
     onError: (error: unknown) => {
       const errorMessage = getErrorMessage(error)
@@ -52,9 +53,25 @@ export default function Register() {
       footer={formFooter}
     >
       <>
-        <TextField label='Email' {...email} required />
-        <TextField label='Name' {...name} required />
-        <TextField label='Password' type='password' {...password} required />
+        <TextField
+          label='Email'
+          value={email.value}
+          onChange={email.onChange}
+          required
+        />
+        <TextField
+          label='Name'
+          value={name.value}
+          onChange={name.onChange}
+          required
+        />
+        <TextField
+          label='Password'
+          type='password'
+          value={password.value}
+          onChange={password.onChange}
+          required
+        />
         <Button loading={isPending} type='submit' variant='contained' fullWidth>
           submit
         </Button>

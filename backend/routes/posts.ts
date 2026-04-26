@@ -22,7 +22,7 @@ router.post('/', requireAuth, async (req, res) => {
   const parsedPost = CreatePostSchema.parse(body)
   const newPost: PostPayload = {
     ...parsedPost,
-    userId: req.userId!,
+    user: req.userId!,
   }
   const post = await postService.createPost(newPost)
   return res.status(201).json(post)
