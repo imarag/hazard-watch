@@ -1,6 +1,6 @@
-import NotificationContext from '../../contexts/NotificationContext'
+import NotificationContext from '@/contexts/NotificationContext'
 import { useState, useCallback } from 'react'
-import type { Notification, NotificationType } from '../../types/notification'
+import type { Notification, NotificationType } from '@/types/notification'
 import { Alert, Snackbar } from '@mui/material'
 
 interface NotificationProviderProps {

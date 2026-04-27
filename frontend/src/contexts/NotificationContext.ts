@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react'
-import type { NotificationContextType } from '../types/notification'
+import type { NotificationContextType } from '@/types/notification'
 
 const NotificationContext = createContext<NotificationContextType | undefined>(
   undefined,

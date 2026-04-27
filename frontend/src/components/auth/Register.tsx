@@ -1,7 +1,7 @@
 import Button from '@mui/material/Button'
 import { TextField } from '@mui/material'
 import FormFooter from '@/components/ui/FormFooter'
-import FormContainer from '../ui/FormContainer'
+import FormContainer from '@/components/ui/FormContainer'
 import { useNavigate } from 'react-router'
 import { useAuth } from '@/contexts/AuthContext'
 import useField from '@/hooks/useField'

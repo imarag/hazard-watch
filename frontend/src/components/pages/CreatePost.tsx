@@ -5,14 +5,14 @@ import useField from '@/hooks/useField'
 import { useState } from 'react'
 import type { Location } from '@/types/hazards'
 import { HazardType } from '@/types/hazards'
-import HazardMap from '../features/map/HazardMap'
+import HazardMap from '@/components/features/map/HazardMap'
 import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import type { CreatePost } from '@/types/posts'
 import { appRoutes } from '@/constants/routes'
-import PageLayout from '../layouts/PageLayout'
+import PageLayout from '@/components/layouts/PageLayout'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import FormContainer from '../ui/FormContainer'
+import FormContainer from '@/components/ui/FormContainer'
 
 export default function CreatePost() {
   const { showNotification, createNotification } = useNotification()

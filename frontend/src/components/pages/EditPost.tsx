@@ -6,11 +6,11 @@ import { HazardType } from '@/types/hazards'
 import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
-import PageLayout from '../layouts/PageLayout'
+import PageLayout from '@/components/layouts/PageLayout'
 import useField from '@/hooks/useField'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
 import type { CreatePost } from '@/types/posts'
-import Loading from '../ui/Loading'
+import Loading from '@/components/ui/Loading'
 import EditPostForm from '@/components/features/edit-post/EditPostForm'
 
 export default function EditPost() {

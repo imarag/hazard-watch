@@ -1,4 +1,4 @@
-import type { HazardType, Location } from './hazards'
+import type { HazardType, Location } from '@/types/hazards'
 
 type BasePost = {
   title: string

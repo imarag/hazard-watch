@@ -1,4 +1,4 @@
-import { api, plainAxios } from './api'
+import { api, plainAxios } from '@/services/api'
 import type { UserLogin, UserRegister, LoginResponse } from '@/types/users'
 
 const baseUrl = '/auth'

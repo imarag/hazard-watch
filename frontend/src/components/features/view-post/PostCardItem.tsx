@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import PostCardTitle from './PostCardTitle'
+import PostCardTitle from '@/components/features/view-post/PostCardTitle'
 
 interface PostCardItemProps {
   label: string

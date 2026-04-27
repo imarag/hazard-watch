@@ -1,5 +1,5 @@
 import { Stack } from '@mui/material'
-import EmptyPostsMessage from './EmptyPostsMessage'
+import EmptyPostsMessage from '@/components/features/posts/EmptyPostsMessage'
 import type { Post } from '@/types/posts'
 import HomePostCard from '@/components/features/posts/HomePostCard'
 

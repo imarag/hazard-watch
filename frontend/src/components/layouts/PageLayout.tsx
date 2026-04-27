@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import TopBar from '../structure/TopBar'
+import TopBar from '@/components/structure/TopBar'
 
 interface PageLayoutProps {
   pageTitle: string
