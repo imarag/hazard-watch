@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "npm install --prefix ../frontend && npm run build --prefix ../frontend && rm -rf dist && tsc -p tsconfig.build.json && cp -r ../frontend/dist dist/public",
+    "build": "cd ../frontend && npm install && npm run build && cd ../backend && rm -rf dist && tsc -p tsconfig.build.json && cp -r ../frontend/dist dist/public",
     "start": "node dist/index.js",
     "dev": "node --watch index.ts",
     "seed": "node seed.ts",
