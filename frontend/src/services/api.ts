@@ -17,12 +17,12 @@ export const clearToken = (): void => {
 }
 
 export const api = axios.create({
-  baseURL: 'http://localhost:3001/api',
+  baseURL: '/api',
   withCredentials: true,
 })
 
 export const plainAxios = axios.create({
-  baseURL: 'http://localhost:3001/api',
+  baseURL: '/api',
   withCredentials: true,
 })
 

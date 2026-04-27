@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.ts",
+    "build": "npm install --prefix ../frontend && npm run build --prefix ../frontend && rm -rf dist && tsc -p tsconfig.build.json && cp -r ../frontend/dist dist/public",
+    "start": "node dist/index.js",
     "dev": "node --watch index.ts",
-    "server": "json-server db.json",
     "seed": "node seed.ts",
     "lint": "eslint . --fix"
   },
@@ -40,6 +40,7 @@
     "@stylistic/eslint-plugin": "^5.10.0",
     "eslint": "^10.2.0",
     "globals": "^17.5.0",
+    "tsx": "^4.21.0",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.2"
   }

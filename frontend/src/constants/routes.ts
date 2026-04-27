@@ -1,6 +1,4 @@
-import type { AppRoutes } from '@/types/routes'
-
-export const appRoutes: AppRoutes = {
+export const appRoutes = {
   home: {
     path: '/',
     title: 'Posts',
@@ -47,3 +45,11 @@ export const appRoutes: AppRoutes = {
     pageTitle: 'Logout',
   },
 } as const
+
+export type RouteKey = keyof typeof appRoutes
+export type AppRoute = {
+  path: string
+  title: string
+  pageTitle: string
+}
+export type AppRoutes = Record<RouteKey, AppRoute>

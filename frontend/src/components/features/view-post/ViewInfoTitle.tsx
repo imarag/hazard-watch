@@ -1,6 +1,6 @@
-import { Typography, Box, Chip } from '@mui/material'
-import { hazardIconMapping } from '@/icons'
+import { Typography, Box } from '@mui/material'
 import type { HazardType } from '@/types/hazards'
+import HazardChip from '@/components/features/posts/HazardChip'
 
 interface ViewInfoTitleProps {
   title: string
@@ -11,7 +11,6 @@ export default function ViewInfoTitle({
   title,
   hazardType,
 }: ViewInfoTitleProps) {
-  const Icon = hazardIconMapping[hazardType]
   return (
     <Box
       sx={{
@@ -28,12 +27,7 @@ export default function ViewInfoTitle({
       >
         {title}
       </Typography>
-      <Chip
-        label={hazardType}
-        icon={<Icon style={{ fontSize: 14 }} />}
-        color='primary'
-        size='small'
-      />
+      <HazardChip hazard={hazardType} />
     </Box>
   )
 }

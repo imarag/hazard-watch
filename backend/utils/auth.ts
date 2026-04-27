@@ -1,8 +1,9 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import config from '../config.ts'
-import type { UserPayload } from '../types/users.ts'
-import type { ErrorResponse } from '../types/auth.ts'
+import config from '../config.js'
+import type { UserPayload } from '../types/users.js'
+import type { ErrorResponse } from '../types/auth.js'
+import type { SignOptions } from 'jsonwebtoken'
 
 export const hashPassword = async (password: string, saltRounds = 10) => {
   return await bcrypt.hash(password, saltRounds)
@@ -19,7 +20,9 @@ export const createJWTToken = (
   payload: UserPayload,
   expires: number | string = 60 * 60,
 ) => {
-  return jwt.sign(payload, config.JWT_SECRET, { expiresIn: expires })
+  return jwt.sign(payload, config.JWT_SECRET, {
+    expiresIn: expires,
+  } as SignOptions)
 }
 
 export const verifyJWTToken = (token: string): UserPayload | null => {

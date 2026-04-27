@@ -33,7 +33,6 @@ export default function HazardTypeFilter({
             label={hazardName.charAt(0).toUpperCase() + hazardName.slice(1)}
             onClick={() => toggle(hazardName)}
             variant={isSelected ? 'filled' : 'outlined'}
-            color={isSelected ? 'primary' : 'default'}
             sx={{
               justifyContent: 'flex-start',
               px: 1,

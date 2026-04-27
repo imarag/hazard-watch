@@ -7,8 +7,7 @@
     "dev": "concurrently \"vite\" \"tsc --noEmit --watch\"",
     "build": "tsc -b && npm run lint && vite build",
     "lint": "eslint . --fix",
-    "preview": "vite preview",
-    "build:ui": "rm -rf dist && npm run build && cp -r ./dist ../backend"
+    "preview": "vite preview"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

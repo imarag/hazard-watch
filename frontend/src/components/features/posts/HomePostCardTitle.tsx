@@ -1,8 +1,8 @@
 import type { Post } from '@/types/posts'
-import { Stack, Chip, Avatar, Typography, Box } from '@mui/material'
-import { hazardIconMapping } from '@/icons'
+import { Stack, Avatar, Typography, Box } from '@mui/material'
 import { formatDate } from '@/utils/typography'
 import type { UserPublic } from '@/types/users'
+import HazardChip from '@/components/features/posts/HazardChip'
 
 interface HomePostCardTitleProps {
   user: UserPublic | null
@@ -13,7 +13,6 @@ export default function HomePostCardTitle({
   user,
   post,
 }: HomePostCardTitleProps) {
-  const Icon = hazardIconMapping[post.hazardType]
   return (
     <Box
       sx={{
@@ -56,12 +55,7 @@ export default function HomePostCardTitle({
         </Stack>
       </Box>
       <Box>
-        <Chip
-          label={post.hazardType}
-          icon={<Icon style={{ fontSize: 14 }} />}
-          color='primary'
-          size='small'
-        />
+        <HazardChip hazard={post.hazardType} />
       </Box>
     </Box>
   )

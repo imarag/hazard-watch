@@ -1,6 +1,6 @@
 import z from 'zod'
 import mongoose from 'mongoose'
-import type { UserInDb } from '../types/users.ts'
+import type { UserInDb } from '../types/users.js'
 
 export const UserLoginSchema = z.object({
   email: z.email(),
@@ -21,11 +21,14 @@ const UserSchema = new mongoose.Schema<UserInDb>(
   },
   {
     toJSON: {
-      transform: (_, ret) => {
-        ret.id = ret._id.toString()
-        delete ret._id
-        delete ret.__v
-        delete ret.password
+      transform: (_, ret: Record<string, unknown>) => {
+        const id = ret['_id']
+        if (id != null) {
+          ret['id'] = String(id)
+        }
+        delete ret['_id']
+        delete ret['__v']
+        delete ret['password']
       },
     },
   },

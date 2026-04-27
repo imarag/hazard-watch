@@ -1,12 +1,10 @@
-import { Box, Stack, Typography, Chip, Divider } from '@mui/material'
+import { Box, Stack, Typography, Divider } from '@mui/material'
 import { Tooltip } from 'react-leaflet'
 import type { Post } from '@/types/posts'
-import { hazardMeta } from '@/constants/hazards'
 import { formatDate } from '@/utils/typography'
+import HazardChip from '@/components/features/posts/HazardChip'
 
 export default function MarkerTooltip({ post }: { post: Post }) {
-  const Icon = hazardMeta[post.hazardType].muiIcon
-
   return (
     <Tooltip direction='bottom' offset={[0, 20]} opacity={1}>
       <Stack spacing={0.5} sx={{ padding: 1.5, minWidth: 300, maxWidth: 360 }}>
@@ -26,13 +24,7 @@ export default function MarkerTooltip({ post }: { post: Post }) {
           >
             {post.title}
           </Typography>
-          <Chip
-            icon={<Icon fontSize='small' />}
-            label={post.hazardType}
-            size='small'
-            color='primary'
-            sx={{ fontSize: 10, flexShrink: 0 }}
-          />
+          <HazardChip hazard={post.hazardType} />
         </Box>
 
         <Typography variant='caption' color='text.disabled'>

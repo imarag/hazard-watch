@@ -1,6 +1,6 @@
-import type { PostInDb, PostPayload } from '../types/posts.ts'
-import type { UpdatePostInput } from '../types/posts.ts'
-import { PostModel } from '../models/posts.ts'
+import type { PostInDb, PostPayload } from '../types/posts.js'
+import type { UpdatePostInput } from '../types/posts.js'
+import { PostModel } from '../models/posts.js'
 
 const getAllPosts = async (): Promise<PostInDb[]> => {
   const posts = await PostModel.find().populate('user')

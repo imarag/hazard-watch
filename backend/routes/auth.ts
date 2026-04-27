@@ -1,15 +1,15 @@
 import express from 'express'
-import type { UserLogin, UserRegister } from '../types/users.ts'
-import { UserLoginSchema, UserRegisterSchema } from '../models/users.ts'
-import usersService from '../services/users.ts'
+import type { UserLogin, UserRegister } from '../types/users.js'
+import { UserLoginSchema, UserRegisterSchema } from '../models/users.js'
+import usersService from '../services/users.js'
 import {
   compareHashed,
   verifyJWTToken,
   createJWTToken,
   hashPassword,
   createErrorResponse,
-} from '../utils/auth.ts'
-import config from '../config.ts'
+} from '../utils/auth.js'
+import config from '../config.js'
 
 const router = express.Router()
 

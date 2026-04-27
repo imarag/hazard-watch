@@ -1,8 +1,8 @@
 import express from 'express'
-import postService from '../services/posts.ts'
-import { CreatePostSchema, UpdatePostSchema } from '../models/posts.ts'
-import type { PostPayload } from '../types/posts.ts'
-import { requireAuth, requireOwnership } from '../middleware.ts'
+import postService from '../services/posts.js'
+import { CreatePostSchema, UpdatePostSchema } from '../models/posts.js'
+import type { PostPayload } from '../types/posts.js'
+import { requireAuth, requireOwnership } from '../middleware.js'
 
 const router = express.Router()
 

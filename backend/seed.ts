@@ -1,9 +1,9 @@
 // seed.ts
 import mongoose from 'mongoose'
 import bcrypt from 'bcrypt'
-import { PostModel } from './models/posts.ts'
-import { UserModel } from './models/users.ts'
-import config from './config.ts'
+import { PostModel } from './models/posts.js'
+import { UserModel } from './models/users.js'
+import config from './config.js'
 
 const uri = `mongodb+srv://${config.MONGO_DB_USERNAME}:${config.MONGO_DB_PASSWORD}@clustermongo.wn3vaaa.mongodb.net/HazardWatch?appName=ClusterMongo`
 

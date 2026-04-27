@@ -11,9 +11,9 @@ export type HazardType = (typeof HazardType)[keyof typeof HazardType]
 
 export type HazardMeta = {
   name: string
-  svgUrl: string
   muiIcon: SvgIconComponent
   color: string
+  backgroundColor: string
 }
 
 export type Position = [number, number] // [lon, lat]

@@ -1,9 +1,9 @@
 import type { Request, Response, NextFunction } from 'express'
-import { verifyJWTToken } from './utils/auth.ts'
-import postService from './services/posts.ts'
+import { verifyJWTToken } from './utils/auth.js'
+import postService from './services/posts.js'
 import { z } from 'zod'
-import config from './config.ts'
-import { createErrorResponse } from './utils/auth.ts'
+import config from './config.js'
+import { createErrorResponse } from './utils/auth.js'
 import axios from 'axios'
 
 export const extractToken = (

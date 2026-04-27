@@ -1,6 +1,6 @@
-import { CreatePostSchema, UpdatePostSchema } from '../models/posts.ts'
+import { CreatePostSchema, UpdatePostSchema } from '../models/posts.js'
 import { z } from 'zod'
-import { HazardType } from './hazards.ts'
+import { HazardType } from './hazards.js'
 
 export type BasePost = {
   title: string

@@ -11,6 +11,7 @@ import EditPost from './components/pages/EditPost'
 import InteractiveMap from '@/components/pages/InteractiveMap'
 import About from './components/pages/About'
 import ProtectedRoute from './components/auth/ProtectedRoute'
+import { appRoutes } from './constants/routes'
 
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
@@ -21,17 +22,20 @@ function App() {
       <CssBaseline />
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path='/auth/login' element={<Login />} />
-          <Route path='/auth/register' element={<Register />} />
+          <Route path={appRoutes.login.path} element={<Login />} />
+          <Route path={appRoutes.register.path} element={<Register />} />
           <Route element={<AppLayout />}>
             <Route index element={<Home />} />
             <Route element={<ProtectedRoute />}>
-              <Route path='/posts/create' element={<CreatePost />} />
-              <Route path='/posts/:id/edit' element={<EditPost />} />
+              <Route
+                path={appRoutes.createPost.path}
+                element={<CreatePost />}
+              />
+              <Route path={appRoutes.editPost.path} element={<EditPost />} />
             </Route>
-            <Route path='/posts/:id' element={<ViewPost />} />
-            <Route path='/map' element={<InteractiveMap />} />
-            <Route path='/about' element={<About />} />
+            <Route path={appRoutes.viewPost.path} element={<ViewPost />} />
+            <Route path={appRoutes.map.path} element={<InteractiveMap />} />
+            <Route path={appRoutes.about.path} element={<About />} />
           </Route>
         </Route>
       </Routes>

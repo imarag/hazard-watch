@@ -1,8 +1,8 @@
 import { z } from 'zod'
-import { HazardType } from '../types/hazards.ts'
-import { LocationSchema } from './hazards.ts'
+import { HazardType } from '../types/hazards.js'
+import { LocationSchema } from './hazards.js'
 import mongoose from 'mongoose'
-import type { PostInDb } from '../types/posts.ts'
+import type { PostInDb } from '../types/posts.js'
 
 export const CreatePostSchema = z.object({
   title: z.string().min(3).max(30),
@@ -37,10 +37,13 @@ const PostSchema = new mongoose.Schema<PostInDb>(
   {
     timestamps: { createdAt: true, updatedAt: true },
     toJSON: {
-      transform: (_, ret) => {
-        ret.id = ret._id.toString()
-        delete ret._id
-        delete ret.__v
+      transform: (_, ret: Record<string, unknown>) => {
+        const id = ret['_id']
+        if (id != null) {
+          ret['id'] = String(id)
+        }
+        delete ret['_id']
+        delete ret['__v']
       },
     },
   },

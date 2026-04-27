@@ -1,5 +1,5 @@
-import type { UserInDb, UserRegister } from '../types/users.ts'
-import { UserModel } from '../models/users.ts'
+import type { UserInDb, UserRegister } from '../types/users.js'
+import { UserModel } from '../models/users.js'
 
 const getAllUsers = async (): Promise<UserInDb[]> => {
   const users = await UserModel.find()
