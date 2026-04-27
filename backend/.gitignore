@@ -40,3 +40,6 @@ Thumbs.db
 
 # Mac
 .DS_Store
+
+# db seed
+seed.ts

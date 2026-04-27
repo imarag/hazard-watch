@@ -14,8 +14,8 @@ import { appRoutes } from '@/constants/routes'
 export default function Login() {
   const { showNotification, createNotification } = useNotification()
   const { login } = useAuth()
-  const email = useField('giannis.marar@hotmail.com')
-  const password = useField('12345678')
+  const email = useField('')
+  const password = useField('')
   const navigate = useNavigate()
 
   async function handleLogin(e: React.SubmitEvent<HTMLFormElement>) {
