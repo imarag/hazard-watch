@@ -21,7 +21,7 @@ export default function OpenFilterPanelButton({
       className={positionProps.className}
       style={positionProps.style}
     >
-      <MapButton onClick={onClick} icon={<FilterListIcon />} />
+      <MapButton size='large' onClick={onClick} icon={<FilterListIcon />} />
     </Box>
   )
 }

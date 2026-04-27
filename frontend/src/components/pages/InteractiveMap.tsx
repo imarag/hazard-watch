@@ -54,14 +54,6 @@ export default function InteractiveMap() {
       hazardTypeSelected.includes(post.hazardType) &&
       filterDate(post.createdAt, postDateSelected),
   )
-  console.log(
-    'filtered posts dates:',
-    filteredPosts.map((p) => p.createdAt),
-  )
-  console.log(
-    'all post dates:',
-    posts.map((p) => p.createdAt),
-  )
 
   return (
     <PageLayout pageTitle={appRoutes.map.pageTitle}>

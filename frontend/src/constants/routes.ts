@@ -27,7 +27,7 @@ export const appRoutes = {
   about: {
     path: '/about',
     title: 'About',
-    pageTitle: 'About Hazard Watch',
+    pageTitle: 'About Hazard Watch & Me',
   },
   login: {
     path: '/auth/login',
