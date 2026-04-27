@@ -9,10 +9,12 @@ import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap'
 
 interface ZoomControlButtonsProps {
   position?: MapPosition
+  size?: 'small' | 'medium' | 'large'
 }
 
 export default function ZoomControlButtons({
   position = 'topleft',
+  size = 'medium',
 }: ZoomControlButtonsProps) {
   const map = useMap()
 
@@ -35,9 +37,13 @@ export default function ZoomControlButtons({
       className={positionProps.className}
       style={positionProps.style}
     >
-      <MapButton icon={<AddIcon />} onClick={handleZoomIn} />
-      <MapButton icon={<RemoveIcon />} onClick={handleZoomOut} />
-      <MapButton icon={<ZoomOutMapIcon />} onClick={handleZoomOutWorld} />
+      <MapButton size={size} icon={<AddIcon />} onClick={handleZoomIn} />
+      <MapButton size={size} icon={<RemoveIcon />} onClick={handleZoomOut} />
+      <MapButton
+        size={size}
+        icon={<ZoomOutMapIcon />}
+        onClick={handleZoomOutWorld}
+      />
     </Box>
   )
 }

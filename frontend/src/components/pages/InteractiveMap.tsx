@@ -15,8 +15,6 @@ import MapLoading from '@/components/features/map/MapLoading'
 import MapFilterPanel from '@/components/features/map/MapFilterPanel'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import OpenFilterPanelButton from '@/components/features/interactive-map/OpenFilterPanelButton'
-import GetCurrentPosition from '@/components/features/map/GeCurrentPosition'
-import ZoomControlButtons from '@/components/features/map/ZoomControlButtons'
 
 export default function InteractiveMap() {
   const { createNotification, showNotification } = useNotification()
@@ -26,9 +24,8 @@ export default function InteractiveMap() {
   const [hazardTypeSelected, setHazardTypeSelected] = useState<HazardType[]>(
     () => allHazards,
   )
-  const [postDateSelected, setPostDateSelected] = useState<DateFilterValue>(
-    DateFilter[2].value,
-  )
+  const [postDateSelected, setPostDateSelected] =
+    useState<DateFilterValue>('all')
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
@@ -57,13 +54,25 @@ export default function InteractiveMap() {
       hazardTypeSelected.includes(post.hazardType) &&
       filterDate(post.createdAt, postDateSelected),
   )
+  console.log(
+    'filtered posts dates:',
+    filteredPosts.map((p) => p.createdAt),
+  )
+  console.log(
+    'all post dates:',
+    posts.map((p) => p.createdAt),
+  )
 
   return (
     <PageLayout pageTitle={appRoutes.map.pageTitle}>
       <Box sx={{ height: '100%', position: 'relative' }}>
-        <Map height='100%' zoom={3}>
-          <ZoomControlButtons position='topleft' />
-          <GetCurrentPosition position='bottomright' />
+        <Map
+          height='100%'
+          zoom={3}
+          zoomControl={false}
+          attributionControl={false}
+          buttonIconSize='large'
+        >
           <MapLoading text='Loading posts...' open={isLoading} />
           {!openFilterPanel && (
             <OpenFilterPanelButton

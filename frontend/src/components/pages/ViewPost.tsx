@@ -93,10 +93,10 @@ export default function ViewPost() {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           sx={{ height: '100%' }}
         >
-          <Grid size={4}>
+          <Grid size={{ xs: 12, lg: 6, xl: 4 }}>
             <ViewInfo post={post} />
           </Grid>
-          <Grid size={8}>
+          <Grid size={{ xs: 12, lg: 6, xl: 8 }} sx={{ minHeight: 400 }}>
             <ViewMap post={post} />
           </Grid>
         </Grid>

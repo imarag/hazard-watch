@@ -1,5 +1,6 @@
 import { MapContainer, TileLayer, AttributionControl } from 'react-leaflet'
-
+import ZoomControlButtons from '@/components/features/map/ZoomControlButtons'
+import GetCurrentPosition from '@/components/features/map/GeCurrentPosition'
 import React from 'react'
 
 interface MapProps {
@@ -8,8 +9,10 @@ interface MapProps {
   scrollWheelZoom?: boolean
   height?: string
   zoomControl?: boolean
+  attributionControl?: boolean
   zoomControlPosition?: 'topleft' | 'topright' | 'bottomleft' | 'bottomright'
   children: React.ReactNode
+  buttonIconSize?: 'small' | 'medium' | 'large'
 }
 
 export default function Map({
@@ -17,6 +20,9 @@ export default function Map({
   scrollWheelZoom = true,
   zoom = 13,
   height = '240px',
+  zoomControl = false,
+  attributionControl = true,
+  buttonIconSize = 'small',
   children,
 }: MapProps) {
   return (
@@ -25,11 +31,13 @@ export default function Map({
       zoom={zoom}
       scrollWheelZoom={scrollWheelZoom}
       style={{ height: height }}
-      zoomControl={false}
-      attributionControl={false}
+      zoomControl={zoomControl}
+      attributionControl={attributionControl}
     >
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       <AttributionControl position='bottomleft' />
+      <ZoomControlButtons size={buttonIconSize} position='topleft' />
+      <GetCurrentPosition size={buttonIconSize} position='bottomright' />
       {children}
     </MapContainer>
   )

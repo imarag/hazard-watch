@@ -5,14 +5,25 @@ import mongoose from 'mongoose'
 import type { PostInDb } from '../types/posts.js'
 
 export const CreatePostSchema = z.object({
-  title: z.string().min(3).max(30),
-  description: z.string().min(5).max(500),
+  title: z
+    .string()
+    .trim()
+    .min(5, 'Title must be at least 5 characters')
+    .max(100, 'Title is too long'),
+
+  description: z
+    .string()
+    .trim()
+    .min(20, 'Description must be at least 20 characters')
+    .max(5000, 'Description is too long'),
+
   hazardType: z.enum([
     HazardType.EARTHQUAKE,
     HazardType.FLOOD,
     HazardType.STORM,
     HazardType.WILDFIRE,
   ]),
+
   location: LocationSchema,
 })
 

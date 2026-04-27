@@ -4,7 +4,7 @@ const filterDurationMs: Record<Exclude<DateFilterValue, 'all'>, number> = {
   '1h': 60 * 60 * 1000,
   '1d': 24 * 60 * 60 * 1000,
   '7d': 7 * 24 * 60 * 60 * 1000,
-  '1m': 30 * 24 * 60 * 60 * 1000,
+  '30d': 30 * 24 * 60 * 60 * 1000,
   '3m': 90 * 24 * 60 * 60 * 1000,
 }
 

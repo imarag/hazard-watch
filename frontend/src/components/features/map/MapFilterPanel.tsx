@@ -27,6 +27,7 @@ export default function MapFilterPanel({
   onClearFilters,
 }: FiltersPanelProps) {
   const totalPosts = posts.length
+
   return (
     <Box
       sx={{

@@ -53,7 +53,7 @@ export const DateFilter = [
   { label: 'Last hour', value: '1h' },
   { label: 'Last 24 hours', value: '1d' },
   { label: 'Last 7 days', value: '7d' },
-  { label: 'Last 30 days', value: '1m' },
+  { label: 'Last 30 days', value: '30d' },
   { label: 'Last 3 months', value: '3m' },
   { label: 'All', value: 'all' },
 ] as const

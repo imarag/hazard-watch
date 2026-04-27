@@ -19,7 +19,7 @@ export default function MarkerTooltip({ post }: { post: Post }) {
         >
           <Typography
             variant='body2'
-            sx={{ fontWeight: 'fontWeightBold' }}
+            sx={{ fontWeight: 'fontWeightBold', textWrap: 'wrap' }}
             noWrap
           >
             {post.title}
@@ -33,7 +33,11 @@ export default function MarkerTooltip({ post }: { post: Post }) {
 
         <Divider />
 
-        <Typography variant='caption' color='text.secondary'>
+        <Typography
+          variant='caption'
+          color='text.secondary'
+          sx={{ textWrap: 'wrap' }}
+        >
           {post.description}
         </Typography>
         <Box

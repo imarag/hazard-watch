@@ -7,10 +7,12 @@ import { Box } from '@mui/material'
 
 interface GetCurrentPositionProps {
   position: MapPosition
+  size?: 'small' | 'medium' | 'large'
 }
 
 export default function GetCurrentPosition({
   position,
+  size,
 }: GetCurrentPositionProps) {
   const map = useMapEvents({
     locationfound(e) {
@@ -29,7 +31,11 @@ export default function GetCurrentPosition({
       className={positionProps.className}
       style={positionProps.style}
     >
-      <MapButton onClick={getCurrentLocation} icon={<MyLocationIcon />} />
+      <MapButton
+        size={size}
+        onClick={getCurrentLocation}
+        icon={<MyLocationIcon />}
+      />
     </Box>
   )
 }

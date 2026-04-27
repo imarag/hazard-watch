@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "dev": "node --watch index.ts",
+    "dev": "tsx --watch index.ts",
     "seed": "npx tsx seed.ts",
     "lint": "eslint . --fix",
     "build": "cd ../frontend && npm install --include=dev && npm run build && cd ../backend && rm -rf dist && tsc -p tsconfig.build.json && cp -r ../frontend/dist dist/public"
