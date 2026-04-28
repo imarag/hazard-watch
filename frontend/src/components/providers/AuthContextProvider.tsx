@@ -1,6 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
 import AuthContext from '@/contexts/AuthContext'
-import type { CurrentUser, UserRegister } from '@/types/users'
+import type {
+  CurrentUser,
+  UserForgotPassword,
+  UserRegister,
+  UserResetPassword,
+} from '@/types/users'
 import authService from '@/services/auth'
 import { setToken } from '@/services/api'
 import userService from '@/services/auth'
@@ -47,6 +52,14 @@ export default function AuthContextProvider({
     isLoggingOut.current = false
   }
 
+  async function sendResetLink({ email }: UserForgotPassword) {
+    await userService.sendResetLink({ email })
+  }
+
+  async function resetPassword({ token, newPassword }: UserResetPassword) {
+    await userService.resetPassword({ token, newPassword })
+  }
+
   async function register(userInfo: UserRegister) {
     await userService.register(userInfo)
   }
@@ -68,6 +81,8 @@ export default function AuthContextProvider({
         logout,
         loading,
         isLoggingOut,
+        sendResetLink,
+        resetPassword,
       }}
     >
       {loading ? <p>Loading...</p> : children}

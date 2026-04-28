@@ -10,6 +10,8 @@ import type { UserRegister } from '@/types/users'
 import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
+import PageLayout from '@/components/layouts/PageLayout'
+import BackToHome from '@/components/actions/BackToHome'
 
 export default function Register() {
   const { showNotification, createNotification } = useNotification()
@@ -46,36 +48,45 @@ export default function Register() {
     },
   })
 
+  const Action = <BackToHome />
+
   return (
-    <FormContainer
-      title='Join HazardWatch'
-      onSubmit={handleRegister}
-      footer={formFooter}
-    >
-      <>
-        <TextField
-          label='Email'
-          value={email.value}
-          onChange={email.onChange}
-          required
-        />
-        <TextField
-          label='Name'
-          value={name.value}
-          onChange={name.onChange}
-          required
-        />
-        <TextField
-          label='Password'
-          type='password'
-          value={password.value}
-          onChange={password.onChange}
-          required
-        />
-        <Button loading={isPending} type='submit' variant='contained' fullWidth>
-          submit
-        </Button>
-      </>
-    </FormContainer>
+    <PageLayout pageTitle={appRoutes.register.pageTitle} actions={Action}>
+      <FormContainer
+        title='Join HazardWatch'
+        onSubmit={handleRegister}
+        footer={formFooter}
+      >
+        <>
+          <TextField
+            label='Email'
+            value={email.value}
+            onChange={email.onChange}
+            required
+          />
+          <TextField
+            label='Name'
+            value={name.value}
+            onChange={name.onChange}
+            required
+          />
+          <TextField
+            label='Password'
+            type='password'
+            value={password.value}
+            onChange={password.onChange}
+            required
+          />
+          <Button
+            loading={isPending}
+            type='submit'
+            variant='contained'
+            fullWidth
+          >
+            submit
+          </Button>
+        </>
+      </FormContainer>
+    </PageLayout>
   )
 }

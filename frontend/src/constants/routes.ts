@@ -44,6 +44,16 @@ export const appRoutes = {
     title: 'Logout',
     pageTitle: 'Logout',
   },
+  forgotPassword: {
+    path: '/auth/forgot-password',
+    title: 'Forgot Password',
+    pageTitle: 'Forgot Password',
+  },
+  resetPassword: {
+    path: '/auth/reset-password',
+    title: 'Reset Password',
+    pageTitle: 'Reset Password',
+  },
 } as const
 
 export type RouteKey = keyof typeof appRoutes

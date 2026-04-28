@@ -2,31 +2,45 @@ import z from 'zod'
 import mongoose from 'mongoose'
 import type { UserInDb } from '../types/users.js'
 
+const emailField = z
+  .string()
+  .trim()
+  .toLowerCase()
+  .email('Please enter a valid email address')
+
+const passwordField = z
+  .string()
+  .min(6, 'Password must be at least 6 characters long')
+  .max(72, 'Password is too long, please use fewer than 72 characters')
+
+const nameField = z
+  .string()
+  .trim()
+  .min(2, 'Name must be at least 2 characters long')
+  .max(80, 'Name is too long, please use fewer than 80 characters')
+  .regex(
+    /^[a-zA-ZÀ-ÿ\s'-]+$/,
+    'Name can only contain letters, spaces, hyphens and apostrophes',
+  )
+
 export const UserLoginSchema = z.object({
-  email: z.email().trim().toLowerCase(),
-  password: z
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .max(72, 'Password is too long'),
+  email: emailField,
+  password: passwordField,
 })
 
 export const UserRegisterSchema = z.object({
-  name: z
-    .string()
-    .trim()
-    .min(2, 'Name must be at least 2 characters')
-    .max(80, 'Name is too long')
-    .regex(/^[a-zA-ZÀ-ÿ\s'-]+$/, 'Name contains invalid characters'),
+  name: nameField,
+  email: emailField,
+  password: passwordField,
+})
 
-  email: z.email().trim().toLowerCase(),
+export const UserForgotPasswordSchema = z.object({
+  email: emailField,
+})
 
-  password: z
-    .string()
-    .min(6, 'Password must be at least 6 characters')
-    .max(72, 'Password is too long')
-    .regex(/[A-Z]/, 'Password must contain an uppercase letter')
-    .regex(/[a-z]/, 'Password must contain a lowercase letter')
-    .regex(/[0-9]/, 'Password must contain a number'),
+export const UserResetPasswordSchema = z.object({
+  token: z.string().min(1, 'Token is required'),
+  newPassword: passwordField,
 })
 
 const UserSchema = new mongoose.Schema<UserInDb>(

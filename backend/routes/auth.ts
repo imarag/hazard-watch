@@ -1,6 +1,12 @@
 import express from 'express'
 import type { UserLogin, UserRegister } from '../types/users.js'
-import { UserLoginSchema, UserRegisterSchema } from '../models/users.js'
+import {
+  UserForgotPasswordSchema,
+  UserLoginSchema,
+  UserModel,
+  UserRegisterSchema,
+  UserResetPasswordSchema,
+} from '../models/users.js'
 import usersService from '../services/users.js'
 import {
   compareHashed,
@@ -10,6 +16,7 @@ import {
   createErrorResponse,
 } from '../utils/auth.js'
 import config from '../config.js'
+import transporter from '../utils/mailer.js'
 
 const router = express.Router()
 
@@ -117,6 +124,76 @@ router.post('/logout', (_req, res) => {
     sameSite: 'strict',
   })
   return res.status(200).json({ message: 'Logged out' })
+})
+
+router.post('/forgot-password', async (req, res) => {
+  const body = req.body
+
+  const payload = UserForgotPasswordSchema.parse(body)
+
+  const user = await UserModel.findOne({ email: payload.email })
+
+  if (!user) {
+    return res.json({
+      message: 'If this email exists, a reset link has been sent.',
+    })
+  }
+
+  const resetToken = createJWTToken(
+    {
+      id: user.id,
+      userName: user.name,
+      email: user.email,
+      tokenType: 'reset',
+    },
+    '1h',
+  )
+
+  const clientHost =
+    config.NODE_ENV === 'development'
+      ? 'http://localhost:5173'
+      : `${req.protocol}://${req.get('host')}`
+
+  const resetLink = `${clientHost}/auth/reset-password?token=${resetToken}`
+  await transporter.sendMail({
+    from: config.GMAIL_USER,
+    to: user.email,
+    subject: 'Reset your password',
+    html: `
+    <p>You requested a password reset.</p>
+    <a href="${resetLink}">Click here to reset your password</a>
+    <p>This link expires in 1 hour. If you didn't request this, ignore this email.</p>
+  `,
+  })
+
+  return res.json({
+    message: 'If this email exists, a reset link has been sent.',
+  })
+})
+
+router.post('/reset-password', async (req, res) => {
+  const body = req.body
+
+  const payload = UserResetPasswordSchema.parse(body)
+
+  const decoded = verifyJWTToken(payload.token)
+
+  if (!decoded) {
+    return res
+      .status(400)
+      .json(createErrorResponse(400, 'Invalid or expired token.'))
+  }
+
+  // Make sure this is a reset token, not a regular auth token
+  if (decoded.tokenType !== 'reset') {
+    return res.status(400).json(createErrorResponse(400, 'Invalid token type.'))
+  }
+
+  const hashedPassword = await hashPassword(payload.newPassword)
+
+  await UserModel.findByIdAndUpdate(decoded.id, { password: hashedPassword })
+
+  return res.json({ message: 'Password reset successful' })
 })
 
 export default router

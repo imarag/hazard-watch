@@ -1,6 +1,8 @@
 import { Routes, Route } from 'react-router'
-import Login from '@/components/auth/Login'
-import Register from '@/components/auth/Register'
+import Login from '@/components/pages/Login'
+import ForgotPassword from '@/components/pages/ForgotPassword'
+import ResetPassword from '@/components/pages/ResetPassword'
+import Register from '@/components/pages/Register'
 import Home from '@/components/pages/Home'
 import AppLayout from '@/components/layouts/AppLayout'
 import MainLayout from '@/components/layouts/MainLayout'
@@ -23,7 +25,15 @@ function App() {
       <Routes>
         <Route element={<MainLayout />}>
           <Route path={appRoutes.login.path} element={<Login />} />
+          <Route
+            path={appRoutes.resetPassword.path}
+            element={<ResetPassword />}
+          />
           <Route path={appRoutes.register.path} element={<Register />} />
+          <Route
+            path={appRoutes.forgotPassword.path}
+            element={<ForgotPassword />}
+          />
           <Route element={<AppLayout />}>
             <Route index element={<Home />} />
             <Route element={<ProtectedRoute />}>

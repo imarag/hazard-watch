@@ -8,11 +8,12 @@ export default function AppLayout() {
       {/* Sidebar */}
       <Box
         sx={{
-          width: 250,
+          width: { xs: 0, md: 200, xl: 250 },
           flexShrink: 0,
           backgroundColor: 'background.paper',
           borderRight: '1px solid',
           borderColor: 'divider',
+          overflow: 'hidden',
         }}
       >
         <SideNav />

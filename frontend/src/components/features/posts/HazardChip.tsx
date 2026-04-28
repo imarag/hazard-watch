@@ -13,11 +13,14 @@ export default function HazardChip({ hazard, sx }: HazardChipProps) {
   return (
     <Chip
       label={hazard}
-      icon={<HazardIcon style={{ fontSize: 14 }} />}
+      icon={<HazardIcon />}
       sx={{
         backgroundColor: hazardInfo.backgroundColor,
-        color: hazardInfo.color,
         ...sx,
+        '& .MuiChip-icon': {
+          color: 'text.primary',
+          fontSize: 14,
+        },
       }}
       size='small'
     />

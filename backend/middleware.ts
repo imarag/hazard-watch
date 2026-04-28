@@ -36,9 +36,9 @@ export const requireAuth = (
         createErrorResponse(401, 'You must be logged in to use this option.'),
       )
   }
-  console.log('Token exists: ', req.token)
+
   const user = verifyJWTToken(req.token)
-  console.log('Token valid: ', user)
+
   if (!user) {
     return res
       .status(401)
@@ -82,13 +82,8 @@ export const errorHandler = (
   console.error(error)
 
   if (error instanceof z.ZodError) {
-    return res.status(400).json(
-      createErrorResponse(
-        400,
-        'Validation failed',
-        error.issues.map((i) => i.message),
-      ),
-    )
+    const message = error.issues.map((i) => i.message).join(', ')
+    return res.status(400).json(createErrorResponse(400, message))
   }
 
   if (axios.isAxiosError(error)) {

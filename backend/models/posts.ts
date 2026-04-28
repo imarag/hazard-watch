@@ -4,26 +4,29 @@ import { LocationSchema } from './hazards.js'
 import mongoose from 'mongoose'
 import type { PostInDb } from '../types/posts.js'
 
+const titleField = z
+  .string()
+  .trim()
+  .min(5, 'Title must be at least 5 characters')
+  .max(100, 'Title is too long')
+
+const descriptionField = z
+  .string()
+  .trim()
+  .min(20, 'Description must be at least 20 characters')
+  .max(5000, 'Description is too long')
+
+const hazardTypeField = z.enum([
+  HazardType.EARTHQUAKE,
+  HazardType.FLOOD,
+  HazardType.STORM,
+  HazardType.WILDFIRE,
+])
+
 export const CreatePostSchema = z.object({
-  title: z
-    .string()
-    .trim()
-    .min(5, 'Title must be at least 5 characters')
-    .max(100, 'Title is too long'),
-
-  description: z
-    .string()
-    .trim()
-    .min(20, 'Description must be at least 20 characters')
-    .max(5000, 'Description is too long'),
-
-  hazardType: z.enum([
-    HazardType.EARTHQUAKE,
-    HazardType.FLOOD,
-    HazardType.STORM,
-    HazardType.WILDFIRE,
-  ]),
-
+  title: titleField,
+  description: descriptionField,
+  hazardType: hazardTypeField,
   location: LocationSchema,
 })
 

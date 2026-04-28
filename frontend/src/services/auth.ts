@@ -1,5 +1,11 @@
 import { api, plainAxios } from '@/services/api'
-import type { UserLogin, UserRegister, LoginResponse } from '@/types/users'
+import type {
+  UserLogin,
+  UserRegister,
+  LoginResponse,
+  UserForgotPassword,
+  UserResetPassword,
+} from '@/types/users'
 
 const baseUrl = '/auth'
 
@@ -23,9 +29,21 @@ const refreshToken = async () => {
   return res.data
 }
 
+const sendResetLink = async (payload: UserForgotPassword) => {
+  const res = await api.post(`${baseUrl}/forgot-password`, payload)
+  return res.data
+}
+
+const resetPassword = async (payload: UserResetPassword) => {
+  const res = await api.post(`${baseUrl}/reset-password`, payload)
+  return res.data
+}
+
 export default {
   login,
   register,
   logout,
   refreshToken,
+  resetPassword,
+  sendResetLink,
 }

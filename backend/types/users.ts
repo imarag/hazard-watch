@@ -20,5 +20,5 @@ export type UserPayload = {
   id: string
   userName: string
   email: string
-  tokenType: 'access' | 'refresh'
+  tokenType: 'access' | 'refresh' | 'reset'
 }
