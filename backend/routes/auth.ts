@@ -152,7 +152,7 @@ router.post('/forgot-password', async (req, res) => {
   const clientHost =
     config.NODE_ENV === 'development'
       ? 'http://localhost:5173'
-      : `${req.protocol}://${req.get('host')}`
+      : config.CLIENT_URL
 
   const resetLink = `${clientHost}/auth/reset-password?token=${resetToken}`
   await transporter.sendMail({

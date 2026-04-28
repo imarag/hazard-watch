@@ -16,6 +16,7 @@ const configSchema = z.object({
   MONGO_DB_PASSWORD: z.string(),
   GMAIL_USER: z.string(),
   GMAIL_APP_PASSWORD: z.string(),
+  CLIENT_URL: z.string(),
 })
 
 const config = configSchema.parse({
@@ -29,6 +30,7 @@ const config = configSchema.parse({
   MONGO_DB_PASSWORD: process.env['MONGO_DB_PASSWORD'],
   GMAIL_USER: process.env['GMAIL_USER'],
   GMAIL_APP_PASSWORD: process.env['GMAIL_APP_PASSWORD'],
+  CLIENT_URL: process.env['CLIENT_URL'],
 })
 
 export default config
