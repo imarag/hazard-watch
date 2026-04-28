@@ -44,6 +44,7 @@ function SectionTitle({ title }: { title: string }) {
       sx={{
         fontWeight: 'fontWeightBold',
         marginBottom: 1,
+        textAlign: { xs: 'center', sm: 'start' },
       }}
     >
       {title}
@@ -103,13 +104,15 @@ function InitialsAvatar() {
 function TechStackSection() {
   return (
     <SectionContainer>
-      <Typography
-        variant='subtitle2'
-        sx={{ fontWeight: 'fontWeightBold', marginBottom: 1 }}
+      <SectionTitle title='Teck Stack' />
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: { xs: 'center', sm: 'start' },
+          flexWrap: 'wrap',
+          gap: 1,
+        }}
       >
-        <SectionTitle title='Teck Stack' />
-      </Typography>
-      <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
         {techStack.map((tech) => (
           <Chip key={tech} label={tech} size='small' variant='outlined' />
         ))}
@@ -124,7 +127,10 @@ function AboutProjectSection() {
       <SectionTitle title='About this project' />
       <Typography
         variant='body2'
-        sx={{ fontWeight: 'fontWeightLight' }}
+        sx={{
+          fontWeight: 'fontWeightLight',
+          textAlign: { xs: 'center', sm: 'start' },
+        }}
         color='text.secondary'
       >
         {aboutApp}
@@ -135,13 +141,33 @@ function AboutProjectSection() {
 
 function AboutMeSection() {
   return (
-    <SectionContainer sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-      <InitialsAvatar />
+    <SectionContainer
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: { xs: 'center', sm: 'start' },
+        gap: 2,
+      }}
+    >
+      <Box sx={{ display: { xs: 'none', sm: 'inline' } }}>
+        <InitialsAvatar />
+      </Box>
       <Box>
-        <Typography variant='h6' sx={{ fontWeight: 'fontWeightBold' }}>
+        <Typography
+          variant='h6'
+          sx={{
+            fontWeight: 'fontWeightBold',
+            textAlign: { xs: 'center', sm: 'start' },
+          }}
+        >
           Giannis Maragkakis
         </Typography>
-        <Typography variant='body2'>Full Stack Developer</Typography>
+        <Typography
+          sx={{ textAlign: { xs: 'center', sm: 'start' } }}
+          variant='body2'
+        >
+          Full Stack Developer
+        </Typography>
         <Stack direction='row' spacing={1} sx={{ marginTop: 1 }}>
           <LinkedInButton />
           <GitHubAction />

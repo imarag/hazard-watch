@@ -1,7 +1,6 @@
-import { Button } from '@mui/material'
-import { Link } from 'react-router'
 import EditIcon from '@mui/icons-material/Edit'
 import { appRoutes } from '@/constants/routes'
+import ActionButton from '@/components/ui/ActionButton'
 
 interface EditPostActionProps {
   postId: string
@@ -9,15 +8,12 @@ interface EditPostActionProps {
 
 export default function EditPostAction({ postId }: EditPostActionProps) {
   return (
-    <Button
-      component={Link}
+    <ActionButton
       to={appRoutes.editPost.path.replace(':id', postId)}
-      startIcon={<EditIcon />}
-      size='small'
+      icon={EditIcon}
+      label='Edit Post'
       variant='outlined'
       color='secondary'
-    >
-      Edit post
-    </Button>
+    />
   )
 }

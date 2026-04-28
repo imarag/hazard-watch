@@ -36,6 +36,7 @@ export default function HomePostCardTitle({
             width: 40,
             height: 40,
             fontSize: 'h6',
+            display: { xs: 'none', sm: 'flex' },
           }}
         >
           {user ? user.name[0].toUpperCase() : ''}

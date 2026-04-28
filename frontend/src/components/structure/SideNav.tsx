@@ -1,4 +1,4 @@
-import { Box, Divider, Typography } from '@mui/material'
+import { Box, Divider, Typography, IconButton } from '@mui/material'
 import ThemeSwitch from '../ui/ThemeSwitch'
 import { useAuth } from '@/contexts/AuthContext'
 import SideNavItem from './SideNavItem'
@@ -11,9 +11,12 @@ import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRound
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useNavigate } from 'react-router'
+import { useSideNav } from '@/contexts/SideNavContext'
+import CloseIcon from '@mui/icons-material/Close'
 
 export default function SideNav() {
   const { isUserLoggedIn, logout } = useAuth()
+  const { showSideNav, closeSideNav } = useSideNav()
   const { showNotification, createNotification } = useNotification()
   const navigate = useNavigate()
 
@@ -37,13 +40,25 @@ export default function SideNav() {
         paddingInline: 2,
       }}
     >
-      <Box sx={{ paddingBlock: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         <Typography variant='h6' align='center'>
-          HAZARD
+          HAZARD WATCH
         </Typography>
-        <Typography variant='h6' align='center'>
-          WATCH
-        </Typography>
+        {showSideNav && (
+          <IconButton
+            aria-label='toggle sidebar'
+            onClick={closeSideNav}
+            sx={{ display: { md: 'none' } }}
+          >
+            <CloseIcon />
+          </IconButton>
+        )}
       </Box>
 
       <Divider variant='middle' sx={{ marginBottom: 2 }} />

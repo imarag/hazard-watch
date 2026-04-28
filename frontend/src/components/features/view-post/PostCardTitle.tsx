@@ -11,6 +11,7 @@ export default function PostCardTitle({ label }: PostCardTitleProps) {
       sx={{
         color: 'text.disabled',
         fontWeight: 'fontWeightBold',
+        paddingBlock: 1,
       }}
     >
       {label}

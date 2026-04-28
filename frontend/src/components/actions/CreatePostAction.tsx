@@ -1,18 +1,14 @@
-import { Button } from '@mui/material'
-import { Link } from 'react-router'
 import AddIcon from '@mui/icons-material/Add'
 import { appRoutes } from '@/constants/routes'
+import ActionButton from '@/components/ui/ActionButton'
 
 export default function CreatePostAction() {
   return (
-    <Button
-      component={Link}
+    <ActionButton
       to={appRoutes.createPost.path}
-      startIcon={<AddIcon />}
-      size='small'
+      icon={AddIcon}
+      label='Create Post'
       variant='contained'
-    >
-      Create Post
-    </Button>
+    />
   )
 }

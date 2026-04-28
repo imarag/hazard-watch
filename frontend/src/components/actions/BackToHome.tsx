@@ -1,18 +1,14 @@
-import { Button } from '@mui/material'
-import { Link } from 'react-router'
 import HomeIcon from '@mui/icons-material/Home'
 import { appRoutes } from '@/constants/routes'
+import ActionButton from '@/components/ui/ActionButton'
 
 export default function BackToHome() {
   return (
-    <Button
-      component={Link}
+    <ActionButton
       to={appRoutes.home.path}
-      startIcon={<HomeIcon />}
-      size='small'
+      icon={HomeIcon}
+      label='Back to posts'
       variant='contained'
-    >
-      Back to posts
-    </Button>
+    />
   )
 }

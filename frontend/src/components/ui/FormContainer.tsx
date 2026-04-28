@@ -38,7 +38,7 @@ export default function FormContainer({
           component='form'
           onSubmit={onSubmit}
           spacing={3}
-          sx={{ paddingInline: 2 }}
+          sx={{ paddingInline: { xs: 0, md: 1, xl: 2 } }}
         >
           <Typography
             variant='h5'

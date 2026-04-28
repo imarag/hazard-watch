@@ -15,7 +15,7 @@ export default function HomePostCard({ post }: PostProps) {
       sx={{
         borderColor: 'divider',
         borderRadius: 4,
-        padding: 4,
+        padding: { xs: 3, sm: 4 },
         display: 'flex',
         flexDirection: 'column',
         gap: 2,

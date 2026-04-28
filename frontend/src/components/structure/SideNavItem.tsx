@@ -1,6 +1,7 @@
 import { Button } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material'
 import { NavLink } from 'react-router'
+import { useSideNav } from '@/contexts/SideNavContext'
 
 interface SideNavItemProps {
   to?: string
@@ -19,6 +20,12 @@ export default function SideNavItem({
   onClick,
   sx,
 }: SideNavItemProps) {
+  const { showSideNav, closeSideNav } = useSideNav()
+
+  function clickSideButton() {
+    if (onClick) onClick()
+    closeSideNav()
+  }
   return (
     <Button
       startIcon={icon}
@@ -27,9 +34,9 @@ export default function SideNavItem({
       size='small'
       variant='text'
       fullWidth
-      onClick={onClick}
+      onClick={clickSideButton}
       sx={{
-        justifyContent: 'flex-start',
+        justifyContent: showSideNav ? 'flex-center' : 'flex-start',
         paddingInline: 2,
         paddingBlock: 0.5,
         '&:hover': {

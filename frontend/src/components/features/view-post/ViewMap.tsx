@@ -30,13 +30,15 @@ export default function ViewMap({ post }: ViewMapProps) {
           alignItems: 'center',
           justifyContent: 'space-between',
           px: 2,
-          py: 1.25,
+
           bgcolor: 'background.paper',
           borderBottom: '1px solid',
           borderColor: 'divider',
         }}
       >
-        <PostCardTitle label={'Location'} />
+        <Box sx={{ display: { xs: 'none', lg: 'inline' } }}>
+          <PostCardTitle label={'Location'} />
+        </Box>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Map height='100%'>

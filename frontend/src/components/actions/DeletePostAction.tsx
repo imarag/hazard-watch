@@ -1,5 +1,5 @@
-import { Button } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
+import ActionButton from '@/components/ui/ActionButton'
 
 interface DeletePostActionProps {
   onDeletePost: (id: string) => Promise<void>
@@ -21,16 +21,13 @@ export default function DeletePostAction({
   }
 
   return (
-    <Button
-      loading={loading}
-      loadingPosition='start'
+    <ActionButton
       onClick={handleClickDelete}
-      startIcon={<DeleteIcon />}
-      size='small'
-      color='error'
+      loading={loading}
+      icon={DeleteIcon}
+      label='Delete Post'
       variant='outlined'
-    >
-      Delete post
-    </Button>
+      color='error'
+    />
   )
 }

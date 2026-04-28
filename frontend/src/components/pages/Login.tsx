@@ -48,7 +48,11 @@ export default function Login() {
   const Action = <BackToHome />
 
   return (
-    <PageLayout pageTitle={appRoutes.login.pageTitle} actions={Action}>
+    <PageLayout
+      pageTitle={appRoutes.login.pageTitle}
+      actions={Action}
+      isAuth={true}
+    >
       <FormContainer
         title='Log In to HazardWatch'
         onSubmit={handleLogin}

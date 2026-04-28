@@ -32,7 +32,7 @@ export default function PostToolBar({
       }}
     >
       <Typography variant='body2' sx={{ color: 'text.disabled' }}>
-        {totalFilteredPosts} / {totalPosts} reports
+        {totalFilteredPosts} / {totalPosts}
       </Typography>
 
       <Box

@@ -20,7 +20,10 @@ function ViewInfo({ post }: { post: Post }) {
   const lat = post.location.geometry.coordinates[1]
   const lon = post.location.geometry.coordinates[0]
   return (
-    <Card variant='outlined' sx={{ height: '100%', borderRadius: 4 }}>
+    <Card
+      variant='outlined'
+      sx={{ height: '100%', borderRadius: 4, overflowY: 'scroll' }}
+    >
       <CardContent sx={{ padding: 4 }}>
         <ViewInfoTitle title={post.title} hazardType={post.hazardType} />
         <Divider sx={{ borderColor: 'divider', marginBlock: 2 }} />
@@ -93,10 +96,16 @@ export default function ViewPost() {
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           sx={{ height: '100%' }}
         >
-          <Grid size={{ xs: 12, lg: 6, xl: 4 }}>
+          <Grid
+            size={{ xs: 12, lg: 6, xl: 4 }}
+            sx={{ height: { xs: '50%', lg: '100%' } }}
+          >
             <ViewInfo post={post} />
           </Grid>
-          <Grid size={{ xs: 12, lg: 6, xl: 8 }} sx={{ minHeight: 400 }}>
+          <Grid
+            size={{ xs: 12, lg: 6, xl: 8 }}
+            sx={{ height: { xs: '50%', lg: '100%' } }}
+          >
             <ViewMap post={post} />
           </Grid>
         </Grid>

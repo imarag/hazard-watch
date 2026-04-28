@@ -51,7 +51,11 @@ export default function Register() {
   const Action = <BackToHome />
 
   return (
-    <PageLayout pageTitle={appRoutes.register.pageTitle} actions={Action}>
+    <PageLayout
+      pageTitle={appRoutes.register.pageTitle}
+      actions={Action}
+      isAuth={true}
+    >
       <FormContainer
         title='Join HazardWatch'
         onSubmit={handleRegister}
