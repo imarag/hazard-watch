@@ -11,6 +11,7 @@ export default function ActionBar({ children }: ActionBarProps) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'end',
+        gap: 2,
         marginBottom: 4,
       }}
     >

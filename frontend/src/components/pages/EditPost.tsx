@@ -1,13 +1,11 @@
 import { useParams } from 'react-router'
 import { Box } from '@mui/material'
 import EditPostForm from '@/components/features/edit-post/EditPostForm'
-import DeletePostAction from '@/components/actions/DeletePostAction'
 import Loading from '@/components/ui/Loading'
 import { getErrorMessage } from '@/utils/auth'
 import { useQuery } from '@tanstack/react-query'
 import postsService from '@/services/posts'
 import { useNotification } from '@/contexts/NotificationContext'
-import ActionBar from '../actions/ActionBar'
 
 export default function EditPost() {
   const { id: postId } = useParams()
@@ -32,11 +30,6 @@ export default function EditPost() {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-      {post && (
-        <ActionBar>
-          <DeletePostAction post={post} />
-        </ActionBar>
-      )}
       <Box sx={{ flexGrow: 1 }}>
         {isLoading ? (
           <Loading text='Loading post' />
