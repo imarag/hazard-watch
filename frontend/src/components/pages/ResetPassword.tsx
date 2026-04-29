@@ -9,7 +9,6 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import { appRoutes } from '@/constants/routes'
-import PageLayout from '@/components/layouts/PageLayout'
 import BackToHome from '@/components/actions/BackToHome'
 
 export default function ResetPassword() {
@@ -61,33 +60,26 @@ export default function ResetPassword() {
   const Action = <BackToHome />
 
   return (
-    <PageLayout pageTitle={appRoutes.login.pageTitle} actions={Action}>
-      <FormContainer title='Reset your password' onSubmit={handleResetPassword}>
-        <>
-          <TextField
-            label='New Password'
-            type='password'
-            value={newPassword.value}
-            onChange={newPassword.onChange}
-            required
-          />
-          <TextField
-            label='Confirm New Password'
-            type='password'
-            value={confirmNewPassword.value}
-            onChange={confirmNewPassword.onChange}
-            required
-          />
-          <Button
-            loading={isPending}
-            type='submit'
-            variant='contained'
-            fullWidth
-          >
-            Change password
-          </Button>
-        </>
-      </FormContainer>
-    </PageLayout>
+    <FormContainer title='Reset your password' onSubmit={handleResetPassword}>
+      <>
+        <TextField
+          label='New Password'
+          type='password'
+          value={newPassword.value}
+          onChange={newPassword.onChange}
+          required
+        />
+        <TextField
+          label='Confirm New Password'
+          type='password'
+          value={confirmNewPassword.value}
+          onChange={confirmNewPassword.onChange}
+          required
+        />
+        <Button loading={isPending} type='submit' variant='contained' fullWidth>
+          Change password
+        </Button>
+      </>
+    </FormContainer>
   )
 }

@@ -9,10 +9,8 @@ import {
 } from '@mui/material'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import GitHubIcon from '@mui/icons-material/GitHub'
-import { appRoutes } from '@/constants/routes'
 import { techStack, aboutApp } from '@/constants/about'
 import type { SxProps } from '@mui/material'
-import PageLayout from '@/components/layouts/PageLayout'
 
 function SectionContainer({
   sx,
@@ -179,14 +177,12 @@ function AboutMeSection() {
 
 export default function About() {
   return (
-    <PageLayout pageTitle={appRoutes.about.pageTitle}>
-      <Container maxWidth='sm'>
-        <Stack spacing={2}>
-          <AboutMeSection />
-          <AboutProjectSection />
-          <TechStackSection />
-        </Stack>
-      </Container>
-    </PageLayout>
+    <Container maxWidth='sm' disableGutters>
+      <Stack spacing={{ xs: 1, sm: 2 }}>
+        <AboutMeSection />
+        <AboutProjectSection />
+        <TechStackSection />
+      </Stack>
+    </Container>
   )
 }

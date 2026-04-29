@@ -1,4 +1,4 @@
-import { Box, Container, Stack, Typography, IconButton } from '@mui/material'
+import { Box, Stack, Typography, IconButton } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useSideNav } from '@/contexts/SideNavContext'
 
@@ -17,7 +17,7 @@ export default function TopBar({
   return (
     <Box
       sx={{
-        backgroundColor: 'background.paper',
+        backgroundColor: 'transparent',
         display: 'flex',
         alignItems: 'center',
         paddingBlock: 2,

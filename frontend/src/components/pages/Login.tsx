@@ -10,7 +10,6 @@ import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import FormFooter from '@/components/ui/FormFooter'
 import { appRoutes } from '@/constants/routes'
-import PageLayout from '@/components/layouts/PageLayout'
 import BackToHome from '@/components/actions/BackToHome'
 
 export default function Login() {
@@ -48,49 +47,38 @@ export default function Login() {
   const Action = <BackToHome />
 
   return (
-    <PageLayout
-      pageTitle={appRoutes.login.pageTitle}
-      actions={Action}
-      isAuth={true}
+    <FormContainer
+      title='Log In to HazardWatch'
+      onSubmit={handleLogin}
+      footer={formFooter}
     >
-      <FormContainer
-        title='Log In to HazardWatch'
-        onSubmit={handleLogin}
-        footer={formFooter}
-      >
-        <>
-          <TextField
-            label='Email'
-            value={email.value}
-            onChange={email.onChange}
-            required
-          />
-          <TextField
-            label='Password'
-            type='password'
-            value={password.value}
-            onChange={password.onChange}
-            required
-          />
-          <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
-            <Button
-              variant='text'
-              size='small'
-              onClick={() => navigate(appRoutes.forgotPassword.path)}
-            >
-              Forgot password?
-            </Button>
-          </Box>
+      <>
+        <TextField
+          label='Email'
+          value={email.value}
+          onChange={email.onChange}
+          required
+        />
+        <TextField
+          label='Password'
+          type='password'
+          value={password.value}
+          onChange={password.onChange}
+          required
+        />
+        <Box sx={{ display: 'flex', justifyContent: 'flex-start' }}>
           <Button
-            loading={isPending}
-            type='submit'
-            variant='contained'
-            fullWidth
+            variant='text'
+            size='small'
+            onClick={() => navigate(appRoutes.forgotPassword.path)}
           >
-            Submit
+            Forgot password?
           </Button>
-        </>
-      </FormContainer>
-    </PageLayout>
+        </Box>
+        <Button loading={isPending} type='submit' variant='contained' fullWidth>
+          Submit
+        </Button>
+      </>
+    </FormContainer>
   )
 }

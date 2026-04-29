@@ -8,7 +8,6 @@ import postsService from '@/services/posts'
 import { useAuth } from '@/contexts/AuthContext'
 import { useNavigate } from 'react-router'
 import { appRoutes } from '@/constants/routes'
-import PageLayout from '@/components/layouts/PageLayout'
 import EditPostAction from '@/components/actions/EditPostAction'
 import DeletePostAction from '@/components/actions/DeletePostAction'
 import type { Post } from '@/types/posts'
@@ -84,7 +83,7 @@ export default function ViewPost() {
     ) : null
 
   return (
-    <PageLayout pageTitle={appRoutes.viewPost.pageTitle} actions={Action}>
+    <>
       {isFetching ? (
         <Loading text='Loading post' />
       ) : !post ? (
@@ -110,6 +109,6 @@ export default function ViewPost() {
           </Grid>
         </Grid>
       )}
-    </PageLayout>
+    </>
   )
 }

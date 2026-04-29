@@ -33,12 +33,9 @@ export default function SideNavItem({
       to={to}
       size='small'
       variant='text'
-      fullWidth
       onClick={clickSideButton}
       sx={{
-        justifyContent: showSideNav ? 'flex-center' : 'flex-start',
-        paddingInline: 2,
-        paddingBlock: 0.5,
+        justifyContent: { xs: 'center', sm: 'start', md: 'center' },
         '&:hover': {
           backgroundColor: 'background.default',
         },
@@ -47,7 +44,11 @@ export default function SideNavItem({
           color: 'primary.main',
           fontWeight: 'bold',
         },
+        '& .MuiButton-startIcon': {
+          display: { xs: 'inline', md: 'none', xl: 'inline' },
+        },
         ...sx,
+        display: 'flex',
       }}
     >
       {label}

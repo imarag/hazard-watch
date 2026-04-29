@@ -6,7 +6,6 @@ import { HazardType } from '@/types/hazards'
 import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
-import PageLayout from '@/components/layouts/PageLayout'
 import useField from '@/hooks/useField'
 import { useMutation, useQueryClient, useQuery } from '@tanstack/react-query'
 import type { CreatePost } from '@/types/posts'
@@ -84,7 +83,7 @@ export default function EditPost() {
   }
 
   return (
-    <PageLayout pageTitle={appRoutes.editPost.pageTitle}>
+    <>
       {isLoading ? (
         <Loading text='Loading post' />
       ) : (
@@ -99,6 +98,6 @@ export default function EditPost() {
           isLoading={isLoading}
         />
       )}
-    </PageLayout>
+    </>
   )
 }

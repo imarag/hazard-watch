@@ -9,7 +9,6 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import { appRoutes } from '@/constants/routes'
-import PageLayout from '@/components/layouts/PageLayout'
 import BackToHome from '@/components/actions/BackToHome'
 
 export default function ForgotPassword() {
@@ -39,28 +38,19 @@ export default function ForgotPassword() {
     },
   })
 
-  const Action = <BackToHome />
-
   return (
-    <PageLayout pageTitle={appRoutes.login.pageTitle} actions={Action}>
-      <FormContainer title='Reset your password' onSubmit={handleResetPassword}>
-        <>
-          <TextField
-            label='Email'
-            value={email.value}
-            onChange={email.onChange}
-            required
-          />
-          <Button
-            loading={isPending}
-            type='submit'
-            variant='contained'
-            fullWidth
-          >
-            Send reset link
-          </Button>
-        </>
-      </FormContainer>
-    </PageLayout>
+    <FormContainer title='Reset your password' onSubmit={handleResetPassword}>
+      <>
+        <TextField
+          label='Email'
+          value={email.value}
+          onChange={email.onChange}
+          required
+        />
+        <Button loading={isPending} type='submit' variant='contained' fullWidth>
+          Send reset link
+        </Button>
+      </>
+    </FormContainer>
   )
 }

@@ -6,8 +6,6 @@ import postsService from '@/services/posts'
 import MarkerTooltip from '@/components/features/interactive-map/MarkerToolTip'
 import { DateFilter, HazardType, type DateFilterValue } from '@/types/hazards'
 import { filterDate } from '@/utils/date'
-import PageLayout from '@/components/layouts/PageLayout'
-import { appRoutes } from '@/constants/routes'
 import { useQuery } from '@tanstack/react-query'
 import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
@@ -56,49 +54,47 @@ export default function InteractiveMap() {
   )
 
   return (
-    <PageLayout pageTitle={appRoutes.map.pageTitle}>
-      <Box sx={{ height: '100%', position: 'relative' }}>
-        <Map
-          height='100%'
-          zoom={3}
-          zoomControl={false}
-          attributionControl={false}
-          buttonIconSize='large'
-        >
-          <MapLoading text='Loading posts...' open={isLoading} />
-          {!openFilterPanel && (
-            <OpenFilterPanelButton
-              position='centerright'
-              onClick={() => setOpenFilterPanel(!openFilterPanel)}
-            />
-          )}
+    <Box sx={{ height: '100%', position: 'relative' }}>
+      <Map
+        height='100%'
+        zoom={3}
+        zoomControl={false}
+        attributionControl={false}
+        buttonIconSize='large'
+      >
+        <MapLoading text='Loading posts...' open={isLoading} />
+        {!openFilterPanel && (
+          <OpenFilterPanelButton
+            position='centerright'
+            onClick={() => setOpenFilterPanel(!openFilterPanel)}
+          />
+        )}
 
-          {openFilterPanel && (
-            <MapFilterPanel
-              posts={filteredPosts}
-              hazardTypeSelected={hazardTypeSelected}
-              setHazardTypeSelected={setHazardTypeSelected}
-              postDateSelected={postDateSelected}
-              setPostDateSelected={setPostDateSelected}
-              onClearFilters={handleClearFilters}
-              onClosePanel={() => setOpenFilterPanel(false)}
-            />
-          )}
-          <MarkerClusterGroup>
-            {filteredPosts.map((post) => (
-              <Marker
-                key={post.id}
-                position={[
-                  post.location.geometry.coordinates[1],
-                  post.location.geometry.coordinates[0],
-                ]}
-              >
-                <MarkerTooltip post={post} />
-              </Marker>
-            ))}
-          </MarkerClusterGroup>
-        </Map>
-      </Box>
-    </PageLayout>
+        {openFilterPanel && (
+          <MapFilterPanel
+            posts={filteredPosts}
+            hazardTypeSelected={hazardTypeSelected}
+            setHazardTypeSelected={setHazardTypeSelected}
+            postDateSelected={postDateSelected}
+            setPostDateSelected={setPostDateSelected}
+            onClearFilters={handleClearFilters}
+            onClosePanel={() => setOpenFilterPanel(false)}
+          />
+        )}
+        <MarkerClusterGroup>
+          {filteredPosts.map((post) => (
+            <Marker
+              key={post.id}
+              position={[
+                post.location.geometry.coordinates[1],
+                post.location.geometry.coordinates[0],
+              ]}
+            >
+              <MarkerTooltip post={post} />
+            </Marker>
+          ))}
+        </MarkerClusterGroup>
+      </Map>
+    </Box>
   )
 }

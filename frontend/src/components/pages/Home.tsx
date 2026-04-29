@@ -1,29 +1,25 @@
 import { useState, useMemo } from 'react'
 import postsService from '@/services/posts'
 import { Box } from '@mui/material'
+import { appRoutes } from '@/constants/routes'
+import AddIcon from '@mui/icons-material/Add'
 import PostsList from '@/components/features/posts/PostsList'
 import type { SortField, SortDirection } from '@/types/posts'
 import { sortPosts } from '@/utils/posts'
-import { appRoutes } from '@/constants/routes'
-import CreatePostAction from '@/components/actions/CreatePostAction'
-import { useAuth } from '@/contexts/AuthContext'
 import { useNotification } from '@/contexts/NotificationContext'
 import { useQuery } from '@tanstack/react-query'
 import { getErrorMessage } from '@/utils/auth'
-import PageLayout from '@/components/layouts/PageLayout'
 import PostSearchBar from '@/components/features/home/PostSearchBar.tsx'
 import PostToolBar from '@/components/features/home/PostToolBar'
 import Loading from '@/components/ui/Loading'
+import ActionButton from '../ui/ActionButton'
 
 export default function Home() {
   const { createNotification, showNotification } = useNotification()
-  const { isUserLoggedIn } = useAuth()
 
   const [sortField, setSortField] = useState<SortField>('createdAt')
   const [sortDir, setSortDir] = useState<SortDirection>('desc')
   const [searchText, setSearchText] = useState('')
-
-  const Actions = isUserLoggedIn ? <CreatePostAction /> : null
 
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['posts'],
@@ -46,10 +42,10 @@ export default function Home() {
   const filteredPosts = useMemo(() => {
     return searchText
       ? posts.filter((p) =>
-        Object.values(p).some((val) =>
-          String(val).toLowerCase().includes(searchText.toLowerCase()),
-        ),
-      )
+          Object.values(p).some((val) =>
+            String(val).toLowerCase().includes(searchText.toLowerCase()),
+          ),
+        )
       : posts
   }, [searchText, posts])
 
@@ -62,41 +58,53 @@ export default function Home() {
   const totalFilteredPosts = filteredPosts.length
 
   return (
-    <PageLayout pageTitle={appRoutes.home.pageTitle} actions={Actions}>
+    <Box
+      sx={{
+        height: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2,
+      }}
+    >
       <Box
         sx={{
-          height: '100%',
           display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
+          flexDirection: 'row',
+          justifyContent: 'end',
         }}
       >
-        <PostSearchBar
-          disabled={isLoading}
-          searchText={searchText}
-          setSearchText={setSearchText}
+        <ActionButton
+          to={appRoutes.createPost.path}
+          icon={AddIcon}
+          label='Create Post'
+          variant='contained'
         />
-        <PostToolBar
-          isLoading={isLoading}
-          sortField={sortField}
-          sortDir={sortDir}
-          setSortDir={setSortDir}
-          setSortField={setSortField}
-          totalPosts={totalPosts}
-          totalFilteredPosts={totalFilteredPosts}
-        />
-        <Box
-          sx={{
-            flexGrow: 1,
-          }}
-        >
-          {isLoading ? (
-            <Loading text='Loading posts' />
-          ) : (
-            <PostsList posts={sortedPosts} />
-          )}
-        </Box>
       </Box>
-    </PageLayout>
+      <PostSearchBar
+        disabled={isLoading}
+        searchText={searchText}
+        setSearchText={setSearchText}
+      />
+      <PostToolBar
+        isLoading={isLoading}
+        sortField={sortField}
+        sortDir={sortDir}
+        setSortDir={setSortDir}
+        setSortField={setSortField}
+        totalPosts={totalPosts}
+        totalFilteredPosts={totalFilteredPosts}
+      />
+      <Box
+        sx={{
+          flexGrow: 1,
+        }}
+      >
+        {isLoading ? (
+          <Loading text='Loading posts' />
+        ) : (
+          <PostsList posts={sortedPosts} />
+        )}
+      </Box>
+    </Box>
   )
 }

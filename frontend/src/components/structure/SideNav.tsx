@@ -1,5 +1,6 @@
 import { Box, Divider, Typography, IconButton } from '@mui/material'
 import ThemeSwitch from '../ui/ThemeSwitch'
+import MenuIcon from '@mui/icons-material/Menu'
 import { useAuth } from '@/contexts/AuthContext'
 import SideNavItem from './SideNavItem'
 import { appRoutes } from '@/constants/routes'
@@ -16,7 +17,7 @@ import CloseIcon from '@mui/icons-material/Close'
 
 export default function SideNav() {
   const { isUserLoggedIn, logout } = useAuth()
-  const { showSideNav, closeSideNav } = useSideNav()
+  const { showSideNav, setShowSideNav } = useSideNav()
   const { showNotification, createNotification } = useNotification()
   const navigate = useNavigate()
 
@@ -33,39 +34,46 @@ export default function SideNav() {
       sx={{
         height: '100%',
         display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        paddingTop: 2,
-        paddingBottom: 2,
-        paddingInline: 2,
+        flexDirection: {
+          xs: 'row',
+          md: 'row',
+          xl: 'column',
+        },
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: 3,
+        overflow: 'hidden',
+        width: { xs: '100%', xl: 350 },
+        backgroundColor: 'background.paper',
+        flexWrap: 'wrap',
       }}
     >
+      <Typography variant='h6' align='center'>
+        HAZARD WATCH
+      </Typography>
+
       <Box
         sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
+          flexGrow: { xl: 1 },
+          display: { xs: showSideNav ? 'flex' : 'none', md: 'flex' },
+          flexDirection: { xs: 'column', md: 'row', xl: 'column' },
+          gap: 1,
+          width: { xs: '100%', md: 'auto' },
+          order: { xs: 2, md: 1 },
+          alignItems: 'stretch',
         }}
       >
-        <Typography variant='h6' align='center'>
-          HAZARD WATCH
-        </Typography>
-        {showSideNav && (
-          <IconButton
-            aria-label='toggle sidebar'
-            onClick={closeSideNav}
-            sx={{ display: { md: 'none' } }}
-          >
-            <CloseIcon />
-          </IconButton>
-        )}
-      </Box>
-
-      <Divider variant='middle' sx={{ marginBottom: 2 }} />
-
-      <Box
-        sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', gap: 1 }}
-      >
+        <Divider
+          variant='middle'
+          sx={{
+            display: {
+              xs: showSideNav ? 'block' : 'none',
+              md: 'none',
+              xl: 'block',
+            },
+            marginBlock: 2,
+          }}
+        />
         <SideNavItem
           to={appRoutes.home.path}
           icon={<ArticleIcon />}
@@ -78,7 +86,17 @@ export default function SideNav() {
           label='About'
         />
 
-        <Divider variant='middle' sx={{ marginBlock: 2 }} />
+        <Divider
+          variant='middle'
+          sx={{
+            display: {
+              xs: showSideNav ? 'block' : 'none',
+              md: 'none',
+              xl: 'block',
+            },
+            marginBlock: 2,
+          }}
+        />
 
         {isUserLoggedIn ? (
           <SideNavItem
@@ -101,20 +119,36 @@ export default function SideNav() {
             />
           </>
         )}
+        <Divider
+          variant='middle'
+          sx={{
+            display: {
+              xs: showSideNav ? 'block' : 'none',
+              md: 'none',
+              xl: 'block',
+            },
+            marginBlock: 2,
+          }}
+        />
+
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: { xs: 'center', sm: 'start', md: 'center' },
+            marginLeft: { md: 4, xl: 0 },
+          }}
+        >
+          <ThemeSwitch />
+        </Box>
       </Box>
 
-      <Divider variant='middle' sx={{ marginTop: 2 }} />
-
-      <Box
-        sx={{
-          marginTop: 'auto',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
+      <IconButton
+        aria-label='toggle sidebar'
+        onClick={() => setShowSideNav((prev) => !prev)}
+        sx={{ display: { md: 'none' }, marginLeft: 2 }}
       >
-        <ThemeSwitch />
-      </Box>
+        {showSideNav ? <CloseIcon /> : <MenuIcon />}
+      </IconButton>
     </Box>
   )
 }
