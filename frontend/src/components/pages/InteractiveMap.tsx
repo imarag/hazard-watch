@@ -24,6 +24,7 @@ export default function InteractiveMap() {
   )
   const [postDateSelected, setPostDateSelected] =
     useState<DateFilterValue>('all')
+
   const { data: posts = [], isLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
@@ -40,6 +41,7 @@ export default function InteractiveMap() {
         throw error
       }
     },
+    staleTime: 5 * 60 * 1000,
   })
 
   function handleClearFilters() {

@@ -36,15 +36,16 @@ export default function Home() {
         throw error
       }
     },
+    staleTime: 5 * 60 * 1000,
   })
 
   const filteredPosts = useMemo(() => {
     return searchText
       ? posts.filter((p) =>
-        Object.values(p).some((val) =>
-          String(val).toLowerCase().includes(searchText.toLowerCase()),
-        ),
-      )
+          Object.values(p).some((val) =>
+            String(val).toLowerCase().includes(searchText.toLowerCase()),
+          ),
+        )
       : posts
   }, [searchText, posts])
 
