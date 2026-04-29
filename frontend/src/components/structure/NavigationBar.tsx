@@ -2,7 +2,7 @@ import { Box, Divider, Typography, IconButton } from '@mui/material'
 import ThemeSwitch from '../ui/ThemeSwitch'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useAuth } from '@/contexts/AuthContext'
-import SideNavItem from './SideNavItem'
+import NavigationBarItem from '@/components/structure/NavigationBarItem'
 import { appRoutes } from '@/constants/routes'
 import ArticleIcon from '@mui/icons-material/Article'
 import MapIcon from '@mui/icons-material/Map'
@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router'
 import { useSideNav } from '@/contexts/SideNavContext'
 import CloseIcon from '@mui/icons-material/Close'
 
-export default function SideNav() {
+export default function NavigationBar() {
   const { isUserLoggedIn, logout } = useAuth()
   const { showSideNav, setShowSideNav } = useSideNav()
   const { showNotification, createNotification } = useNotification()
@@ -41,9 +41,10 @@ export default function SideNav() {
         },
         justifyContent: 'space-between',
         alignItems: 'center',
-        padding: 3,
+        paddingBlock: { xs: 2 },
+        paddingInline: { xs: 4, sm: 8 },
         overflow: 'hidden',
-        width: { xs: '100%', xl: 350 },
+        width: { xs: '100%', xl: 300 },
         backgroundColor: 'background.paper',
         flexWrap: 'wrap',
       }}
@@ -58,7 +59,7 @@ export default function SideNav() {
           display: { xs: showSideNav ? 'flex' : 'none', md: 'flex' },
           flexDirection: { xs: 'column', md: 'row', xl: 'column' },
           gap: 1,
-          width: { xs: '100%', md: 'auto' },
+          width: { xs: '100%', md: 'auto', xl: '100%' },
           order: { xs: 2, md: 1 },
           alignItems: 'stretch',
         }}
@@ -74,13 +75,17 @@ export default function SideNav() {
             marginBlock: 2,
           }}
         />
-        <SideNavItem
+        <NavigationBarItem
           to={appRoutes.home.path}
           icon={<ArticleIcon />}
           label='Posts'
         />
-        <SideNavItem to={appRoutes.map.path} icon={<MapIcon />} label='Map' />
-        <SideNavItem
+        <NavigationBarItem
+          to={appRoutes.map.path}
+          icon={<MapIcon />}
+          label='Map'
+        />
+        <NavigationBarItem
           to={appRoutes.about.path}
           icon={<PersonIcon />}
           label='About'
@@ -99,7 +104,7 @@ export default function SideNav() {
         />
 
         {isUserLoggedIn ? (
-          <SideNavItem
+          <NavigationBarItem
             link={false}
             icon={<LogoutRoundedIcon />}
             label='Logout'
@@ -107,12 +112,12 @@ export default function SideNav() {
           />
         ) : (
           <>
-            <SideNavItem
+            <NavigationBarItem
               to={appRoutes.login.path}
               icon={<LoginRoundedIcon />}
               label='Login'
             />
-            <SideNavItem
+            <NavigationBarItem
               to={appRoutes.register.path}
               icon={<AppRegistrationRoundedIcon />}
               label='Register'
@@ -128,13 +133,18 @@ export default function SideNav() {
               xl: 'block',
             },
             marginBlock: 2,
+            marginTop: { xl: 'auto' },
           }}
         />
 
         <Box
           sx={{
             display: 'flex',
-            justifyContent: { xs: 'center', sm: 'start', md: 'center' },
+            justifyContent: {
+              xs: 'center',
+              sm: 'start',
+              md: 'center',
+            },
             marginLeft: { md: 4, xl: 0 },
           }}
         >

@@ -2,7 +2,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import { appRoutes } from '@/constants/routes'
 import ActionButton from '@/components/ui/ActionButton'
 
-export default function BackToHome() {
+export default function BackToHomeAction() {
   return (
     <ActionButton
       to={appRoutes.home.path}

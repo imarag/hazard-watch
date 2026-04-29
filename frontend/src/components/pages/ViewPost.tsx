@@ -1,114 +1,96 @@
-import { Card, CardContent, Typography, Divider, Grid } from '@mui/material'
+import {
+  Card,
+  CardContent,
+  Typography,
+  Divider,
+  Grid,
+  Box,
+} from '@mui/material'
 import Loading from '@/components/ui/Loading'
 import { getErrorMessage } from '@/utils/auth'
 import { useNotification } from '@/contexts/NotificationContext'
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 import postsService from '@/services/posts'
-import { useAuth } from '@/contexts/AuthContext'
-import { useNavigate } from 'react-router'
-import { appRoutes } from '@/constants/routes'
-import EditPostAction from '@/components/actions/EditPostAction'
-import DeletePostAction from '@/components/actions/DeletePostAction'
-import type { Post } from '@/types/posts'
 import ViewInfoTitle from '@/components/features/view-post/ViewInfoTitle'
 import ViewInfoBody from '@/components/features/view-post/ViewInfoBody'
 import ViewMap from '@/components/features/view-post/ViewMap'
-
-function ViewInfo({ post }: { post: Post }) {
-  const lat = post.location.geometry.coordinates[1]
-  const lon = post.location.geometry.coordinates[0]
-  return (
-    <Card
-      variant='outlined'
-      sx={{ height: '100%', borderRadius: 4, overflowY: 'scroll' }}
-    >
-      <CardContent sx={{ padding: 4 }}>
-        <ViewInfoTitle title={post.title} hazardType={post.hazardType} />
-        <Divider sx={{ borderColor: 'divider', marginBlock: 2 }} />
-        <ViewInfoBody post={post} lon={lon} lat={lat} />
-      </CardContent>
-    </Card>
-  )
-}
+import DeletePostAction from '@/components/actions/DeletePostAction'
+import GoToEditPostAction from '@/components/actions/GoToEditPostAction'
+import ActionBar from '../actions/ActionBar'
 
 export default function ViewPost() {
   const { createNotification, showNotification } = useNotification()
-  const navigate = useNavigate()
   const { id: postId } = useParams()
-  const { currentUser, isUserLoggedIn } = useAuth()
 
-  const { data: post = null, isFetching } = useQuery({
+  const { data: post = null, isLoading } = useQuery({
     queryKey: ['post', postId],
     enabled: !!postId,
-    queryFn: () => postsService.getPostById(postId!),
-    onError: (error: unknown) => {
-      const errorMessage = getErrorMessage(error)
-      showNotification(
-        createNotification(`Cannot fetch the post: ${errorMessage}`, 'error'),
-      )
+    queryFn: async () => {
+      try {
+        return await postsService.getPostById(postId!)
+      } catch (error: unknown) {
+        showNotification(
+          createNotification(
+            `Cannot fetch the post: ${getErrorMessage(error)}`,
+            'error',
+          ),
+        )
+        throw error
+      }
     },
   })
-
-  const deleteMutation = useMutation({
-    mutationFn: async (postId: string) => {
-      return await postsService.deletePost(postId)
-    },
-    onSuccess: () => {
-      showNotification(
-        createNotification('Post deleted succesfully.', 'success'),
-      )
-      navigate(appRoutes.home.path)
-    },
-
-    onError: (error: unknown) => {
-      const errorMessage = getErrorMessage(error)
-      showNotification(
-        createNotification(`Cannot delete the post: ${errorMessage}`, 'error'),
-      )
-    },
-  })
-
-  const isSameUser = post?.user.id === currentUser?.id
-  const Action =
-    isSameUser && isUserLoggedIn && post ? (
-      <>
-        <EditPostAction postId={post.id} />
-        <DeletePostAction
-          postId={post.id}
-          loading={deleteMutation.isPending}
-          onDeletePost={async () => deleteMutation.mutate(post.id)}
-        />
-      </>
-    ) : null
 
   return (
-    <>
-      {isFetching ? (
-        <Loading text='Loading post' />
-      ) : !post ? (
-        <Typography>Post not found.</Typography>
-      ) : (
-        <Grid
-          container
-          rowSpacing={1}
-          columnSpacing={{ xs: 1, sm: 2, md: 3 }}
-          sx={{ height: '100%' }}
-        >
-          <Grid
-            size={{ xs: 12, lg: 6, xl: 4 }}
-            sx={{ height: { xs: '50%', lg: '100%' } }}
-          >
-            <ViewInfo post={post} />
-          </Grid>
-          <Grid
-            size={{ xs: 12, lg: 6, xl: 8 }}
-            sx={{ height: { xs: '50%', lg: '100%' } }}
-          >
-            <ViewMap post={post} />
-          </Grid>
-        </Grid>
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+      {post && (
+        <ActionBar>
+          <GoToEditPostAction post={post} />
+          <DeletePostAction post={post} />
+        </ActionBar>
       )}
-    </>
+      <Box sx={{ flexGrow: 1 }}>
+        {isLoading ? (
+          <Loading text='Loading post' />
+        ) : !post ? (
+          <Typography>Post not found.</Typography>
+        ) : (
+          <Grid
+            container
+            rowSpacing={1}
+            columnSpacing={{ xs: 1, sm: 2, md: 3 }}
+            sx={{ height: '100%' }}
+          >
+            <Grid
+              size={{ xs: 12, sm: 6, lg: 4 }}
+              sx={{
+                height: { xs: 'min-content', sm: '100%' },
+                overflowY: 'auto',
+              }}
+            >
+              <Card
+                variant='outlined'
+                sx={{ height: '100%', borderRadius: 4, overflowY: 'auto' }}
+              >
+                <CardContent sx={{ padding: 4 }}>
+                  <ViewInfoTitle
+                    title={post.title}
+                    hazardType={post.hazardType}
+                  />
+                  <Divider sx={{ borderColor: 'divider', marginBlock: 2 }} />
+                  <ViewInfoBody post={post} />
+                </CardContent>
+              </Card>
+            </Grid>
+            <Grid
+              size={{ xs: 12, sm: 6, lg: 8 }}
+              sx={{ height: { xs: '400px', sm: '100%' } }}
+            >
+              <ViewMap post={post} />
+            </Grid>
+          </Grid>
+        )}
+      </Box>
+    </Box>
   )
 }

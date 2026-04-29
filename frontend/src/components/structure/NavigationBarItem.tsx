@@ -3,7 +3,7 @@ import type { SxProps, Theme } from '@mui/material'
 import { NavLink } from 'react-router'
 import { useSideNav } from '@/contexts/SideNavContext'
 
-interface SideNavItemProps {
+interface NavigationBarItemProps {
   to?: string
   link?: boolean
   icon?: React.ReactNode
@@ -12,15 +12,15 @@ interface SideNavItemProps {
   onClick?: () => void
 }
 
-export default function SideNavItem({
+export default function NavigationBarItem({
   to,
   link = true,
   icon,
   label,
   onClick,
   sx,
-}: SideNavItemProps) {
-  const { showSideNav, closeSideNav } = useSideNav()
+}: NavigationBarItemProps) {
+  const { closeSideNav } = useSideNav()
 
   function clickSideButton() {
     if (onClick) onClick()
@@ -35,7 +35,12 @@ export default function SideNavItem({
       variant='text'
       onClick={clickSideButton}
       sx={{
-        justifyContent: { xs: 'center', sm: 'start', md: 'center' },
+        justifyContent: {
+          xs: 'center',
+          sm: 'start',
+          md: 'center',
+          xl: 'start',
+        },
         '&:hover': {
           backgroundColor: 'background.default',
         },
@@ -45,7 +50,7 @@ export default function SideNavItem({
           fontWeight: 'bold',
         },
         '& .MuiButton-startIcon': {
-          display: { xs: 'inline', md: 'none', xl: 'inline' },
+          display: { xs: 'inline', md: 'none', xl: 'flex' },
         },
         ...sx,
         display: 'flex',

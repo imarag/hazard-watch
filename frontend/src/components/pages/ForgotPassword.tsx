@@ -9,7 +9,6 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import { appRoutes } from '@/constants/routes'
-import BackToHome from '@/components/actions/BackToHome'
 
 export default function ForgotPassword() {
   const { showNotification, createNotification } = useNotification()

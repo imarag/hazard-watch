@@ -8,11 +8,11 @@ import PostCardItem from '@/components/features/view-post/PostCardItem'
 
 interface ViewInfoBodyProps {
   post: Post
-  lon: number
-  lat: number
 }
 
-export default function ViewInfoBody({ post, lon, lat }: ViewInfoBodyProps) {
+export default function ViewInfoBody({ post }: ViewInfoBodyProps) {
+  const lon = post.location.geometry.coordinates[0]
+  const lat = post.location.geometry.coordinates[1]
   return (
     <Stack spacing={2}>
       <PostCardItem label='Description'>

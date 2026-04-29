@@ -1,8 +1,6 @@
 import { useState, useMemo } from 'react'
 import postsService from '@/services/posts'
 import { Box } from '@mui/material'
-import { appRoutes } from '@/constants/routes'
-import AddIcon from '@mui/icons-material/Add'
 import PostsList from '@/components/features/posts/PostsList'
 import type { SortField, SortDirection } from '@/types/posts'
 import { sortPosts } from '@/utils/posts'
@@ -12,7 +10,8 @@ import { getErrorMessage } from '@/utils/auth'
 import PostSearchBar from '@/components/features/home/PostSearchBar.tsx'
 import PostToolBar from '@/components/features/home/PostToolBar'
 import Loading from '@/components/ui/Loading'
-import ActionButton from '../ui/ActionButton'
+import GoToCreatePostAction from '../actions/GoToCreatePostAction'
+import ActionBar from '../actions/ActionBar'
 
 export default function Home() {
   const { createNotification, showNotification } = useNotification()
@@ -42,10 +41,10 @@ export default function Home() {
   const filteredPosts = useMemo(() => {
     return searchText
       ? posts.filter((p) =>
-          Object.values(p).some((val) =>
-            String(val).toLowerCase().includes(searchText.toLowerCase()),
-          ),
-        )
+        Object.values(p).some((val) =>
+          String(val).toLowerCase().includes(searchText.toLowerCase()),
+        ),
+      )
       : posts
   }, [searchText, posts])
 
@@ -66,20 +65,10 @@ export default function Home() {
         gap: 2,
       }}
     >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          justifyContent: 'end',
-        }}
-      >
-        <ActionButton
-          to={appRoutes.createPost.path}
-          icon={AddIcon}
-          label='Create Post'
-          variant='contained'
-        />
-      </Box>
+      <ActionBar>
+        <GoToCreatePostAction />
+      </ActionBar>
+
       <PostSearchBar
         disabled={isLoading}
         searchText={searchText}

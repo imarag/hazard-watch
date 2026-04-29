@@ -14,6 +14,7 @@ import InteractiveMap from '@/components/pages/InteractiveMap'
 import About from '@/components/pages/About'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import { appRoutes } from '@/constants/routes'
+import AuthLayout from './components/layouts/AuthLayout'
 
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
@@ -24,16 +25,18 @@ function App() {
       <CssBaseline />
       <Routes>
         <Route element={<MainLayout />}>
-          <Route path={appRoutes.login.path} element={<Login />} />
-          <Route
-            path={appRoutes.resetPassword.path}
-            element={<ResetPassword />}
-          />
-          <Route path={appRoutes.register.path} element={<Register />} />
-          <Route
-            path={appRoutes.forgotPassword.path}
-            element={<ForgotPassword />}
-          />
+          <Route element={<AuthLayout />}>
+            <Route path={appRoutes.login.path} element={<Login />} />
+            <Route
+              path={appRoutes.resetPassword.path}
+              element={<ResetPassword />}
+            />
+            <Route path={appRoutes.register.path} element={<Register />} />
+            <Route
+              path={appRoutes.forgotPassword.path}
+              element={<ForgotPassword />}
+            />
+          </Route>
           <Route element={<AppLayout />}>
             <Route index element={<Home />} />
             <Route element={<ProtectedRoute />}>

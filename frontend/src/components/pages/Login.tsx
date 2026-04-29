@@ -10,7 +10,6 @@ import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import FormFooter from '@/components/ui/FormFooter'
 import { appRoutes } from '@/constants/routes'
-import BackToHome from '@/components/actions/BackToHome'
 
 export default function Login() {
   const { showNotification, createNotification } = useNotification()
@@ -43,8 +42,6 @@ export default function Login() {
       Don’t have an account?
     </FormFooter>
   )
-
-  const Action = <BackToHome />
 
   return (
     <FormContainer

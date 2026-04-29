@@ -9,7 +9,6 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import { appRoutes } from '@/constants/routes'
-import BackToHome from '@/components/actions/BackToHome'
 
 export default function ResetPassword() {
   const { showNotification, createNotification } = useNotification()
@@ -56,8 +55,6 @@ export default function ResetPassword() {
       showNotification(createNotification(errorMessage, 'error'))
     },
   })
-
-  const Action = <BackToHome />
 
   return (
     <FormContainer title='Reset your password' onSubmit={handleResetPassword}>

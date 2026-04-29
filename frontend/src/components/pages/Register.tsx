@@ -10,7 +10,6 @@ import type { UserRegister } from '@/types/users'
 import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
-import BackToHome from '@/components/actions/BackToHome'
 
 export default function Register() {
   const { showNotification, createNotification } = useNotification()
