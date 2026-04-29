@@ -13,6 +13,7 @@ export default function ActionBar({ children }: ActionBarProps) {
         justifyContent: 'end',
         gap: 2,
         marginBottom: 4,
+        paddingInline: 2,
       }}
     >
       {children}
