@@ -82,7 +82,9 @@ export default function Search() {
             ))}
           </Stack>
 
-          {hasNextPage && <Box ref={sentinelRef} sx={{ height: 1 }} />}
+          {hasNextPage && (
+            <Box ref={sentinelRef} sx={{ height: 1, padding: 1 }} />
+          )}
           {isFetchingNextPage && <Loading text='Loading more...' />}
         </>
       )}
