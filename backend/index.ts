@@ -52,5 +52,5 @@ app.use(routeNotFound)
 app.use(errorHandler)
 
 app.listen(config.PORT, () => {
-  console.log(`Server initialized in port: ${config.PORT}`)
+  console.log(`Server is initialized and is available in port: ${config.PORT}`)
 })
