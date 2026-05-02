@@ -27,7 +27,10 @@ export default function ForgotPassword() {
     },
     onSuccess: () => {
       showNotification(
-        createNotification('Reset link sent! Check your email.', 'success'),
+        createNotification(
+          'Reset link sent! Check your email and spam folder.',
+          'success',
+        ),
       )
       navigate(appRoutes.login.path)
     },
