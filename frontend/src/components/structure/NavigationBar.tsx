@@ -1,4 +1,4 @@
-import { Box, Divider, Link, IconButton, TextField } from '@mui/material'
+import { Box, Divider, Link, IconButton } from '@mui/material'
 import ThemeSwitch from '../ui/ThemeSwitch'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useAuth } from '@/contexts/AuthContext'

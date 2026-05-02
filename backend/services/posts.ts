@@ -3,7 +3,7 @@ import type { UpdatePostInput } from '../types/posts.js'
 import { PostModel } from '../models/posts.js'
 import { ObjectId } from 'mongodb'
 import type { SearchParams } from '../types/posts.js'
-import { escapeRegex } from '../utils/route.ts'
+import { escapeRegex } from '../utils/route.js'
 
 const getAllPosts = async (): Promise<PostInDb[]> => {
   const posts = await PostModel.find().populate('user')

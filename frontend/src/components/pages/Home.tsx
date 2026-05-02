@@ -1,7 +1,7 @@
 import GoToCreatePostAction from '../actions/GoToCreatePostAction'
 import ActionBar from '@/components/actions/ActionBar'
 import { useAuth } from '@/contexts/AuthContext'
-import { Box, Stack, Skeleton } from '@mui/material'
+import { Box, Stack } from '@mui/material'
 import { useSearchParams } from 'react-router'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
@@ -18,35 +18,29 @@ export default function Home() {
   const [searchParams] = useSearchParams()
   const searchParam = searchParams.get('q') ?? ''
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    isFetching,
-  } = useInfiniteQuery({
-    queryKey: ['posts', 'search', searchParam],
-    queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
-      try {
-        return await postsService.searchPosts({
-          cursor: pageParam,
-          limit: 10,
-          q: searchParam,
-        })
-      } catch (error: unknown) {
-        showNotification(
-          createNotification(
-            `Cannot fetch the posts: ${getErrorMessage(error)}`,
-            'error',
-          ),
-        )
-        throw error
-      }
-    },
-    initialPageParam: undefined as string | undefined,
-    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
-  })
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
+    useInfiniteQuery({
+      queryKey: ['posts', 'search', searchParam],
+      queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
+        try {
+          return await postsService.searchPosts({
+            cursor: pageParam,
+            limit: 10,
+            q: searchParam,
+          })
+        } catch (error: unknown) {
+          showNotification(
+            createNotification(
+              `Cannot fetch the posts: ${getErrorMessage(error)}`,
+              'error',
+            ),
+          )
+          throw error
+        }
+      },
+      initialPageParam: undefined as string | undefined,
+      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+    })
 
   const sentinelRef = useInfiniteScroll({
     hasNextPage,
