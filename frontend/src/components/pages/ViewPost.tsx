@@ -44,7 +44,14 @@ export default function ViewPost() {
   })
   const isSameUser = isUserLoggedIn && currentUser?.id === post?.user.id
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100%',
+        gap: { xs: 1, sm: 2 },
+      }}
+    >
       {isSameUser && post && (
         <ActionBar>
           <GoToEditPostAction post={post} />
