@@ -16,7 +16,7 @@ import {
   createErrorResponse,
 } from '../utils/auth.js'
 import config from '../config.js'
-import transporter from '../utils/mailer.js'
+import { sendMail } from '../utils/mailer.js'
 
 const router = express.Router()
 
@@ -129,15 +129,17 @@ router.post('/logout', (_req, res) => {
 
 router.post('/forgot-password', async (req, res) => {
   const body = req.body
-
   const payload = UserForgotPasswordSchema.parse(body)
 
   const user = await UserModel.findOne({ email: payload.email })
 
+  // Always return the same message to prevent email enumeration
+  const genericResponse = {
+    message: 'If this email exists, a reset link has been sent.',
+  }
+
   if (!user) {
-    return res.json({
-      message: 'If this email exists, a reset link has been sent.',
-    })
+    return res.json(genericResponse)
   }
 
   const resetToken = createJWTToken(
@@ -156,20 +158,24 @@ router.post('/forgot-password', async (req, res) => {
       : config.CLIENT_URL
 
   const resetLink = `${clientHost}/auth/reset-password?token=${resetToken}`
-  await transporter.sendMail({
-    from: config.GMAIL_USER,
-    to: user.email,
-    subject: 'Reset your password',
-    html: `
-    <p>You requested a password reset.</p>
-    <a href="${resetLink}">Click here to reset your password</a>
-    <p>This link expires in 1 hour. If you didn't request this, ignore this email.</p>
-  `,
-  })
 
-  return res.json({
-    message: 'If this email exists, a reset link has been sent.',
-  })
+  try {
+    await sendMail({
+      to: user.email,
+      subject: 'Reset your password',
+      html: `
+        <p>You requested a password reset.</p>
+        <a href="${resetLink}">Click here to reset your password</a>
+        <p>This link expires in 1 hour. If you didn't request this, ignore this email.</p>
+      `,
+    })
+  } catch (err) {
+    console.error('Failed to send reset email:', err)
+    // Still return generic success — don't tell the client whether the email exists
+    // But you'll see this in logs to diagnose
+  }
+
+  return res.json(genericResponse)
 })
 
 router.post('/reset-password', async (req, res) => {
