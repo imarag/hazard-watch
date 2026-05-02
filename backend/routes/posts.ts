@@ -36,9 +36,8 @@ router.post('/', requireAuth, async (req, res) => {
     ...parsedPost,
     user: req.userId!,
   }
-  console.log(newPost, '*****')
   const post = await postService.createPost(newPost)
-  return res.status(201).json(newPost)
+  return res.status(201).json(post)
 })
 
 router.put('/:id', requireAuth, requireOwnership, async (req, res) => {
