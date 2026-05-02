@@ -9,6 +9,7 @@ export default function SideNavContextProvider({
   children,
 }: SideNavProviderProps) {
   const [showSideNav, setShowSideNav] = useState(false)
+  const [searchParam, setSearchParam] = useState('')
 
   function openSideNav() {
     setShowSideNav(true)
@@ -25,6 +26,8 @@ export default function SideNavContextProvider({
         setShowSideNav,
         openSideNav,
         closeSideNav,
+        searchParam,
+        setSearchParam,
       }}
     >
       {children}

@@ -17,3 +17,14 @@ export type CreatePost = Omit<BasePost, 'createdAt' | 'user'>
 
 export type SortField = 'createdAt' | 'hazardType' | 'title' | 'author'
 export type SortDirection = 'asc' | 'desc'
+
+export type SearchParams = {
+  q?: string
+  cursor?: string
+  limit?: number
+}
+
+export type SearchResult = {
+  data: Post[]
+  nextCursor?: string
+}

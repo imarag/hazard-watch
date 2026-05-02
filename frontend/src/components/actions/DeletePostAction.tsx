@@ -23,11 +23,10 @@ export default function DeletePostAction({ post }: DeletePostActionProps) {
     mutationFn: () => postsService.deletePost(post.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })
-      queryClient.invalidateQueries({ queryKey: ['post', post.id] })
+      navigate(appRoutes.home.path)
       showNotification(
         createNotification('Post deleted successfully.', 'success'),
       )
-      navigate(appRoutes.home.path)
     },
     onError: (error: unknown) => {
       showNotification(

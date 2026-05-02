@@ -54,6 +54,11 @@ export const appRoutes = {
     title: 'Reset Password',
     pageTitle: 'Reset Password',
   },
+  search: {
+    path: '/search',
+    title: 'Search posts',
+    pageTitle: 'search posts',
+  },
 } as const
 
 export type RouteKey = keyof typeof appRoutes

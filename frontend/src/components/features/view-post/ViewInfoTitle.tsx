@@ -17,12 +17,15 @@ export default function ViewInfoTitle({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        flexWrap: 'wrap',
+        gap: 2,
       }}
     >
       <Typography
-        variant='h6'
+        variant='body1'
         sx={{
           fontWeight: 'fontWeightBold',
+          order: { xs: 2, sm: 1 },
         }}
       >
         {title}

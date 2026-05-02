@@ -19,11 +19,16 @@ const configSchema = z.object({
   CLIENT_URL: z.string(),
 })
 
+const SECONDS = 1
+const MINUTES = 60 * SECONDS
+const HOURS = 60 * MINUTES
+const DAYS = 24 * HOURS
+
 const config = configSchema.parse({
   JWT_SECRET: process.env['JWT_SECRET'],
   REFRESH_TOKEN_KEY: REFRESH_TOKEN_KEY,
-  REFRESH_TOKEN_DUR: 7 * 24 * 60 * 60 * 1000,
-  ACCESS_TOKEN_DUR: 1 * 1 * 15 * 60 * 1000,
+  ACCESS_TOKEN_DUR: 15 * MINUTES,
+  REFRESH_TOKEN_DUR: 7 * DAYS,
   NODE_ENV: process.env['NODE_ENV'],
   PORT: process.env['PORT'],
   MONGO_DB_USERNAME: process.env['MONGO_DB_USERNAME'],

@@ -13,7 +13,9 @@ export default function PostsList({ posts }: PostsListProps) {
       {posts.length === 0 ? (
         <EmptyPostsMessage />
       ) : (
-        posts.map((post) => <HomePostCard key={post.id} post={post} />)
+        posts
+          .slice(0, 20)
+          .map((post) => <HomePostCard key={post.id} post={post} />)
       )}
     </Stack>
   )

@@ -22,6 +22,7 @@ export default function PostSearch({
       value={searchText}
       onChange={(e) => setSearchText(e.target.value)}
       variant='outlined'
+      fullWidth
     />
   )
 }

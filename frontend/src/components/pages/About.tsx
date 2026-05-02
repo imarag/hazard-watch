@@ -54,7 +54,7 @@ function LinkedInButton() {
   return (
     <Button
       component='a'
-      href='https://www.linkedin.com/in/ioannis-maragkakis-1ba2851a9/'
+      href='https://www.linkedin.com/in/ioannis-maragkakis-1ba2851a9'
       target='_blank'
       size='small'
       variant='contained'

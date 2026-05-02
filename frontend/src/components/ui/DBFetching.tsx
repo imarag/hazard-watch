@@ -2,13 +2,16 @@ import { Box } from '@mui/material'
 import CircularProgress from '@mui/material/CircularProgress'
 
 interface LoadingProps {
-  text: string
+  text?: string
 }
 
-export default function Loading({ text }: LoadingProps) {
+export default function DBFetching({ text = 'saving' }: LoadingProps) {
   return (
     <Box
       sx={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: '#00000080',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

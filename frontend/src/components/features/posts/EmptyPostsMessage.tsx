@@ -1,7 +1,13 @@
 import { Box, Typography, Button } from '@mui/material'
 import { Link } from 'react-router'
 
-export default function EmptyPostsMessage() {
+interface EmptyPostsMessageProps {
+  searchParam?: string
+}
+
+export default function EmptyPostsMessage({
+  searchParam,
+}: EmptyPostsMessageProps) {
   return (
     <Box
       sx={{
@@ -20,7 +26,7 @@ export default function EmptyPostsMessage() {
         }}
       >
         <Typography variant='h6' color='text.secondary' align='center'>
-          No posts found
+          {searchParam ? `No posts found for ${searchParam}` : 'No posts found'}
         </Typography>
         <Typography variant='body2' color='text.disabled' align='center'>
           Try adjusting your search or create a new report.

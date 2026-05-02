@@ -36,9 +36,9 @@ export const requireAuth = (
         createErrorResponse(401, 'You must be logged in to use this option.'),
       )
   }
-
+  console.log('token: ', req.token)
   const user = verifyJWTToken(req.token)
-
+  console.log('user: ', user)
   if (!user) {
     return res
       .status(401)

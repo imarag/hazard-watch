@@ -38,7 +38,11 @@ export default function ForgotPassword() {
   })
 
   return (
-    <FormContainer title='Reset your password' onSubmit={handleResetPassword}>
+    <FormContainer
+      title='Reset your password'
+      subtitle='Fill in your email to reset your password'
+      onSubmit={handleResetPassword}
+    >
       <>
         <TextField
           label='Email'

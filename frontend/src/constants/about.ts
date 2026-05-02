@@ -7,6 +7,9 @@ export const techStack = [
   'Leaflet',
   'JWT Auth',
   'REST API',
+  'React-leaflet',
+  'Mongoose',
+  'MongoDB Atlas',
 ]
 
 export const aboutApp = `Hazard Watch is a hazard reporting platform that allows users to

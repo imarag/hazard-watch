@@ -1,7 +1,8 @@
-import { Box, Divider, Typography, IconButton } from '@mui/material'
+import { Box, Divider, Link, IconButton, TextField } from '@mui/material'
 import ThemeSwitch from '../ui/ThemeSwitch'
 import MenuIcon from '@mui/icons-material/Menu'
 import { useAuth } from '@/contexts/AuthContext'
+import { Link as LinkRouter } from 'react-router'
 import NavigationBarItem from '@/components/structure/NavigationBarItem'
 import { appRoutes } from '@/constants/routes'
 import ArticleIcon from '@mui/icons-material/Article'
@@ -14,6 +15,8 @@ import { useNotification } from '@/contexts/NotificationContext'
 import { useNavigate } from 'react-router'
 import { useSideNav } from '@/contexts/SideNavContext'
 import CloseIcon from '@mui/icons-material/Close'
+import Logo from '@/components/structure/Logo'
+import SearchField from '@/components/structure/SearchField'
 
 export default function NavigationBar() {
   const { isUserLoggedIn, logout } = useAuth()
@@ -39,20 +42,27 @@ export default function NavigationBar() {
           md: 'row',
           xl: 'column',
         },
-        justifyContent: 'space-between',
         alignItems: 'center',
-        paddingBlock: { xs: 2 },
-        paddingInline: { xs: 4, sm: 8 },
+        paddingBlock: 2,
+        paddingInline: 4,
         overflow: 'hidden',
-        width: { xs: '100%', xl: 300 },
+        width: { xs: '100%', xl: 350 },
         backgroundColor: 'background.paper',
         flexWrap: 'wrap',
+        gap: { xs: 2, md: 4 },
       }}
     >
-      <Typography variant='h6' align='center'>
-        HAZARD WATCH
-      </Typography>
-
+      <Link
+        sx={{ fontSize: 'fontSize' }}
+        component={LinkRouter}
+        to={appRoutes.home.path}
+        underline='none'
+      >
+        <Logo />
+      </Link>
+      <Box sx={{ display: 'flex', minWidth: 0, flex: { xs: 1, xl: 0 } }}>
+        <SearchField />
+      </Box>
       <Box
         sx={{
           flexGrow: { xl: 1 },
@@ -140,12 +150,12 @@ export default function NavigationBar() {
         <Box
           sx={{
             display: 'flex',
+            marginLeft: { md: 4, xl: 0 },
             justifyContent: {
               xs: 'center',
               sm: 'start',
               md: 'center',
             },
-            marginLeft: { md: 4, xl: 0 },
           }}
         >
           <ThemeSwitch />
@@ -155,7 +165,7 @@ export default function NavigationBar() {
       <IconButton
         aria-label='toggle sidebar'
         onClick={() => setShowSideNav((prev) => !prev)}
-        sx={{ display: { md: 'none' }, marginLeft: 2 }}
+        sx={{ display: { md: 'none' }, padding: 0 }}
       >
         {showSideNav ? <CloseIcon /> : <MenuIcon />}
       </IconButton>

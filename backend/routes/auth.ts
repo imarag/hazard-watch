@@ -77,6 +77,7 @@ router.post('/login', async (req, res) => {
     id: existingUser.id,
     userName: existingUser.name,
   }
+
   const accessToken = createJWTToken(
     { ...userPayload, tokenType: 'access' },
     config.ACCESS_TOKEN_DUR,
@@ -90,7 +91,7 @@ router.post('/login', async (req, res) => {
     httpOnly: true,
     secure: false,
     sameSite: 'strict',
-    maxAge: config.REFRESH_TOKEN_DUR,
+    maxAge: config.REFRESH_TOKEN_DUR * 1000,
   })
 
   return res.status(200).json({

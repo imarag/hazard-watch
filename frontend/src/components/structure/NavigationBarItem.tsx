@@ -50,7 +50,7 @@ export default function NavigationBarItem({
           fontWeight: 'bold',
         },
         '& .MuiButton-startIcon': {
-          display: { xs: 'inline', md: 'none', xl: 'flex' },
+          display: { xs: 'flex', md: 'none', xl: 'flex' },
         },
         ...sx,
         display: 'flex',

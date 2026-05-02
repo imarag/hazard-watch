@@ -23,3 +23,14 @@ export type UpdatePostInput = z.infer<typeof UpdatePostSchema>
 export type PostPayload = CreatePostInput & {
   user: string
 }
+
+export type SearchParams = {
+  q?: string | undefined
+  cursor?: string | undefined
+  limit?: number | undefined
+}
+
+export type FeedResult = {
+  data: PostInDb[]
+  nextCursor: string | null
+}

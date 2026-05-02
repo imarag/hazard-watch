@@ -1,100 +1,84 @@
-import { useState, useMemo } from 'react'
-import postsService from '@/services/posts'
-import { Box } from '@mui/material'
-import PostsList from '@/components/features/posts/PostsList'
-import type { SortField, SortDirection } from '@/types/posts'
-import { sortPosts } from '@/utils/posts'
-import { useNotification } from '@/contexts/NotificationContext'
-import { useQuery } from '@tanstack/react-query'
-import { getErrorMessage } from '@/utils/auth'
-import PostSearchBar from '@/components/features/home/PostSearchBar.tsx'
-import PostToolBar from '@/components/features/home/PostToolBar'
-import Loading from '@/components/ui/Loading'
 import GoToCreatePostAction from '../actions/GoToCreatePostAction'
-import ActionBar from '../actions/ActionBar'
+import ActionBar from '@/components/actions/ActionBar'
+import { useAuth } from '@/contexts/AuthContext'
+import { Box, Stack, Skeleton } from '@mui/material'
+import { useSearchParams } from 'react-router'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import useInfiniteScroll from '@/hooks/useInfiniteScroll'
+import { getErrorMessage } from '@/utils/auth'
+import { useNotification } from '@/contexts/NotificationContext'
+import EmptyPostsMessage from '@/components/features/posts/EmptyPostsMessage'
+import postsService from '@/services/posts'
+import Loading from '@/components/ui/Loading'
+import HomePostCard from '@/components/features/posts/HomePostCard'
 
 export default function Home() {
+  const { isUserLoggedIn } = useAuth()
   const { createNotification, showNotification } = useNotification()
+  const [searchParams] = useSearchParams()
+  const searchParam = searchParams.get('q') ?? ''
 
-  const [sortField, setSortField] = useState<SortField>('createdAt')
-  const [sortDir, setSortDir] = useState<SortDirection>('desc')
-  const [searchText, setSearchText] = useState('')
-
-  const { data: posts = [], isLoading } = useQuery({
-    queryKey: ['posts'],
-    queryFn: async () => {
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isFetching,
+  } = useInfiniteQuery({
+    queryKey: ['posts', 'search', searchParam],
+    queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
       try {
-        return await postsService.getAllPosts()
+        return await postsService.searchPosts({
+          cursor: pageParam,
+          limit: 10,
+          q: searchParam,
+        })
       } catch (error: unknown) {
-        const errorMessage = getErrorMessage(error)
         showNotification(
           createNotification(
-            `Cannot fetch the posts: ${errorMessage}`,
+            `Cannot fetch the posts: ${getErrorMessage(error)}`,
             'error',
           ),
         )
         throw error
       }
     },
-    staleTime: 5 * 60 * 1000,
+    initialPageParam: undefined as string | undefined,
+    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
   })
 
-  const filteredPosts = useMemo(() => {
-    return searchText
-      ? posts.filter((p) =>
-          Object.values(p).some((val) =>
-            String(val).toLowerCase().includes(searchText.toLowerCase()),
-          ),
-        )
-      : posts
-  }, [searchText, posts])
+  const sentinelRef = useInfiniteScroll({
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+  })
 
-  const sortedPosts = useMemo(
-    () => sortPosts(filteredPosts, sortField, sortDir),
-    [filteredPosts, sortField, sortDir],
-  )
+  if (isLoading) return <Loading text='Loading posts' />
 
-  const totalPosts = posts.length
-  const totalFilteredPosts = filteredPosts.length
+  const posts = data?.pages.flatMap((page) => page.data) ?? []
 
   return (
-    <Box
-      sx={{
-        height: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-      }}
-    >
-      <ActionBar>
-        <GoToCreatePostAction />
-      </ActionBar>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      {isUserLoggedIn && (
+        <ActionBar>
+          <GoToCreatePostAction />
+        </ActionBar>
+      )}
+      {posts.length === 0 ? (
+        <EmptyPostsMessage searchParam={searchParam} />
+      ) : (
+        <>
+          <Stack spacing={1.5}>
+            {posts.map((post) => (
+              <HomePostCard key={post.id} post={post} />
+            ))}
+          </Stack>
 
-      <PostSearchBar
-        disabled={isLoading}
-        searchText={searchText}
-        setSearchText={setSearchText}
-      />
-      <PostToolBar
-        isLoading={isLoading}
-        sortField={sortField}
-        sortDir={sortDir}
-        setSortDir={setSortDir}
-        setSortField={setSortField}
-        totalPosts={totalPosts}
-        totalFilteredPosts={totalFilteredPosts}
-      />
-      <Box
-        sx={{
-          flexGrow: 1,
-        }}
-      >
-        {isLoading ? (
-          <Loading text='Loading posts' />
-        ) : (
-          <PostsList posts={sortedPosts} />
-        )}
-      </Box>
+          {hasNextPage && <Box ref={sentinelRef} sx={{ height: 1 }} />}
+          {isFetchingNextPage && <Loading text='Loading more...' />}
+        </>
+      )}
     </Box>
   )
 }

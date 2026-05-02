@@ -14,7 +14,8 @@ import InteractiveMap from '@/components/pages/InteractiveMap'
 import About from '@/components/pages/About'
 import ProtectedRoute from '@/components/auth/ProtectedRoute'
 import { appRoutes } from '@/constants/routes'
-import AuthLayout from './components/layouts/AuthLayout'
+import AuthLayout from '@/components/layouts/AuthLayout'
+import Search from '@/components/pages/Search'
 
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
@@ -46,6 +47,7 @@ function App() {
               />
               <Route path={appRoutes.editPost.path} element={<EditPost />} />
             </Route>
+            <Route path={appRoutes.search.path} element={<Search />} />
             <Route path={appRoutes.viewPost.path} element={<ViewPost />} />
             <Route path={appRoutes.map.path} element={<InteractiveMap />} />
             <Route path={appRoutes.about.path} element={<About />} />

@@ -1,10 +1,25 @@
 import { api } from '@/services/api'
-import type { Post, CreatePost } from '@/types/posts'
+import type {
+  Post,
+  CreatePost,
+  SearchParams,
+  SearchResult,
+} from '@/types/posts'
 
 const baseUrl = '/posts'
 
 const getAllPosts = async (): Promise<Post[]> => {
   const res = await api.get(baseUrl)
+  return res.data
+}
+const searchPosts = async ({
+  cursor,
+  limit,
+  q,
+}: SearchParams): Promise<SearchResult> => {
+  const res = await api.get(`${baseUrl}/search`, {
+    params: { q, cursor, limit },
+  })
   return res.data
 }
 
@@ -27,4 +42,11 @@ const deletePost = async (id: string): Promise<void> => {
   await api.delete(`${baseUrl}/${id}`)
 }
 
-export default { getAllPosts, getPostById, createPost, updatePost, deletePost }
+export default {
+  getAllPosts,
+  getPostById,
+  createPost,
+  updatePost,
+  deletePost,
+  searchPosts,
+}

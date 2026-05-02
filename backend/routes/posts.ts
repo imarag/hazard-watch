@@ -11,6 +11,18 @@ router.get('/', async (_req, res) => {
   return res.status(200).json(posts)
 })
 
+router.get('/search', async (req, res) => {
+  const { q, cursor, limit } = req.query
+
+  const data = await postService.searchPosts({
+    q: typeof q === 'string' ? q : undefined,
+    cursor: typeof cursor === 'string' ? cursor : undefined,
+    limit: typeof limit === 'string' ? Number(limit) : undefined,
+  })
+
+  return res.status(200).json(data)
+})
+
 router.get('/:id', async (req, res) => {
   const postId = String(req.params['id'])
   const post = await postService.getPostById(postId)
