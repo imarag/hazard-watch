@@ -43,7 +43,7 @@ export default function NavigationBar() {
           xl: 'column',
         },
         alignItems: 'center',
-        paddingBlock: 2,
+        paddingBlock: 1,
         paddingInline: 4,
         overflow: 'hidden',
         width: { xs: '100%', xl: 350 },

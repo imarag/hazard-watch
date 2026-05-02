@@ -46,7 +46,7 @@ export default function MapFilterPanel({
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
-        width: 350,
+        width: { xs: 280, sm: 350 },
         opacity: 0.9,
       }}
       className='leaflet-control'
@@ -61,13 +61,13 @@ export default function MapFilterPanel({
           gap: 2,
         }}
       >
-        <FilterPanelSection title='Hazard type filters'>
+        <FilterPanelSection title='Hazard type'>
           <HazardTypeFilter
             hazardTypeSelected={hazardTypeSelected}
             setHazardTypeSelected={setHazardTypeSelected}
           />
         </FilterPanelSection>
-        <FilterPanelSection title='Post date filters'>
+        <FilterPanelSection title='Report date'>
           <PostDateFilter
             postDateSelected={postDateSelected}
             setPostDateSelected={setPostDateSelected}

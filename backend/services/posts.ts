@@ -1,8 +1,11 @@
-import type { PostInDb, PostPayload } from '../types/posts.js'
-import type { UpdatePostInput } from '../types/posts.js'
+import type {
+  PostInDb,
+  PostPayload,
+  UpdatePostInput,
+  SearchParams,
+} from '../types/posts.js'
 import { PostModel } from '../models/posts.js'
 import { ObjectId } from 'mongodb'
-import type { SearchParams } from '../types/posts.js'
 import { escapeRegex } from '../utils/route.js'
 
 const getAllPosts = async (): Promise<PostInDb[]> => {
@@ -47,6 +50,7 @@ const getPostById = async (id: string): Promise<PostInDb> => {
 }
 
 const createPost = async (post: PostPayload): Promise<PostInDb> => {
+  console.log(post, '****888')
   const newPost = new PostModel(post)
   await newPost.save()
   return newPost.populate('user')
@@ -66,7 +70,8 @@ const updatePost = async (
 }
 
 const deletePost = async (id: string): Promise<void> => {
-  await PostModel.findByIdAndDelete(id)
+  const deleted = await PostModel.findByIdAndDelete(id)
+  if (!deleted) throw new Error('Post not found')
 }
 
 export default {

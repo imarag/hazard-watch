@@ -38,7 +38,7 @@ export const requireAuth = (
   }
   console.log('token: ', req.token)
   const user = verifyJWTToken(req.token)
-  console.log('user: ', user)
+
   if (!user) {
     return res
       .status(401)
@@ -77,6 +77,7 @@ export const errorHandler = (
   error: Error,
   _req: Request,
   res: Response,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _next: NextFunction,
 ) => {
   console.error(error)

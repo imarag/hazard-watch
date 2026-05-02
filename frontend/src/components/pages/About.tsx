@@ -177,12 +177,21 @@ function AboutMeSection() {
 
 export default function About() {
   return (
-    <Container maxWidth='sm' disableGutters>
-      <Stack spacing={{ xs: 1, sm: 2 }}>
-        <AboutMeSection />
-        <AboutProjectSection />
-        <TechStackSection />
-      </Stack>
-    </Container>
+    <Box
+      sx={{
+        height: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <Container maxWidth='sm' disableGutters>
+        <Stack spacing={{ xs: 1, sm: 2 }}>
+          <AboutMeSection />
+          <AboutProjectSection />
+          <TechStackSection />
+        </Stack>
+      </Container>
+    </Box>
   )
 }

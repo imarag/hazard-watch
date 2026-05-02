@@ -12,7 +12,7 @@ export default function ActionBar({ children }: ActionBarProps) {
         alignItems: 'center',
         justifyContent: 'end',
         gap: 2,
-        marginBottom: 4,
+        marginBlock: 2,
         paddingInline: 2,
       }}
     >

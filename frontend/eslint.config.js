@@ -6,9 +6,8 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 import stylistic from '@stylistic/eslint-plugin'
 
-
 export default defineConfig([
-  globalIgnores(['dist']),
+  globalIgnores(['dist', 'node_modules']),
   {
     files: ['**/*.{ts,tsx}'],
     extends: [
@@ -22,12 +21,13 @@ export default defineConfig([
       globals: globals.browser,
     },
     plugins: {
-      '@stylistic': stylistic
+      '@stylistic': stylistic,
     },
     rules: {
       '@stylistic/indent': ['error', 2],
       '@stylistic/quotes': ['warn', 'single'],
-      '@stylistic/jsx-quotes': ['warn', 'prefer-single']
-    }
+      '@stylistic/jsx-quotes': ['warn', 'prefer-single'],
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+    },
   },
 ])

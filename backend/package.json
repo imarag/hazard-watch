@@ -8,7 +8,8 @@
     "dev": "tsx --watch index.ts",
     "seed": "npx tsx seed.ts",
     "lint": "eslint . --fix",
-    "build": "cd ../frontend && npm install --include=dev && npm run build && cd ../backend && rm -rf dist && tsc -p tsconfig.build.json && cp -r ../frontend/dist dist/public"
+    "build": "cd ../frontend && npm install --include=dev && npm run build && cd ../backend && rm -rf dist && tsc -p tsconfig.build.json && cp -r ../frontend/dist dist/public",
+    "check": "npm run lint && tsc --noEmit"
   },
   "keywords": [],
   "author": "",
@@ -40,10 +41,11 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "eslint": "^10.2.0",
-    "globals": "^17.5.0",
+    "eslint": "^10.3.0",
+    "globals": "^17.6.0",
+    "jiti": "^2.6.1",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.2"
+    "typescript-eslint": "^8.59.1"
   }
 }

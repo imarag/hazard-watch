@@ -53,7 +53,9 @@ export default function Home() {
   const posts = data?.pages.flatMap((page) => page.data) ?? []
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Box
+      sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1, sm: 2 } }}
+    >
       {isUserLoggedIn && (
         <ActionBar>
           <GoToCreatePostAction />

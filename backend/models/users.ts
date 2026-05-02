@@ -3,10 +3,9 @@ import mongoose from 'mongoose'
 import type { UserInDb } from '../types/users.js'
 
 const emailField = z
-  .string()
+  .email('Please enter a valid email address')
   .trim()
   .toLowerCase()
-  .email('Please enter a valid email address')
 
 const passwordField = z
   .string()
@@ -18,10 +17,7 @@ const nameField = z
   .trim()
   .min(2, 'Name must be at least 2 characters long')
   .max(80, 'Name is too long, please use fewer than 80 characters')
-  .regex(
-    /^[a-zA-ZÀ-ÿ\s'-]+$/,
-    'Name can only contain letters, spaces, hyphens and apostrophes',
-  )
+  .regex(/^[a-zA-Z\s-]+$/, 'Name can only contain letters, spaces and hyphens')
 
 export const UserLoginSchema = z.object({
   email: emailField,
@@ -52,10 +48,7 @@ const UserSchema = new mongoose.Schema<UserInDb>(
   {
     toJSON: {
       transform: (_, ret: Record<string, unknown>) => {
-        const id = ret['_id']
-        if (id != null) {
-          ret['id'] = String(id)
-        }
+        ret['id'] = String(ret['_id'])
         delete ret['_id']
         delete ret['__v']
         delete ret['password']

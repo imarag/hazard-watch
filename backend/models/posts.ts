@@ -8,12 +8,12 @@ const titleField = z
   .string()
   .trim()
   .min(5, 'Title must be at least 5 characters')
-  .max(100, 'Title is too long')
+  .max(100, 'Title is too long. Must be up to 100 characters.')
 
 const descriptionField = z
   .string()
   .trim()
-  .min(20, 'Description must be at least 20 characters')
+  .min(10, 'Description must be at least 10 characters')
   .max(5000, 'Description is too long')
 
 const hazardTypeField = z.enum([
@@ -46,16 +46,13 @@ const PostSchema = new mongoose.Schema<PostInDb>(
       enum: Object.values(HazardType),
       required: true,
     },
-    location: { type: Object, required: true },
+    location: { type: mongoose.Schema.Types.Mixed, required: true },
   },
   {
     timestamps: { createdAt: true, updatedAt: true },
     toJSON: {
       transform: (_, ret: Record<string, unknown>) => {
-        const id = ret['_id']
-        if (id != null) {
-          ret['id'] = String(id)
-        }
+        ret['id'] = String(ret['_id'])
         delete ret['_id']
         delete ret['__v']
       },

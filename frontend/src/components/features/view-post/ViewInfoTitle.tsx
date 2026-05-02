@@ -15,22 +15,29 @@ export default function ViewInfoTitle({
     <Box
       sx={{
         display: 'flex',
-        alignItems: 'center',
+        flexDirection: { xs: 'column', sm: 'row' },
+        alignItems: { xs: 'start', sm: 'center' },
         justifyContent: 'space-between',
         flexWrap: 'wrap',
         gap: 2,
       }}
     >
+      <HazardChip
+        sx={{ display: { xs: 'flex', sm: 'none' } }}
+        hazard={hazardType}
+      />
       <Typography
         variant='body1'
         sx={{
           fontWeight: 'fontWeightBold',
-          order: { xs: 2, sm: 1 },
         }}
       >
         {title}
       </Typography>
-      <HazardChip hazard={hazardType} />
+      <HazardChip
+        sx={{ display: { xs: 'none', sm: 'flex' } }}
+        hazard={hazardType}
+      />
     </Box>
   )
 }
