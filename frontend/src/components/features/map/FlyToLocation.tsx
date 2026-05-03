@@ -10,7 +10,8 @@ export default function FlyToLocation({
 }) {
   const map = useMap()
   useEffect(() => {
-    map.flyTo([lat, lon], map.getZoom())
+    map.setView([0, 0], 2)
+    map.flyTo([lat, lon], 13, { duration: 5 })
   }, [lat, lon, map])
   return null
 }

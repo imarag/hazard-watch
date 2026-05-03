@@ -13,12 +13,11 @@ const getAllPosts = async (): Promise<Post[]> => {
   return res.data
 }
 const searchPosts = async ({
-  cursor,
-  limit,
+  page,
   q,
 }: SearchParams): Promise<SearchResult> => {
   const res = await api.get(`${baseUrl}/search`, {
-    params: { q, cursor, limit },
+    params: { q, page },
   })
   return res.data
 }

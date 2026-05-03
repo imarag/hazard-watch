@@ -7,6 +7,11 @@ export default function Logo() {
   const theme = useTheme()
   const logoIcon = theme.palette.mode === 'dark' ? LogoLight : LogoDark
   return (
-    <Box component='img' src={logoIcon} alt='Hazard App' sx={{ height: 60 }} />
+    <Box
+      component='img'
+      src={logoIcon}
+      alt='Hazard App'
+      sx={{ height: { xs: 60, xl: 80 } }}
+    />
   )
 }

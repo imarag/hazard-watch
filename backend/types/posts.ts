@@ -1,4 +1,8 @@
-import { CreatePostSchema, UpdatePostSchema } from '../models/posts.js'
+import {
+  CreatePostSchema,
+  UpdatePostSchema,
+  SearchParamsSchema,
+} from '../models/posts.js'
 import { z } from 'zod'
 import { HazardType } from './hazards.js'
 
@@ -24,13 +28,9 @@ export type PostPayload = CreatePostInput & {
   user: string
 }
 
-export type SearchParams = {
-  q?: string | undefined
-  cursor?: string | undefined
-  limit?: number | undefined
-}
+export type SearchParams = z.infer<typeof SearchParamsSchema>
 
-export type FeedResult = {
-  data: PostInDb[]
-  nextCursor: string | null
+export type SearchResult = {
+  posts: PostInDb[]
+  hasMore: boolean
 }

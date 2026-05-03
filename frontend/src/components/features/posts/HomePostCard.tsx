@@ -19,6 +19,7 @@ export default function HomePostCard({ post }: PostProps) {
         display: 'flex',
         flexDirection: 'column',
         gap: 2,
+        minHeight: 'min-content',
       }}
     >
       <HomePostCardTitle user={post.user} post={post} />{' '}
