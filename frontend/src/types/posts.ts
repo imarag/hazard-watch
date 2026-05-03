@@ -20,11 +20,10 @@ export type SortDirection = 'asc' | 'desc'
 
 export type SearchParams = {
   q?: string
-  cursor?: string
-  limit?: number
+  page: number
 }
 
 export type SearchResult = {
-  data: Post[]
-  nextCursor?: string
+  posts: Post[]
+  hasMore: boolean
 }

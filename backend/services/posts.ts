@@ -3,9 +3,9 @@ import type {
   PostPayload,
   UpdatePostInput,
   SearchParams,
+  SearchResult,
 } from '../types/posts.js'
 import { PostModel } from '../models/posts.js'
-import { ObjectId } from 'mongodb'
 import { escapeRegex } from '../utils/route.js'
 
 const getAllPosts = async (): Promise<PostInDb[]> => {
@@ -13,34 +13,36 @@ const getAllPosts = async (): Promise<PostInDb[]> => {
   return posts
 }
 
-const searchPosts = async ({ q, cursor, limit = 20 }: SearchParams) => {
+const searchPosts = async ({
+  q,
+  page,
+  limit,
+}: SearchParams): Promise<SearchResult> => {
   const query: Record<string, unknown> = {}
 
-  const trimmedQ = q?.trim()
-  if (trimmedQ) {
-    const regex = new RegExp(escapeRegex(trimmedQ), 'i')
+  const trimmed = q?.trim()
+  if (trimmed) {
+    const regex = new RegExp(escapeRegex(trimmed), 'i')
     query['$or'] = [
       { title: regex },
       { description: regex },
       { hazardType: regex },
-      { 'user.name': regex },
-      { 'user.email': regex },
     ]
   }
+  const offset = (page - 1) * limit
+  const [posts, totalPosts] = await Promise.all([
+    PostModel.find(query)
+      .sort({ createdAt: -1 })
+      .skip(offset)
+      .limit(limit)
+      .populate('user'),
+    PostModel.countDocuments(query),
+  ])
 
-  if (cursor) {
-    query['_id'] = { $lt: new ObjectId(cursor) }
+  return {
+    posts,
+    hasMore: totalPosts > offset + posts.length,
   }
-  const posts = await PostModel.find(query)
-    .sort({ _id: -1 })
-    .limit(limit)
-    .populate('user')
-
-  const lastPost = posts[posts.length - 1]
-  const nextCursor =
-    posts.length === limit && lastPost ? lastPost._id.toString() : null
-
-  return { data: posts, nextCursor }
 }
 
 const getPostById = async (id: string): Promise<PostInDb> => {

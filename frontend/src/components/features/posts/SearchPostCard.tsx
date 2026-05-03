@@ -12,7 +12,10 @@ interface SearchPostCardProps {
 
 export default function SearchPostCard({ post }: SearchPostCardProps) {
   return (
-    <Card variant='outlined' sx={{ borderColor: 'divider', borderRadius: 2 }}>
+    <Card
+      variant='outlined'
+      sx={{ borderColor: 'divider', borderRadius: 2, minHeight: 'min-content' }}
+    >
       <CardActionArea component={RouterLink} to={`/posts/${post.id}`}>
         <Box
           sx={{

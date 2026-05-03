@@ -61,3 +61,9 @@ const PostSchema = new mongoose.Schema<PostInDb>(
 )
 
 export const PostModel = mongoose.model<PostInDb>('Post', PostSchema)
+
+export const SearchParamsSchema = z.object({
+  q: z.string().trim().min(1).optional(),
+  page: z.coerce.number().int().gte(1).optional().default(1),
+  limit: z.coerce.number().int().gt(0).max(100).optional().default(10),
+})

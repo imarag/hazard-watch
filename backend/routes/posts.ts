@@ -3,6 +3,7 @@ import postService from '../services/posts.js'
 import { CreatePostSchema, UpdatePostSchema } from '../models/posts.js'
 import type { PostPayload } from '../types/posts.js'
 import { requireAuth, requireOwnership } from '../middleware.js'
+import { SearchParamsSchema } from '../models/posts.js'
 
 const router = express.Router()
 
@@ -12,15 +13,9 @@ router.get('/', async (_req, res) => {
 })
 
 router.get('/search', async (req, res) => {
-  const { q, cursor, limit } = req.query
-
-  const data = await postService.searchPosts({
-    q: typeof q === 'string' ? q : undefined,
-    cursor: typeof cursor === 'string' ? cursor : undefined,
-    limit: typeof limit === 'string' ? Number(limit) : undefined,
-  })
-
-  return res.status(200).json(data)
+  const queryParams = SearchParamsSchema.parse(req.query)
+  const data = await postService.searchPosts(queryParams)
+  return res.json(data)
 })
 
 router.get('/:id', async (req, res) => {

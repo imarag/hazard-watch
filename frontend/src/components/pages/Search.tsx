@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import { useSearchParams } from 'react-router'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import SearchPostCard from '@/components/features/posts/SearchPostCard'
@@ -8,6 +8,37 @@ import { useNotification } from '@/contexts/NotificationContext'
 import EmptyPostsMessage from '@/components/features/posts/EmptyPostsMessage'
 import postsService from '@/services/posts'
 import Loading from '@/components/ui/Loading'
+import type { Post, SearchResult } from '@/types/posts'
+
+function SearchPostsStatus({
+  searchParam,
+  posts,
+}: {
+  searchParam: string
+  posts: Post[]
+}) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        color: 'text.disabled',
+      }}
+    >
+      <Typography>
+        Showing results for{' '}
+        <Typography component='span' sx={{ fontWeight: 'bold' }}>
+          {searchParam}
+        </Typography>
+      </Typography>
+      <Typography component='span'>
+        {posts.length} report{posts.length > 1 && posts.length !== 0 && 's'}
+      </Typography>
+    </Box>
+  )
+}
 
 export default function Search() {
   const { createNotification, showNotification } = useNotification()
@@ -17,11 +48,10 @@ export default function Search() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
       queryKey: ['posts', 'search', searchParam],
-      queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
+      queryFn: async ({ pageParam }: { pageParam: number }) => {
         try {
           return await postsService.searchPosts({
-            cursor: pageParam,
-            limit: 10,
+            page: pageParam,
             q: searchParam,
           })
         } catch (error: unknown) {
@@ -34,8 +64,12 @@ export default function Search() {
           throw error
         }
       },
-      initialPageParam: undefined as string | undefined,
-      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+      initialPageParam: 1,
+      getNextPageParam: (
+        lastPage: SearchResult,
+        _allPages: SearchResult[],
+        lastPageParam: number,
+      ) => (lastPage.hasMore ? lastPageParam + 1 : undefined),
     })
 
   const sentinelRef = useInfiniteScroll({
@@ -46,48 +80,18 @@ export default function Search() {
 
   if (isLoading) return <Loading text='Loading posts' />
 
-  const posts = data?.pages.flatMap((page) => page.data) ?? []
+  const posts = data?.pages.flatMap((page) => page.posts) ?? []
+
+  if (posts.length === 0) return <EmptyPostsMessage searchParam={searchParam} />
 
   return (
-    <Box
-      sx={{ display: 'flex', flexDirection: 'column', gap: 2, height: '100%' }}
-    >
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          color: 'text.disabled',
-        }}
-      >
-        <Typography>
-          Showing results for{' '}
-          <Typography component='span' sx={{ fontWeight: 'bold' }}>
-            {searchParam}
-          </Typography>
-        </Typography>
-        <Typography component='span'>
-          {posts.length} report{posts.length > 1 && 's'}
-        </Typography>
-      </Box>
-
-      {posts.length === 0 ? (
-        <EmptyPostsMessage searchParam={searchParam} />
-      ) : (
-        <>
-          <Stack spacing={1.5}>
-            {posts.map((post) => (
-              <SearchPostCard key={post.id} post={post} />
-            ))}
-          </Stack>
-
-          {hasNextPage && (
-            <Box ref={sentinelRef} sx={{ height: 1, padding: 1 }} />
-          )}
-          {isFetchingNextPage && <Loading text='Loading more...' />}
-        </>
-      )}
-    </Box>
+    <>
+      <SearchPostsStatus posts={posts} searchParam={searchParam} />
+      {posts.map((post) => (
+        <SearchPostCard key={post.id} post={post} />
+      ))}
+      {hasNextPage && <Box ref={sentinelRef} sx={{ height: 1, padding: 1 }} />}
+      {isFetchingNextPage && <Loading text='Loading more...' />}
+    </>
   )
 }
