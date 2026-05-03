@@ -8,7 +8,7 @@
     "dev": "concurrently \"vite\" \"tsc --noEmit --watch\"",
     "lint": "eslint . --fix",
     "preview": "vite preview",
-    "check": "eslint . && tsc --noEmit"
+    "check": "npm run lint && tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.14.0",

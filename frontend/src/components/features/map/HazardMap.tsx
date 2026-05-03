@@ -70,9 +70,9 @@ export default function HazardMap({
       <Typography variant='caption' color='text.secondary'>
         {location
           ? formatCoordinates(
-              location.geometry.coordinates[0],
-              location.geometry.coordinates[1],
-            )
+            location.geometry.coordinates[0],
+            location.geometry.coordinates[1],
+          )
           : 'You have not selected any location yet'}
       </Typography>
     </Box>
