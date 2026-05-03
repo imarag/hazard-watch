@@ -24,10 +24,12 @@ export default function HazardMap({
   location,
   setLocation,
   isLoading,
+  flyToLocation,
 }: {
   location: Location | null
   setLocation: React.Dispatch<React.SetStateAction<Location | null>>
   isLoading: boolean
+  flyToLocation: boolean
 }) {
   return (
     <Box>
@@ -56,19 +58,21 @@ export default function HazardMap({
               lat={location.geometry.coordinates[1]}
               lon={location.geometry.coordinates[0]}
             />
-            <FlyToLocation
-              lat={location.geometry.coordinates[1]}
-              lon={location.geometry.coordinates[0]}
-            />
+            {flyToLocation && (
+              <FlyToLocation
+                lat={location.geometry.coordinates[1]}
+                lon={location.geometry.coordinates[0]}
+              />
+            )}
           </>
         )}
       </Map>
       <Typography variant='caption' color='text.secondary'>
         {location
           ? formatCoordinates(
-            location.geometry.coordinates[0],
-            location.geometry.coordinates[1],
-          )
+              location.geometry.coordinates[0],
+              location.geometry.coordinates[1],
+            )
           : 'You have not selected any location yet'}
       </Typography>
     </Box>

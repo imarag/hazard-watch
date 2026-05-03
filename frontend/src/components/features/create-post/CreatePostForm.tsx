@@ -94,6 +94,7 @@ export default function CreatePostForm() {
         location={location}
         setLocation={setLocation}
         isLoading={isPending}
+        flyToLocation={false}
       />
       <Button
         disabled={!location || !title.value || !description.value || isPending}

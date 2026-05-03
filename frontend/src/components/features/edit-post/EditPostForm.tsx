@@ -101,6 +101,7 @@ export default function EditPostForm({ post }: EditPostFormProps) {
         location={location}
         setLocation={setLocation}
         isLoading={isPending}
+        flyToLocation={false}
       />
       <Button
         disabled={!location || !title.value || !description.value || isPending}
