@@ -23,7 +23,9 @@ export default function NavigationBarItem({
   const { closeSideNav } = useSideNav()
 
   function clickSideButton() {
-    if (onClick) onClick()
+    if (onClick) {
+      onClick()
+    }
     closeSideNav()
   }
   return (

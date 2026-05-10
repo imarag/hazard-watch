@@ -5,11 +5,10 @@ import type {
   UserForgotPassword,
   UserRegister,
   UserResetPassword,
+  UserLogin,
 } from '@/types/users'
 import authService from '@/services/auth'
 import { setToken } from '@/services/api'
-import userService from '@/services/auth'
-import type { UserLogin } from '@/types/users'
 
 interface AuthContextProviderProps {
   children: React.ReactNode
@@ -46,27 +45,27 @@ export default function AuthContextProvider({
   }, [])
 
   async function login(credentials: UserLogin) {
-    const loginResult = await userService.login(credentials)
+    const loginResult = await authService.login(credentials)
     setCurrentUser({ id: loginResult.id, email: loginResult.email })
     setToken(loginResult.token)
     isLoggingOut.current = false
   }
 
   async function sendResetLink({ email }: UserForgotPassword) {
-    await userService.sendResetLink({ email })
+    await authService.sendResetLink({ email })
   }
 
   async function resetPassword({ token, newPassword }: UserResetPassword) {
-    await userService.resetPassword({ token, newPassword })
+    await authService.resetPassword({ token, newPassword })
   }
 
   async function register(userInfo: UserRegister) {
-    await userService.register(userInfo)
+    await authService.register(userInfo)
   }
 
   async function logout() {
     isLoggingOut.current = true
-    await userService.logout()
+    await authService.logout()
     setCurrentUser(null)
   }
 

@@ -78,11 +78,11 @@ export default function Search() {
     fetchNextPage,
   })
 
-  if (isLoading) return <Loading text='Loading posts' />
+  if (isLoading) {return <Loading text='Loading posts' />}
 
   const posts = data?.pages.flatMap((page) => page.posts) ?? []
 
-  if (posts.length === 0) return <EmptyPostsMessage searchParam={searchParam} />
+  if (posts.length === 0) {return <EmptyPostsMessage searchParam={searchParam} />}
 
   return (
     <>

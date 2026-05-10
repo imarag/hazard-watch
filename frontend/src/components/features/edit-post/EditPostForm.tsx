@@ -58,7 +58,7 @@ export default function EditPostForm({ post }: EditPostFormProps) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!location) return
+    if (!location) {return}
     mutate()
   }
 

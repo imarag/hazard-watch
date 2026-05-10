@@ -2,7 +2,7 @@ const useLocalStorage = <T>(storageKey: string) => {
   function getStorageItem(): T | null {
     try {
       const item = localStorage.getItem(storageKey)
-      if (!item) return null
+      if (!item) {return null}
       return JSON.parse(item) as T
     } catch {
       return null

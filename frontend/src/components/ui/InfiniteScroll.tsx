@@ -53,7 +53,7 @@ export default function InfiniteScroll({
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
-  if (isLoading) return <Loading text='Loading posts' />
+  if (isLoading) {return <Loading text='Loading posts' />}
 
   const posts = data?.pages.flatMap((page) => page.data) ?? []
 

@@ -39,12 +39,12 @@ export default function DeletePostAction({ post }: DeletePostActionProps) {
   })
 
   function handleClickDelete() {
-    if (!window.confirm('Are you sure you want to delete this post?')) return
+    if (!window.confirm('Are you sure you want to delete this post?')) {return}
     mutate()
   }
 
   const isSameUser = isUserLoggedIn && currentUser?.id === post.user.id
-  if (!isSameUser) return null
+  if (!isSameUser) {return null}
 
   return (
     <ActionButton

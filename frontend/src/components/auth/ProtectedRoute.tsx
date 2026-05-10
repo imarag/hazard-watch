@@ -29,7 +29,7 @@ export default function ProtectedRoute() {
     isLoggingOut,
   ])
 
-  if (loading) return <Loading text='Checking authentication...' />
-  if (!currentUser) return null
+  if (loading) {return <Loading text='Checking authentication...' />}
+  if (!currentUser) {return null}
   return <Outlet />
 }

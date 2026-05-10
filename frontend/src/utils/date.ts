@@ -12,7 +12,7 @@ export const filterDate = (
   date: string | Date,
   filter: DateFilterValue,
 ): boolean => {
-  if (filter === 'all') return true
+  if (filter === 'all') {return true}
   const diffMs = Date.now() - new Date(date).getTime()
   return diffMs <= filterDurationMs[filter]
 }

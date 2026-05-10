@@ -1,7 +1,12 @@
 import { Typography, Box } from '@mui/material'
 import { useMapEvents } from 'react-leaflet'
-import type { Location } from '@/types/hazards'
-import type { Feature, Point, Coords, Properties } from '@/types/hazards'
+import type {
+  Feature,
+  Point,
+  Coords,
+  Properties,
+  Location,
+} from '@/types/hazards'
 import Map from '@/components/features/map/Map'
 import { formatCoordinates } from '@/utils/geometry'
 import MapMarker from '@/components/features/map/MapMarker'
@@ -39,7 +44,9 @@ export default function HazardMap({
       <Map height='240px'>
         <LocationPicker
           onLocationSelect={(loc) => {
-            if (isLoading) return
+            if (isLoading) {
+              return
+            }
             const point: Point = {
               type: 'Point',
               coordinates: [loc.longitude, loc.latitude],

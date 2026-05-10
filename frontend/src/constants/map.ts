@@ -41,9 +41,7 @@ const CUSTOM_POSITION_STYLES: Record<CustomPosition, React.CSSProperties> = {
 
 const isLeafletPosition = (
   position: MapPosition,
-): position is ControlPosition => {
-  return position in LEAFLET_POSITION_CLASSES
-}
+): position is ControlPosition => position in LEAFLET_POSITION_CLASSES
 
 export function getPositionProps(position: MapPosition) {
   if (isLeafletPosition(position)) {

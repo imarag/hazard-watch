@@ -48,11 +48,11 @@ export default function Home() {
     fetchNextPage,
   })
 
-  if (isLoading) return <Loading text='Loading posts' />
+  if (isLoading) {return <Loading text='Loading posts' />}
 
   const posts = data?.pages.flatMap((page) => page.posts) ?? []
 
-  if (posts.length === 0) return <EmptyPostsMessage />
+  if (posts.length === 0) {return <EmptyPostsMessage />}
 
   return (
     <>

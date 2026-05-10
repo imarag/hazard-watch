@@ -11,7 +11,7 @@ export default function SearchField() {
   const handleSearch = () => {
     const q = searchParam.trim()
 
-    if (!q) return
+    if (!q) {return}
 
     navigate(`${appRoutes.search.path}?q=${encodeURIComponent(q)}`)
   }
