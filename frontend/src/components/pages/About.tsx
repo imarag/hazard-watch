@@ -189,6 +189,7 @@ export default function About() {
         <Stack spacing={{ xs: 1, sm: 2 }}>
           <AboutMeSection />
           <AboutProjectSection />
+          dd
           <TechStackSection />
         </Stack>
       </Container>
