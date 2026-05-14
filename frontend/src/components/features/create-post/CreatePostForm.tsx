@@ -43,7 +43,7 @@ export default function CreatePostForm() {
 
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!location) return
+    if (!location) {return}
     mutate({
       title: title.value,
       description: description.value,

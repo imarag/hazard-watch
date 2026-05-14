@@ -23,14 +23,14 @@ const hazardTypeField = z.enum([
   HazardType.WILDFIRE,
 ])
 
-export const CreatePostSchema = z.object({
+export const CreatePostPayloadSchema = z.object({
   title: titleField,
   description: descriptionField,
   hazardType: hazardTypeField,
   location: LocationSchema,
 })
 
-export const UpdatePostSchema = CreatePostSchema.partial()
+export const UpdatePostPayloadSchema = CreatePostPayloadSchema.partial()
 
 const PostSchema = new mongoose.Schema<PostInDb>(
   {
@@ -49,7 +49,7 @@ const PostSchema = new mongoose.Schema<PostInDb>(
     location: { type: mongoose.Schema.Types.Mixed, required: true },
   },
   {
-    timestamps: { createdAt: true, updatedAt: true },
+    timestamps: true,
     toJSON: {
       transform: (_, ret: Record<string, unknown>) => {
         ret['id'] = String(ret['_id'])
@@ -60,7 +60,7 @@ const PostSchema = new mongoose.Schema<PostInDb>(
   },
 )
 
-export const PostModel = mongoose.model<PostInDb>('Post', PostSchema)
+export const PostModel = mongoose.model('Post', PostSchema)
 
 export const SearchParamsSchema = z.object({
   q: z.string().trim().min(1).optional(),

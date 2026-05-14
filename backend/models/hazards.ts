@@ -17,6 +17,7 @@ export const PointSchema = z.object({
   coordinates: PositionSchema,
 })
 
+// TODO: add more feature geometries later (e.g. Polygon, LineString)
 const FeatureSchema = z.object({
   type: z.literal('Feature', { message: 'Type must be Feature' }),
   geometry: PointSchema,

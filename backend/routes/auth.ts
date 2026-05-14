@@ -13,10 +13,11 @@ import {
   verifyJWTToken,
   createJWTToken,
   hashPassword,
-  createErrorResponse,
 } from '../utils/auth.js'
 import config from '../config.js'
 import { sendMail } from '../utils/mailer.js'
+import { logger } from '../utils/logger.js'
+import { AppError } from '../errors.js'
 
 const router = express.Router()
 
@@ -24,14 +25,12 @@ router.post('/refresh', async (req, res) => {
   const refreshToken = req.cookies?.[config.REFRESH_TOKEN_KEY]
 
   if (!refreshToken) {
-    return res.status(401).json(createErrorResponse(401, 'No refresh token'))
+    throw new AppError(401, 'No refresh token')
   }
 
   const userPayload = verifyJWTToken(refreshToken)
   if (!userPayload || userPayload.tokenType !== 'refresh') {
-    return res
-      .status(401)
-      .json(createErrorResponse(401, 'Invalid refresh token'))
+    throw new AppError(401, 'Invalid refresh token')
   }
 
   const accessToken = createJWTToken(
@@ -57,9 +56,7 @@ router.post('/login', async (req, res) => {
 
   const existingUser = await usersService.getUserByEmail(user.email)
   if (!existingUser) {
-    return res
-      .status(401)
-      .json(createErrorResponse(401, 'Invalid email or password.'))
+    throw new AppError(401, 'Invalid email or password.')
   }
 
   const passwordMatch = await compareHashed(
@@ -67,9 +64,7 @@ router.post('/login', async (req, res) => {
     existingUser.password,
   )
   if (!passwordMatch) {
-    return res
-      .status(401)
-      .json(createErrorResponse(401, 'Invalid email or password.'))
+    throw new AppError(401, 'Invalid email or password.')
   }
 
   const userPayload = {
@@ -107,9 +102,7 @@ router.post('/register', async (req, res) => {
 
   const existingUser = await usersService.getUserByEmail(user.email)
   if (existingUser) {
-    return res
-      .status(409)
-      .json(createErrorResponse(409, 'User with that email already exists.'))
+    throw new AppError(409, 'User with that email already exists.')
   }
 
   const hashedPassword = await hashPassword(user.password)
@@ -170,9 +163,7 @@ router.post('/forgot-password', async (req, res) => {
       `,
     })
   } catch (err) {
-    console.error('Failed to send reset email:', err)
-    // Still return generic success — don't tell the client whether the email exists
-    // But you'll see this in logs to diagnose
+    logger.error('Failed to send reset email:', err)
   }
 
   return res.json(genericResponse)
@@ -186,14 +177,12 @@ router.post('/reset-password', async (req, res) => {
   const decoded = verifyJWTToken(payload.token)
 
   if (!decoded) {
-    return res
-      .status(400)
-      .json(createErrorResponse(400, 'Invalid or expired token.'))
+    throw new AppError(400, 'Invalid or expired token.')
   }
 
   // Make sure this is a reset token, not a regular auth token
   if (decoded.tokenType !== 'reset') {
-    return res.status(400).json(createErrorResponse(400, 'Invalid token type.'))
+    throw new AppError(400, 'Invalid token type.')
   }
 
   const hashedPassword = await hashPassword(payload.newPassword)

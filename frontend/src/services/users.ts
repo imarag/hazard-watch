@@ -7,23 +7,17 @@ import type {
 
 const baseUrl = '/users'
 
-const getUserById = async (id: string): Promise<UserPublic> => {
-  const res = await api.get(`${baseUrl}/${id}`)
-  return res.data
-}
-
 const createUser = async (user: UserRegister): Promise<UserPublic> => {
   const res = await api.post(`${baseUrl}`, user)
   return res.data
 }
 
 const resetPassword = async (user: UserForgotPassword): Promise<UserPublic> => {
-  const res = await api.post(`${baseUrl}`, user)
+  const res = await api.post(`${baseUrl}/reset-password`, user)
   return res.data
 }
 
 export default {
-  getUserById,
   createUser,
   resetPassword,
 }

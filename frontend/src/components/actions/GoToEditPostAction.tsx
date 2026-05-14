@@ -12,7 +12,7 @@ export default function GoToEditPostAction({ post }: GoToEditPostActionProps) {
   const { currentUser, isUserLoggedIn } = useAuth()
 
   const isSameUser = isUserLoggedIn && currentUser?.id === post.user.id
-  if (!isSameUser) return null
+  if (!isSameUser) {return null}
 
   return (
     <ActionButton

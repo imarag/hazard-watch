@@ -6,7 +6,7 @@ import { useAuth } from '@/contexts/AuthContext'
 export default function GoToCreatePostAction() {
   const { isUserLoggedIn } = useAuth()
 
-  if (!isUserLoggedIn) return null
+  if (!isUserLoggedIn) {return null}
 
   return (
     <ActionButton

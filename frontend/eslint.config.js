@@ -28,6 +28,11 @@ export default defineConfig([
       '@stylistic/quotes': ['warn', 'single'],
       '@stylistic/jsx-quotes': ['warn', 'prefer-single'],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'no-duplicate-imports': ['error', { allowSeparateTypeImports: true }],
+      'no-template-curly-in-string': 'error',
+      'arrow-body-style': ['error', 'as-needed'],
+      camelcase: 'warn',
+      curly: 'error',
     },
   },
 ])

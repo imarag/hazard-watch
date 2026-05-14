@@ -1,5 +1,4 @@
-import type { Post } from '@/types/posts'
-import type { SortField, SortDirection } from '@/types/posts'
+import type { Post, SortField, SortDirection } from '@/types/posts'
 
 export function sortPosts(
   posts: Post[],
