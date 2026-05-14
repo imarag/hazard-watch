@@ -27,19 +27,19 @@ jobs:
 
       - name: Lint frontend
         working-directory: frontend
-        run: npm run lint
+        run: npx eslint .
 
       - name: Lint backend
         working-directory: backend
-        run: npm run lint
+        run: npx eslint .
 
       - name: Typecheck frontend
         working-directory: frontend
-        run: npm run typecheck
+        run: npx tsc --noEmit
 
       - name: Typecheck backend
         working-directory: backend
-        run: npm run typecheck
+        run: npx tsc --noEmit
 
       - name: Audit frontend
         working-directory: frontend
@@ -54,6 +54,5 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/production'
     steps:
-      - uses: actions/checkout@v4
       - name: Deploy to Render
-        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
+        run: curl -fsSL -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"

@@ -8,7 +8,7 @@
     "dev": "tsx --watch index.ts",
     "seed": "npx tsx seed.ts",
     "lint": "eslint . --fix",
-    "build": "cd ../frontend && npm install --include=dev && npm run build && cd ../backend && rm -rf public && tsc -p tsconfig.build.json && cp -r ../frontend/public dist",
+    "build": "cd ../frontend && npm ci && npm run build && cd ../backend && rm -rf public && tsc -p tsconfig.build.json && cp -r ../frontend/public dist",
     "typecheck": "tsc --noEmit",
     "audit": "npm audit --audit-level=high",
     "check": "npm run lint && npm run typecheck && npm run audit",
