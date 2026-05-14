@@ -1,8 +1,14 @@
 import mongoose from 'mongoose'
 import config from './config.js'
+import { logger } from './utils/logger.ts'
 
-const uri = `mongodb+srv://${config.MONGO_DB_USERNAME}:${config.MONGO_DB_PASSWORD}@clustermongo.wn3vaaa.mongodb.net/HazardWatch?appName=ClusterMongo`
+const uri = `mongodb+srv://${config.MONGO_DB_USERNAME}:${config.MONGO_DB_PASSWORD}@clustermongo.wn3vaaa.mongodb.net/${config.MONGO_DB_NAME}?appName=ClusterMongo`
 
 export async function connectDb() {
-  await mongoose.connect(uri)
+  try {
+    await mongoose.connect(uri)
+    logger.info('Connected to MongoDB')
+  } catch (error) {
+    logger.error('Failed to connect to MongoDB:', error)
+  }
 }

@@ -1,7 +1,10 @@
 import express from 'express'
 import postService from '../services/posts.js'
-import { CreatePostSchema, UpdatePostSchema } from '../models/posts.js'
-import type { PostPayload } from '../types/posts.js'
+import {
+  CreatePostPayloadSchema,
+  UpdatePostPayloadSchema,
+} from '../models/posts.js'
+import type { CreatePostData } from '../types/posts.js'
 import { requireAuth, requireOwnership } from '../middleware.js'
 import { SearchParamsSchema } from '../models/posts.js'
 
@@ -26,8 +29,8 @@ router.get('/:id', async (req, res) => {
 
 router.post('/', requireAuth, async (req, res) => {
   const body = req.body
-  const parsedPost = CreatePostSchema.parse(body)
-  const newPost: PostPayload = {
+  const parsedPost = CreatePostPayloadSchema.parse(body)
+  const newPost: CreatePostData = {
     ...parsedPost,
     user: req.userId!,
   }
@@ -38,9 +41,9 @@ router.post('/', requireAuth, async (req, res) => {
 router.put('/:id', requireAuth, requireOwnership, async (req, res) => {
   const postId = String(req.params['id'])
   const body = req.body
-  const updatedPost = UpdatePostSchema.parse(body)
-  const post = await postService.updatePost(updatedPost, postId)
-  return res.status(200).json(post)
+  const parsedPost = UpdatePostPayloadSchema.parse(body)
+  const updatedPost = await postService.updatePost(parsedPost, postId)
+  return res.status(200).json(updatedPost)
 })
 
 router.delete('/:id', requireAuth, requireOwnership, async (req, res) => {

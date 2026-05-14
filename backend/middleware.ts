@@ -3,8 +3,9 @@ import { verifyJWTToken } from './utils/auth.js'
 import postService from './services/posts.js'
 import { z } from 'zod'
 import config from './config.js'
-import { createErrorResponse } from './utils/auth.js'
 import axios from 'axios'
+import { logger } from './utils/logger.js'
+import { AppError } from './errors.js'
 
 export const extractToken = (
   req: Request,
@@ -26,61 +27,58 @@ export const extractToken = (
 
 export const requireAuth = (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   if (!req.token) {
-    return res
-      .status(401)
-      .json(
-        createErrorResponse(401, 'You must be logged in to use this option.'),
-      )
+    throw new AppError(401, 'You must be logged in to use this option.')
   }
-  console.log('token: ', req.token)
+
   const user = verifyJWTToken(req.token)
 
   if (!user) {
-    return res
-      .status(401)
-      .json(createErrorResponse(401, 'Invalid user. Log in again.'))
+    throw new AppError(401, 'Invalid user. Log in again.')
   }
 
   req.userId = user.id
   req.userName = user.userName
-  return next()
+  next()
 }
 
 export const requireOwnership = async (
   req: Request,
-  res: Response,
+  _res: Response,
   next: NextFunction,
 ) => {
   const postId = String(req.params['id'])
   const existingPost = await postService.getPostById(postId)
 
-  if (!existingPost) {
-    return res.status(404).json(createErrorResponse(404, 'Post not found'))
-  }
-
   if (existingPost.user.id !== req.userId) {
-    return res.status(403).json(createErrorResponse(403, 'Unauthorized'))
+    throw new AppError(403, 'Unauthorized')
   }
 
-  return next()
+  next()
 }
 
-export const routeNotFound = (_req: Request, res: Response) => {
-  return res.status(404).json(createErrorResponse(404, 'Route not found'))
+export const routeNotFound = (_req: Request, _res: Response) => {
+  throw new AppError(404, 'Route not found')
 }
+
+const createErrorResponse = (code: number, message: string) => ({
+  error: {
+    code,
+    message,
+  },
+})
 
 export const errorHandler = (
   error: Error,
   _req: Request,
   res: Response,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   _next: NextFunction,
 ) => {
-  console.error(error)
+  logger.error(error)
 
   if (error instanceof z.ZodError) {
     const message = error.issues.map((i) => i.message).join(', ')
@@ -93,14 +91,19 @@ export const errorHandler = (
     return res.status(status).json(createErrorResponse(status, message))
   }
 
+  if (error instanceof AppError) {
+    return res
+      .status(error.statusCode)
+      .json(createErrorResponse(error.statusCode, error.message))
+  }
+
   const isProd = config.NODE_ENV === 'production'
   return res
     .status(500)
     .json(
       createErrorResponse(
         500,
-        'Internal Server Error',
-        isProd ? [] : [error.message],
+        isProd ? 'Internal Server Error' : error.message,
       ),
     )
 }
