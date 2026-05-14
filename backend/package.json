@@ -8,8 +8,10 @@
     "dev": "tsx --watch index.ts",
     "seed": "npx tsx seed.ts",
     "lint": "eslint . --fix",
-    "build": "cd ../frontend && npm install --include=dev && npm run build && cd ../backend && rm -rf dist && tsc -p tsconfig.build.json && cp -r ../frontend/dist dist/public",
-    "check": "npm run lint && tsc --noEmit"
+    "build": "cd ../frontend && npm install --include=dev && npm run build && cd ../backend && rm -rf public && tsc -p tsconfig.build.json && cp -r ../frontend/public dist",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run lint && npm run typecheck",
+    "check:all": "npm run check && cd ../frontend && npm run check"
   },
   "keywords": [],
   "author": "",

@@ -3,7 +3,7 @@ import type {
   UserPublic,
   UserRegister,
   UserForgotPassword,
-} from '@/types/users.ts'
+} from '@/types/users.js'
 
 const baseUrl = '/users'
 

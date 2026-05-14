@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 import config from './config.js'
-import { logger } from './utils/logger.ts'
+import { logger } from './utils/logger.js'
 
 const uri = `mongodb+srv://${config.MONGO_DB_USERNAME}:${config.MONGO_DB_PASSWORD}@clustermongo.wn3vaaa.mongodb.net/${config.MONGO_DB_NAME}?appName=ClusterMongo`
 

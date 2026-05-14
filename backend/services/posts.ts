@@ -7,7 +7,7 @@ import type {
 } from '../types/posts.js'
 import { PostModel } from '../models/posts.js'
 import { escapeRegex } from '../utils/route.js'
-import { AppError } from '../errors.ts'
+import { AppError } from '../errors.js'
 
 const getAllPosts = async (): Promise<PostInDb[]> => {
   const posts = await PostModel.find().populate('user')

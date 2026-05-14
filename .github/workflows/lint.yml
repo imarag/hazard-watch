@@ -1,11 +1,11 @@
-name: Lint
+name: CI
 on:
   push:
     branches: [production, development]
   pull_request:
 
 jobs:
-  lint:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -16,19 +16,33 @@ jobs:
           cache-dependency-path: |
             frontend/package-lock.json
             backend/package-lock.json
+
+      - name: Install frontend deps
+        working-directory: frontend
+        run: npm ci
+
+      - name: Install backend deps
+        working-directory: backend
+        run: npm ci
+
       - name: Lint frontend
         working-directory: frontend
-        run: |
-          npm ci
-          npm run lint
+        run: npm run lint
+
       - name: Lint backend
         working-directory: backend
-        run: |
-          npm ci
-          npm run lint
+        run: npm run lint
+
+      - name: Typecheck frontend
+        working-directory: frontend
+        run: npm run typecheck
+
+      - name: Typecheck backend
+        working-directory: backend
+        run: npm run typecheck
 
   deploy:
-    needs: lint
+    needs: check
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/production'
     steps:
