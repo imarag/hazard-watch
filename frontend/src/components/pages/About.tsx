@@ -188,9 +188,7 @@ export default function About() {
       <Container maxWidth='sm' disableGutters>
         <Stack spacing={{ xs: 1, sm: 2 }}>
           <AboutMeSection />
-          dd
           <AboutProjectSection />
-          dd
           <TechStackSection />
         </Stack>
       </Container>
