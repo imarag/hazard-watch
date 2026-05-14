@@ -1,5 +1,4 @@
 name: Lint
-
 on:
   push:
     branches: [main, development]
@@ -8,10 +7,8 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
-
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
@@ -19,15 +16,22 @@ jobs:
           cache-dependency-path: |
             frontend/package-lock.json
             backend/package-lock.json
-
       - name: Lint frontend
         working-directory: frontend
         run: |
           npm ci
           npm run lint
-
       - name: Lint backend
         working-directory: backend
         run: |
           npm ci
           npm run lint
+
+  deploy:
+    needs: lint
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/production'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy to Render
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL }}"
