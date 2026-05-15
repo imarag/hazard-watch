@@ -3,21 +3,21 @@ import { TextField } from '@mui/material'
 import FormFooter from '@/components/ui/FormFooter'
 import FormContainer from '@/components/ui/FormContainer'
 import { useNavigate } from 'react-router'
-import { useAuth } from '@/contexts/AuthContext'
 import useField from '@/hooks/useField'
 import { useMutation } from '@tanstack/react-query'
 import type { UserRegister } from '@/types/users'
-import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
+import { useAuthActions } from '@/stores/auth'
+import { useNotificationActions } from '@/stores/notification'
 
 export default function Register() {
-  const { showNotification, createNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
+  const { register } = useAuthActions()
   const email = useField('')
   const password = useField('')
   const name = useField('')
   const navigate = useNavigate()
-  const { register } = useAuth()
 
   const formFooter = (
     <FormFooter to='/auth/login' linkText='Sign in'>

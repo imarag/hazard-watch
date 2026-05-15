@@ -8,7 +8,6 @@ import {
 } from '@mui/material'
 import Loading from '@/components/ui/Loading'
 import { getErrorMessage } from '@/utils/auth'
-import { useNotification } from '@/contexts/NotificationContext'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 import postsService from '@/services/posts'
@@ -18,12 +17,14 @@ import ViewMap from '@/components/features/view-post/ViewMap'
 import DeletePostAction from '@/components/actions/DeletePostAction'
 import GoToEditPostAction from '@/components/actions/GoToEditPostAction'
 import ActionBar from '@/components/actions/ActionBar'
-import { useAuth } from '@/contexts/AuthContext'
+import { useNotificationActions } from '@/stores/notification'
+import { useCurrentUser, useIsUserLoggedIn } from '@/stores/auth'
 
 export default function ViewPost() {
-  const { createNotification, showNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
   const { id: postId } = useParams()
-  const { currentUser, isUserLoggedIn } = useAuth()
+  const currentUser = useCurrentUser()
+  const isUserLoggedIn = useIsUserLoggedIn()
 
   const { data: post = null, isLoading } = useQuery({
     queryKey: ['post', postId],

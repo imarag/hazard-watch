@@ -1,17 +1,17 @@
 import { Button, TextField } from '@mui/material'
-import { useAuth } from '@/contexts/AuthContext'
 import { useNavigate, useSearchParams } from 'react-router'
 import useField from '@/hooks/useField'
 import { useMutation } from '@tanstack/react-query'
 import type { UserResetPassword } from '@/types/users'
-import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import { appRoutes } from '@/constants/routes'
+import { useAuthActions } from '@/stores/auth'
+import { useNotificationActions } from '@/stores/notification'
 
 export default function ResetPassword() {
-  const { showNotification, createNotification } = useNotification()
-  const { resetPassword } = useAuth()
+  const { showNotification, createNotification } = useNotificationActions()
+  const { resetPassword } = useAuthActions()
   const newPassword = useField('')
   const confirmNewPassword = useField('')
   const navigate = useNavigate()

@@ -7,7 +7,7 @@ import MarkerTooltip from '@/components/features/interactive-map/MarkerToolTip'
 import { DateFilter, HazardType, type DateFilterValue } from '@/types/hazards'
 import { filterDate } from '@/utils/date'
 import { useQuery } from '@tanstack/react-query'
-import { useNotification } from '@/contexts/NotificationContext'
+import { useNotificationActions } from '@/stores/notification'
 import { getErrorMessage } from '@/utils/auth'
 import MapLoading from '@/components/features/map/MapLoading'
 import MapFilterPanel from '@/components/features/map/MapFilterPanel'
@@ -15,7 +15,7 @@ import MarkerClusterGroup from 'react-leaflet-cluster'
 import OpenFilterPanelButton from '@/components/features/interactive-map/OpenFilterPanelButton'
 
 export default function InteractiveMap() {
-  const { createNotification, showNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
 
   const allHazards: HazardType[] = Object.values(HazardType)
   const [openFilterPanel, setOpenFilterPanel] = useState(false)

@@ -4,7 +4,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import SearchPostCard from '@/components/features/posts/SearchPostCard'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { getErrorMessage } from '@/utils/auth'
-import { useNotification } from '@/contexts/NotificationContext'
+import { useNotificationActions } from '@/stores/notification'
 import EmptyPostsMessage from '@/components/features/posts/EmptyPostsMessage'
 import postsService from '@/services/posts'
 import Loading from '@/components/ui/Loading'
@@ -41,7 +41,7 @@ function SearchPostsStatus({
 }
 
 export default function Search() {
-  const { createNotification, showNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
   const [searchParams] = useSearchParams()
   const searchParam = searchParams.get('q') ?? ''
 
@@ -78,11 +78,15 @@ export default function Search() {
     fetchNextPage,
   })
 
-  if (isLoading) {return <Loading text='Loading posts' />}
+  if (isLoading) {
+    return <Loading text='Loading posts' />
+  }
 
   const posts = data?.pages.flatMap((page) => page.posts) ?? []
 
-  if (posts.length === 0) {return <EmptyPostsMessage searchParam={searchParam} />}
+  if (posts.length === 0) {
+    return <EmptyPostsMessage searchParam={searchParam} />
+  }
 
   return (
     <>

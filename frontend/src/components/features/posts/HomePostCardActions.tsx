@@ -1,6 +1,6 @@
 import type { Post } from '@/types/posts'
 import { Box } from '@mui/material'
-import { useAuth } from '@/contexts/AuthContext'
+import { useCurrentUser } from '@/stores/auth'
 import GoToEditPostAction from '@/components/actions/GoToEditPostAction'
 import DeletePostAction from '@/components/actions/DeletePostAction'
 import ViewPostAction from '@/components/actions/ViewPostAction'
@@ -12,7 +12,7 @@ interface HomePostCardActionsProps {
 export default function HomePostCardActions({
   post,
 }: HomePostCardActionsProps) {
-  const { currentUser } = useAuth()
+  const currentUser = useCurrentUser()
 
   return (
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>

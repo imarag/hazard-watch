@@ -1,11 +1,12 @@
 import GoToCreatePostAction from '../actions/GoToCreatePostAction'
 import ActionBar from '@/components/actions/ActionBar'
-import { useAuth } from '@/contexts/AuthContext'
 import { Box } from '@mui/material'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { getErrorMessage } from '@/utils/auth'
-import { useNotification } from '@/contexts/NotificationContext'
+import { useNotificationActions } from '@/stores/notification'
+import { useIsUserLoggedIn } from '@/stores/auth'
+
 import EmptyPostsMessage from '@/components/features/posts/EmptyPostsMessage'
 import postsService from '@/services/posts'
 import Loading from '@/components/ui/Loading'
@@ -13,8 +14,8 @@ import HomePostCard from '@/components/features/posts/HomePostCard'
 import type { SearchResult } from '@/types/posts'
 
 export default function Home() {
-  const { isUserLoggedIn } = useAuth()
-  const { createNotification, showNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
+  const isUserLoggedIn = useIsUserLoggedIn()
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
@@ -48,11 +49,15 @@ export default function Home() {
     fetchNextPage,
   })
 
-  if (isLoading) {return <Loading text='Loading posts' />}
+  if (isLoading) {
+    return <Loading text='Loading posts' />
+  }
 
   const posts = data?.pages.flatMap((page) => page.posts) ?? []
 
-  if (posts.length === 0) {return <EmptyPostsMessage />}
+  if (posts.length === 0) {
+    return <EmptyPostsMessage />
+  }
 
   return (
     <>

@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material'
 import { NavLink } from 'react-router'
-import { useSideNav } from '@/contexts/SideNavContext'
+import { useSidebarActions } from '@/stores/sidenav'
 
 interface NavigationBarItemProps {
   to?: string
@@ -20,13 +20,13 @@ export default function NavigationBarItem({
   onClick,
   sx,
 }: NavigationBarItemProps) {
-  const { closeSideNav } = useSideNav()
+  const { closeSidebar } = useSidebarActions()
 
   function clickSideButton() {
     if (onClick) {
       onClick()
     }
-    closeSideNav()
+    closeSidebar()
   }
   return (
     <Button

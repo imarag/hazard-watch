@@ -9,7 +9,7 @@ import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import postsService from '@/services/posts'
-import { useNotification } from '@/contexts/NotificationContext'
+import { useNotificationActions } from '@/stores/notification'
 import { useNavigate } from 'react-router'
 import type { Post } from '@/types/posts'
 
@@ -18,7 +18,7 @@ interface EditPostFormProps {
 }
 
 export default function EditPostForm({ post }: EditPostFormProps) {
-  const { showNotification, createNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
@@ -58,7 +58,9 @@ export default function EditPostForm({ post }: EditPostFormProps) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!location) {return}
+    if (!location) {
+      return
+    }
     mutate()
   }
 

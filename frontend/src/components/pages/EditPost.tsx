@@ -5,11 +5,11 @@ import Loading from '@/components/ui/Loading'
 import { getErrorMessage } from '@/utils/auth'
 import { useQuery } from '@tanstack/react-query'
 import postsService from '@/services/posts'
-import { useNotification } from '@/contexts/NotificationContext'
+import { useNotificationActions } from '@/stores/notification'
 
 export default function EditPost() {
   const { id: postId } = useParams()
-  const { showNotification, createNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
 
   const { data: post = null, isLoading } = useQuery({
     queryKey: ['post', postId],
@@ -24,6 +24,7 @@ export default function EditPost() {
             'error',
           ),
         )
+        throw error
       }
     },
   })

@@ -4,20 +4,21 @@ import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import postsService from '@/services/posts'
-import { useNotification } from '@/contexts/NotificationContext'
 import { useNavigate } from 'react-router'
-import { useAuth } from '@/contexts/AuthContext'
+import { useCurrentUser, useIsUserLoggedIn } from '@/stores/auth'
 import type { Post } from '@/types/posts'
+import { useNotificationActions } from '@/stores/notification'
 
 interface DeletePostActionProps {
   post: Post
 }
 
 export default function DeletePostAction({ post }: DeletePostActionProps) {
-  const { showNotification, createNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
   const queryClient = useQueryClient()
   const navigate = useNavigate()
-  const { currentUser, isUserLoggedIn } = useAuth()
+  const currentUser = useCurrentUser()
+  const isUserLoggedIn = useIsUserLoggedIn()
 
   const { mutate, isPending } = useMutation({
     mutationFn: () => postsService.deletePost(post.id),
@@ -39,12 +40,16 @@ export default function DeletePostAction({ post }: DeletePostActionProps) {
   })
 
   function handleClickDelete() {
-    if (!window.confirm('Are you sure you want to delete this post?')) {return}
+    if (!window.confirm('Are you sure you want to delete this post?')) {
+      return
+    }
     mutate()
   }
 
   const isSameUser = isUserLoggedIn && currentUser?.id === post.user.id
-  if (!isSameUser) {return null}
+  if (!isSameUser) {
+    return null
+  }
 
   return (
     <ActionButton

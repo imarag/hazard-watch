@@ -1,18 +1,18 @@
 import { Button, Box, TextField } from '@mui/material'
-import { useAuth } from '@/contexts/AuthContext'
 import { useNavigate } from 'react-router'
 import useField from '@/hooks/useField'
 import { useMutation } from '@tanstack/react-query'
 import type { UserLogin } from '@/types/users'
-import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import FormFooter from '@/components/ui/FormFooter'
 import { appRoutes } from '@/constants/routes'
+import { useAuthActions } from '@/stores/auth'
+import { useNotificationActions } from '@/stores/notification'
 
 export default function Login() {
-  const { showNotification, createNotification } = useNotification()
-  const { login } = useAuth()
+  const { showNotification, createNotification } = useNotificationActions()
+  const { login } = useAuthActions()
   const email = useField('')
   const password = useField('')
   const navigate = useNavigate()

@@ -1,7 +1,8 @@
 import EditIcon from '@mui/icons-material/Edit'
 import ActionButton from '@/components/ui/ActionButton'
 import { appRoutes } from '@/constants/routes'
-import { useAuth } from '@/contexts/AuthContext'
+import { useCurrentUser, useIsUserLoggedIn } from '@/stores/auth'
+
 import type { Post } from '@/types/posts'
 
 interface GoToEditPostActionProps {
@@ -9,10 +10,13 @@ interface GoToEditPostActionProps {
 }
 
 export default function GoToEditPostAction({ post }: GoToEditPostActionProps) {
-  const { currentUser, isUserLoggedIn } = useAuth()
+  const currentUser = useCurrentUser()
+  const isUserLoggedIn = useIsUserLoggedIn()
 
   const isSameUser = isUserLoggedIn && currentUser?.id === post.user.id
-  if (!isSameUser) {return null}
+  if (!isSameUser) {
+    return null
+  }
 
   return (
     <ActionButton

@@ -6,12 +6,12 @@ import { TextField, Button, MenuItem } from '@mui/material'
 import postsService from '@/services/posts'
 import { useNavigate } from 'react-router'
 import type { Location } from '@/types/hazards'
-import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import type { CreatePost } from '@/types/posts'
 import { appRoutes } from '@/constants/routes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import FormContainer from '@/components/ui/FormContainer'
+import { useNotificationActions } from '@/stores/notification'
 
 export default function CreatePostForm() {
   const title = useField('')
@@ -19,7 +19,7 @@ export default function CreatePostForm() {
   const hazardType = useField<HazardType>('earthquake')
   const [location, setLocation] = useState<Location | null>(null)
 
-  const { showNotification, createNotification } = useNotification()
+  const { showNotification, createNotification } = useNotificationActions()
 
   const navigate = useNavigate()
   const queryClient = useQueryClient()
@@ -43,7 +43,9 @@ export default function CreatePostForm() {
 
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!location) {return}
+    if (!location) {
+      return
+    }
     mutate({
       title: title.value,
       description: description.value,

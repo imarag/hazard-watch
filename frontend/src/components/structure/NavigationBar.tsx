@@ -1,7 +1,6 @@
 import { Box, Divider, Link, IconButton } from '@mui/material'
 import ThemeSwitch from '../ui/ThemeSwitch'
 import MenuIcon from '@mui/icons-material/Menu'
-import { useAuth } from '@/contexts/AuthContext'
 import { Link as LinkRouter, useNavigate } from 'react-router'
 import NavigationBarItem from '@/components/structure/NavigationBarItem'
 import { appRoutes } from '@/constants/routes'
@@ -11,16 +10,19 @@ import PersonIcon from '@mui/icons-material/Person'
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded'
 import AppRegistrationRoundedIcon from '@mui/icons-material/AppRegistrationRounded'
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded'
-import { useNotification } from '@/contexts/NotificationContext'
-import { useSideNav } from '@/contexts/SideNavContext'
 import CloseIcon from '@mui/icons-material/Close'
 import Logo from '@/components/structure/Logo'
 import SearchField from '@/components/structure/SearchField'
+import { useIsSidebarOpen, useSidebarActions } from '@/stores/sidenav'
+import { useNotificationActions } from '@/stores/notification'
+import { useIsUserLoggedIn, useAuthActions } from '@/stores/auth'
 
 export default function NavigationBar() {
-  const { isUserLoggedIn, logout } = useAuth()
-  const { showSideNav, setShowSideNav } = useSideNav()
-  const { showNotification, createNotification } = useNotification()
+  const { logout } = useAuthActions()
+  const isUserLoggedIn = useIsUserLoggedIn()
+  const isSidebarOpen = useIsSidebarOpen()
+  const { toggleSidebar } = useSidebarActions()
+  const { showNotification, createNotification } = useNotificationActions()
   const navigate = useNavigate()
 
   async function handleLogoutUser() {
@@ -65,7 +67,7 @@ export default function NavigationBar() {
       <Box
         sx={{
           flexGrow: { xl: 1 },
-          display: { xs: showSideNav ? 'flex' : 'none', md: 'flex' },
+          display: { xs: isSidebarOpen ? 'flex' : 'none', md: 'flex' },
           flexDirection: { xs: 'column', md: 'row', xl: 'column' },
           gap: 1,
           width: { xs: '100%', md: 'auto', xl: '100%' },
@@ -77,7 +79,7 @@ export default function NavigationBar() {
           variant='middle'
           sx={{
             display: {
-              xs: showSideNav ? 'block' : 'none',
+              xs: isSidebarOpen ? 'block' : 'none',
               md: 'none',
               xl: 'block',
             },
@@ -104,7 +106,7 @@ export default function NavigationBar() {
           variant='middle'
           sx={{
             display: {
-              xs: showSideNav ? 'block' : 'none',
+              xs: isSidebarOpen ? 'block' : 'none',
               md: 'none',
               xl: 'block',
             },
@@ -137,7 +139,7 @@ export default function NavigationBar() {
           variant='middle'
           sx={{
             display: {
-              xs: showSideNav ? 'block' : 'none',
+              xs: isSidebarOpen ? 'block' : 'none',
               md: 'none',
               xl: 'block',
             },
@@ -163,10 +165,10 @@ export default function NavigationBar() {
 
       <IconButton
         aria-label='toggle sidebar'
-        onClick={() => setShowSideNav((prev) => !prev)}
+        onClick={() => toggleSidebar()}
         sx={{ display: { md: 'none' }, padding: 0 }}
       >
-        {showSideNav ? <CloseIcon /> : <MenuIcon />}
+        {isSidebarOpen ? <CloseIcon /> : <MenuIcon />}
       </IconButton>
     </Box>
   )

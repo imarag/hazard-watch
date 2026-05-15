@@ -1,17 +1,17 @@
 import { Button, TextField } from '@mui/material'
-import { useAuth } from '@/contexts/AuthContext'
 import { useNavigate } from 'react-router'
 import useField from '@/hooks/useField'
 import { useMutation } from '@tanstack/react-query'
 import type { UserForgotPassword } from '@/types/users'
-import { useNotification } from '@/contexts/NotificationContext'
 import { getErrorMessage } from '@/utils/auth'
 import FormContainer from '@/components/ui/FormContainer'
 import { appRoutes } from '@/constants/routes'
+import { useAuthActions } from '@/stores/auth'
+import { useNotificationActions } from '@/stores/notification'
 
 export default function ForgotPassword() {
-  const { showNotification, createNotification } = useNotification()
-  const { sendResetLink } = useAuth()
+  const { showNotification, createNotification } = useNotificationActions()
+  const { sendResetLink } = useAuthActions()
   const email = useField('')
   const navigate = useNavigate()
 
