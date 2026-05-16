@@ -41,6 +41,16 @@ const deletePost = async (id: string): Promise<void> => {
   await api.delete(`${baseUrl}/${id}`)
 }
 
+const likePost = async (postId: string): Promise<Post> => {
+  const res = await api.post(`${baseUrl}/${postId}/likes`)
+  return res.data
+}
+
+const unlikePost = async (postId: string): Promise<Post> => {
+  const res = await api.delete(`${baseUrl}/${postId}/likes`)
+  return res.data
+}
+
 export default {
   getAllPosts,
   getPostById,
@@ -48,4 +58,6 @@ export default {
   updatePost,
   deletePost,
   searchPosts,
+  likePost,
+  unlikePost,
 }

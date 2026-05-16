@@ -18,6 +18,8 @@ export type BasePost = {
 
 export type PostInDb = BasePost & {
   id: string
+  likeCount: number
+  likedByCurrentUser: boolean
 }
 
 // what UI sends for create and update

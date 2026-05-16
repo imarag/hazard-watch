@@ -47,6 +47,8 @@ const PostSchema = new mongoose.Schema<PostInDb>(
       required: true,
     },
     location: { type: mongoose.Schema.Types.Mixed, required: true },
+    likeCount: { type: Number, default: 0 },
+    likedByCurrentUser: { type: Boolean, default: false },
   },
   {
     timestamps: true,
@@ -60,7 +62,7 @@ const PostSchema = new mongoose.Schema<PostInDb>(
   },
 )
 
-export const PostModel = mongoose.model('Post', PostSchema)
+export const PostModel = mongoose.model<PostInDb>('Post', PostSchema)
 
 export const SearchParamsSchema = z.object({
   q: z.string().trim().min(1).optional(),

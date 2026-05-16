@@ -7,23 +7,24 @@ import {
 import type { CreatePostData } from '../types/posts.js'
 import { requireAuth, requireOwnership } from '../middleware.js'
 import { SearchParamsSchema } from '../models/posts.js'
+import likesRouter from '../routes/likes.ts'
 
 const router = express.Router()
 
-router.get('/', async (_req, res) => {
-  const posts = await postService.getAllPosts()
+router.get('/', async (req, res) => {
+  const posts = await postService.getAllPosts(req.userId)
   return res.status(200).json(posts)
 })
 
 router.get('/search', async (req, res) => {
   const queryParams = SearchParamsSchema.parse(req.query)
-  const data = await postService.searchPosts(queryParams)
+  const data = await postService.searchPosts(queryParams, req.userId)
   return res.json(data)
 })
 
 router.get('/:id', async (req, res) => {
   const postId = String(req.params['id'])
-  const post = await postService.getPostById(postId)
+  const post = await postService.getPostById(postId, req.userId)
   return res.status(200).json(post)
 })
 
@@ -51,5 +52,7 @@ router.delete('/:id', requireAuth, requireOwnership, async (req, res) => {
   await postService.deletePost(postId)
   return res.status(204).send()
 })
+
+router.use('/:id/likes', likesRouter)
 
 export default router

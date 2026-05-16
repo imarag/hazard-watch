@@ -46,15 +46,16 @@ const UserSchema = new mongoose.Schema<UserInDb>(
     name: { type: String, required: true },
   },
   {
+    versionKey: false,
     toJSON: {
       transform: (_, ret: Record<string, unknown>) => {
         ret['id'] = String(ret['_id'])
         delete ret['_id']
-        delete ret['__v']
         delete ret['password']
+        delete ret['__v']
       },
     },
   },
 )
 
-export const UserModel = mongoose.model('User', UserSchema)
+export const UserModel = mongoose.model<UserInDb>('User', UserSchema)

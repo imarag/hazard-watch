@@ -4,7 +4,7 @@ import type { SvgIconComponent } from '@mui/icons-material'
 
 type CommonProps = {
   icon: SvgIconComponent
-  label: string
+  label?: string
   size?: 'small' | 'medium' | 'large'
   variant?: 'text' | 'outlined' | 'contained'
   color?:
@@ -18,7 +18,7 @@ type CommonProps = {
 }
 
 type LinkProps = CommonProps & {
-  to: string
+  to: string | null
   onClick?: never
   loading?: never
 }
@@ -33,26 +33,25 @@ type ActionButtonProps = LinkProps | ButtonProps
 
 export default function ActionButton({
   icon,
-  label,
-  to,
-  onClick,
+  label = undefined,
+  to = null,
+  onClick = () => {},
   loading = false,
   size = 'small',
   variant = 'contained',
   color = 'primary',
 }: ActionButtonProps) {
   const linkProps = to ? { component: Link, to } : {}
-  const clickProps = onClick ? { onClick } : {}
   const Icon = icon
   return (
     <>
       {/* Small screens: IconButton */}
       <Box sx={{ display: { xs: 'inline-flex', sm: 'none' } }}>
-        <Tooltip title={label}>
+        <Tooltip title={label ?? ''} placement='top'>
           <span>
             <IconButton
               {...linkProps}
-              {...clickProps}
+              onClick={onClick}
               size={size}
               color={color}
               disabled={loading}
@@ -63,12 +62,11 @@ export default function ActionButton({
           </span>
         </Tooltip>
       </Box>
-
       {/* Medium+ screens: Button */}
       <Box sx={{ display: { xs: 'none', sm: 'inline-flex' } }}>
         <Button
           {...linkProps}
-          {...clickProps}
+          onClick={onClick}
           loading={loading}
           loadingPosition='start'
           startIcon={<Icon />}
@@ -76,7 +74,7 @@ export default function ActionButton({
           variant={variant}
           color={color}
         >
-          {label}
+          {label ?? null}
         </Button>
       </Box>
     </>

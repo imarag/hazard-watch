@@ -4,6 +4,7 @@ import { useCurrentUser } from '@/stores/auth'
 import GoToEditPostAction from '@/components/actions/GoToEditPostAction'
 import DeletePostAction from '@/components/actions/DeletePostAction'
 import ViewPostAction from '@/components/actions/ViewPostAction'
+import LikePostAction from '@/components/actions/LikePostAction'
 
 interface HomePostCardActionsProps {
   post: Post
@@ -20,10 +21,13 @@ export default function HomePostCardActions({
       {currentUser?.id === post.user.id && (
         <>
           <GoToEditPostAction post={post} />
-          <Box sx={{ marginLeft: 'auto' }}>
-            <DeletePostAction post={post} />
-          </Box>
+          <DeletePostAction post={post} />
         </>
+      )}
+      {currentUser && (
+        <Box sx={{ marginLeft: 'auto' }}>
+          <LikePostAction post={post} />
+        </Box>
       )}
     </Box>
   )

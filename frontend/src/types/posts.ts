@@ -11,6 +11,8 @@ type BasePost = {
 
 export type Post = BasePost & {
   id: string
+  likeCount: number
+  likedByCurrentUser: boolean
 }
 
 export type CreatePost = Omit<BasePost, 'createdAt' | 'user'>

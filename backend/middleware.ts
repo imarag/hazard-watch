@@ -13,14 +13,13 @@ export const extractToken = (
   next: NextFunction,
 ) => {
   const authorization = req.headers.authorization
-  if (
-    authorization &&
-    typeof authorization === 'string' &&
-    authorization.startsWith('Bearer ')
-  ) {
-    req.token = authorization.replace('Bearer ', '')
-  } else {
-    req.token = null
+
+  if (authorization?.startsWith('Bearer ')) {
+    const token = authorization.replace('Bearer ', '')
+    const payload = verifyJWTToken(token)
+    if (payload) {
+      req['userId'] = payload.id
+    }
   }
   next()
 }
@@ -30,18 +29,9 @@ export const requireAuth = (
   _res: Response,
   next: NextFunction,
 ) => {
-  if (!req.token) {
+  if (!req.userId) {
     throw new AppError(401, 'You must be logged in to use this option.')
   }
-
-  const user = verifyJWTToken(req.token)
-
-  if (!user) {
-    throw new AppError(401, 'Invalid user. Log in again.')
-  }
-
-  req.userId = user.id
-  req.userName = user.userName
   next()
 }
 
@@ -51,9 +41,9 @@ export const requireOwnership = async (
   next: NextFunction,
 ) => {
   const postId = String(req.params['id'])
-  const existingPost = await postService.getPostById(postId)
+  const existingPost = await postService.getPostById(postId, req['userId'])
 
-  if (existingPost.user.id !== req.userId) {
+  if (existingPost.user.id !== req['userId']) {
     throw new AppError(403, 'Unauthorized')
   }
 
@@ -75,7 +65,7 @@ export const errorHandler = (
   error: Error,
   _req: Request,
   res: Response,
-   
+
   _next: NextFunction,
 ) => {
   logger.error(error)
