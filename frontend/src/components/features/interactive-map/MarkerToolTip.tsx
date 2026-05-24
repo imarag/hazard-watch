@@ -49,7 +49,7 @@ export default function MarkerTooltip({ post }: { post: Post }) {
           }}
         >
           <Typography variant='caption' sx={{ fontStyle: 'italic' }}>
-            {post.user.name}
+            {post.author.name}
           </Typography>
         </Box>
       </Stack>

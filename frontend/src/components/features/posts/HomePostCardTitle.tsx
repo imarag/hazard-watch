@@ -1,11 +1,11 @@
 import type { Post } from '@/types/posts'
 import { Stack, Avatar, Typography, Box } from '@mui/material'
 import { formatDate } from '@/utils/typography'
-import type { UserPublic } from '@/types/users'
+import type { User } from '@/types/users'
 import HazardChip from '@/components/features/posts/HazardChip'
 
 interface HomePostCardTitleProps {
-  user: UserPublic | null
+  user: User | null
   post: Post
 }
 
@@ -48,7 +48,7 @@ export default function HomePostCardTitle({
               color: 'text.primary',
             }}
           >
-            {post.user.name}
+            {post.author.name}
           </Typography>
           <Typography variant='caption' sx={{ color: 'text.disabled' }}>
             {formatDate(post.createdAt)}

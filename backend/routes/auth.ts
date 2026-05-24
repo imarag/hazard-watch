@@ -1,9 +1,8 @@
 import express from 'express'
-import type { UserLogin, UserRegister } from '../types/users.js'
+import type { UserLogin, UserRegister } from '../models/users.js'
 import {
   UserForgotPasswordSchema,
   UserLoginSchema,
-  UserModel,
   UserRegisterSchema,
   UserResetPasswordSchema,
 } from '../models/users.js'
@@ -18,6 +17,7 @@ import config from '../config.js'
 import { sendMail } from '../utils/mailer.js'
 import { logger } from '../utils/logger.js'
 import { AppError } from '../errors.js'
+import { prisma } from '../lib/prisma.ts'
 
 const router = express.Router()
 
@@ -124,7 +124,7 @@ router.post('/forgot-password', async (req, res) => {
   const body = req.body
   const payload = UserForgotPasswordSchema.parse(body)
 
-  const user = await UserModel.findOne({ email: payload.email })
+  const user = await prisma.user.findUnique({ where: { email: payload.email} })
 
   // Always return the same message to prevent email enumeration
   const genericResponse = {
@@ -187,7 +187,7 @@ router.post('/reset-password', async (req, res) => {
 
   const hashedPassword = await hashPassword(payload.newPassword)
 
-  await UserModel.findByIdAndUpdate(decoded.id, { password: hashedPassword })
+  await prisma.user.update({ where: { id: decoded.id }, data: { password: hashedPassword }})
 
   return res.json({ message: 'Password reset successful' })
 })

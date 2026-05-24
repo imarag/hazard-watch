@@ -46,7 +46,7 @@ export default function DeletePostAction({ post }: DeletePostActionProps) {
     mutate()
   }
 
-  const isSameUser = isUserLoggedIn && currentUser?.id === post.user.id
+  const isSameUser = isUserLoggedIn && currentUser?.id === post.author.id
   if (!isSameUser) {
     return null
   }

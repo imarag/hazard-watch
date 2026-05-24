@@ -41,8 +41,8 @@ export default function HomePostCardBody({ post }: HomePostCardBodyProps) {
       >
         <RoomIcon style={{ fontSize: 14 }} />
         {formatCoordinates(
-          post.location.geometry.coordinates[0],
-          post.location.geometry.coordinates[1],
+          post.longitude,
+          post.latitude,
         )}
       </Typography>
     </Stack>

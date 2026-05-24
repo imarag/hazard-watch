@@ -66,7 +66,7 @@ export default function SearchPostCard({ post }: SearchPostCardProps) {
                 mt: 0.5,
               }}
             >
-              <Typography variant='caption'>{post.user.name}</Typography>
+              <Typography variant='caption'>{post.author.name}</Typography>
               <Typography variant='caption'>·</Typography>
               <Typography variant='caption'>
                 {formatDate(post.createdAt)}
@@ -76,8 +76,8 @@ export default function SearchPostCard({ post }: SearchPostCardProps) {
                 <RoomIcon sx={{ fontSize: 13 }} />
                 <Typography variant='caption' sx={{ fontFamily: 'monospace' }}>
                   {formatCoordinates(
-                    post.location.geometry.coordinates[0],
-                    post.location.geometry.coordinates[1],
+                    post.longitude,
+                    post.latitude,
                   )}
                 </Typography>
               </Box>

@@ -13,7 +13,7 @@ export default function GoToEditPostAction({ post }: GoToEditPostActionProps) {
   const currentUser = useCurrentUser()
   const isUserLoggedIn = useIsUserLoggedIn()
 
-  const isSameUser = isUserLoggedIn && currentUser?.id === post.user.id
+  const isSameUser = isUserLoggedIn && currentUser?.id === post.author.id
   if (!isSameUser) {
     return null
   }

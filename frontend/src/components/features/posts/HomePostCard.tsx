@@ -22,7 +22,7 @@ export default function HomePostCard({ post }: PostProps) {
           gap: 2,
         }}
       >
-        <HomePostCardTitle user={post.user} post={post} />{' '}
+        <HomePostCardTitle user={post.author} post={post} />{' '}
         <Divider sx={{ borderColor: 'divider' }} />
         <HomePostCardBody post={post} />
         <HomePostCardActions post={post} />

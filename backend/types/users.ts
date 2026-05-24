@@ -1,24 +1,5 @@
-type BaseUser = {
-  email: string
-  password: string
-  name: string
-}
+import type { User } from '../generated/prisma/client.js'
 
-export type UserInDb = BaseUser & {
+export type UserPublic = Omit<User, 'password'> & {
   id: string
-}
-
-export type UserPublic = Omit<BaseUser, 'password'> & {
-  id: string
-}
-
-export type UserLogin = Omit<BaseUser, 'name'>
-
-export type UserRegister = BaseUser
-
-export type UserPayload = {
-  id: string
-  userName: string
-  email: string
-  tokenType: 'access' | 'refresh' | 'reset'
 }

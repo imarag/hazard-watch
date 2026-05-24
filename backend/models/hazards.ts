@@ -10,18 +10,6 @@ export const LatitudeSchema = z
   .min(-90, 'Latitude must be at least -90')
   .max(90, 'Latitude must be at most 90')
 
-export const PositionSchema = z.tuple([LongitudeSchema, LatitudeSchema])
+export const LocationSchema = z.tuple([LongitudeSchema, LatitudeSchema])
 
-export const PointSchema = z.object({
-  type: z.literal('Point', { message: 'Type must be Point' }),
-  coordinates: PositionSchema,
-})
-
-// TODO: add more feature geometries later (e.g. Polygon, LineString)
-const FeatureSchema = z.object({
-  type: z.literal('Feature', { message: 'Type must be Feature' }),
-  geometry: PointSchema,
-  properties: z.unknown(),
-})
-
-export const LocationSchema = FeatureSchema
+export type Location = z.infer<typeof LocationSchema>

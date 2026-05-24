@@ -1,23 +1,22 @@
-import type { HazardType, Location } from '@/types/hazards'
+import type { HazardType } from '@/types/hazards'
 
-type BasePost = {
-  title: string
-  description: string
-  user: { name: string; id: string; email: string }
-  hazardType: HazardType
-  location: Location
-  createdAt: string
-}
-
-export type Post = BasePost & {
+export type Post = {
   id: string
-  likeCount: number
-  likedByCurrentUser: boolean
+  createdAt: string
+  updatedAt: string
+  title: string
+  hazardType: HazardType
+  description: string
+  author: { name: string; id: string; email: string; createdAt: string }
+  authorId: string
+  longitude: number
+  latitude: number
 }
 
-export type CreatePost = Omit<BasePost, 'createdAt' | 'user'>
+export type CreatePost = Pick<Post, 'title' | 'hazardType' | 'description' | 'longitude' | 'latitude' >
 
 export type SortField = 'createdAt' | 'hazardType' | 'title' | 'author'
+
 export type SortDirection = 'asc' | 'desc'
 
 export type SearchParams = {

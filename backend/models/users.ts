@@ -1,6 +1,4 @@
 import z from 'zod'
-import mongoose from 'mongoose'
-import type { UserInDb } from '../types/users.js'
 
 const emailField = z
   .email('Please enter a valid email address')
@@ -39,23 +37,5 @@ export const UserResetPasswordSchema = z.object({
   newPassword: passwordField,
 })
 
-const UserSchema = new mongoose.Schema<UserInDb>(
-  {
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    name: { type: String, required: true },
-  },
-  {
-    versionKey: false,
-    toJSON: {
-      transform: (_, ret: Record<string, unknown>) => {
-        ret['id'] = String(ret['_id'])
-        delete ret['_id']
-        delete ret['password']
-        delete ret['__v']
-      },
-    },
-  },
-)
-
-export const UserModel = mongoose.model<UserInDb>('User', UserSchema)
+export type UserLogin = z.infer<typeof UserLoginSchema>
+export type UserRegister = z.infer<typeof UserRegisterSchema>

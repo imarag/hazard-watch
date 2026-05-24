@@ -16,38 +16,7 @@ export type HazardMeta = {
   backgroundColor: string
 }
 
-export type Position = [number, number] // [lon, lat]
-
-export type Coords = { latitude: number; longitude: number }
-
-// Geometries
-export type Point = {
-  type: 'Point'
-  coordinates: Position
-}
-
-export type LineString = {
-  type: 'LineString'
-  coordinates: Position[]
-}
-
-export type Polygon = {
-  type: 'Polygon'
-  coordinates: Position[][]
-}
-
-export type Geometry = Point | LineString | Polygon
-
-export type Properties = unknown
-
-export type Feature<G extends Geometry = Geometry, P = Properties> = {
-  type: 'Feature'
-  geometry: G
-  properties: P
-}
-
-// Your Location type
-export type Location = Feature<Point, Properties>
+export type Location = [number, number]
 
 export const DateFilter = [
   { label: 'Last hour', value: '1h' },
@@ -61,3 +30,9 @@ export const DateFilter = [
 export type DateFilterOption = (typeof DateFilter)[number]
 
 export type DateFilterValue = DateFilterOption['value']
+
+export type HazardPositionMode = 'current' | 'map'
+export type HazardPosition = {
+  longitude: number
+  latitude: number
+}

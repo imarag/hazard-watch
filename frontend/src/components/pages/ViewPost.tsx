@@ -43,7 +43,7 @@ export default function ViewPost() {
       }
     },
   })
-  const isSameUser = isUserLoggedIn && currentUser?.id === post?.user.id
+  const isSameUser = isUserLoggedIn && currentUser?.id === post?.author.id
   return (
     <Box
       sx={{

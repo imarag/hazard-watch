@@ -19,11 +19,11 @@ export default function ZoomControlButtons({
   const map = useMap()
 
   function handleZoomIn() {
-    map.zoomIn()
+    map.setZoom(map.getZoom() + 1)
   }
 
   function handleZoomOut() {
-    map.zoomOut()
+    map.setZoom(map.getZoom() - 1)
   }
 
   function handleZoomOutWorld() {

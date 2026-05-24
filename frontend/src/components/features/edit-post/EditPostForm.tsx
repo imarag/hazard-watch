@@ -1,9 +1,7 @@
 import { TextField, Button, MenuItem } from '@mui/material'
 import { HazardType } from '@/types/hazards'
-import { useState } from 'react'
 import useField from '@/hooks/useField'
 import HazardMap from '@/components/features/map/HazardMap'
-import type { Location } from '@/types/hazards'
 import FormContainer from '@/components/ui/FormContainer'
 import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
@@ -25,7 +23,8 @@ export default function EditPostForm({ post }: EditPostFormProps) {
   const title = useField(post.title)
   const description = useField(post.description)
   const hazardType = useField<HazardType>(post.hazardType)
-  const [location, setLocation] = useState<Location | null>(post.location)
+  const hazardLongitude = useField(post.longitude)
+  const hazardLatitude = useField(post.latitude)
 
   const { mutate, isPending } = useMutation({
     mutationFn: () =>
@@ -34,7 +33,8 @@ export default function EditPostForm({ post }: EditPostFormProps) {
           title: title.value,
           description: description.value,
           hazardType: hazardType.value,
-          location: location!,
+          longitude: hazardLongitude.value,
+          latitude: hazardLatitude.value,
         },
         post.id,
       ),
@@ -62,6 +62,11 @@ export default function EditPostForm({ post }: EditPostFormProps) {
       return
     }
     mutate()
+  }
+
+  function handleLocationSelect(longitude: number, latitude: number) {
+    hazardLongitude.setValue(longitude)
+    hazardLongitude.setValue(latitude)
   }
 
   return (
@@ -100,8 +105,9 @@ export default function EditPostForm({ post }: EditPostFormProps) {
         ))}
       </TextField>
       <HazardMap
-        location={location}
-        setLocation={setLocation}
+        onLocationSelect={handleLocationSelect}
+        longitude={hazardLongitude.value}
+        latitude={hazardLatitude.value}
         isLoading={isPending}
         flyToLocation={false}
       />

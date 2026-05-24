@@ -1,7 +1,7 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import config from '../config.js'
-import type { UserPayload } from '../types/users.js'
+import type { TokenPayload } from '../types/auth.ts'
 import type { SignOptions } from 'jsonwebtoken'
 
 export const hashPassword = async (password: string, saltRounds = 10) => {
@@ -16,7 +16,7 @@ export const compareHashed = async (
 }
 
 export const createJWTToken = (
-  payload: UserPayload,
+  payload: TokenPayload,
   expires: number | string,
 ) => {
   return jwt.sign(payload, config.JWT_SECRET, {
@@ -24,9 +24,9 @@ export const createJWTToken = (
   } as SignOptions)
 }
 
-export const verifyJWTToken = (token: string): UserPayload | null => {
+export const verifyJWTToken = (token: string): TokenPayload | null => {
   try {
-    return jwt.verify(token, config.JWT_SECRET) as UserPayload
+    return jwt.verify(token, config.JWT_SECRET) as TokenPayload
   } catch {
     return null
   }

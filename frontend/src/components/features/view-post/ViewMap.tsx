@@ -10,8 +10,8 @@ interface ViewMapProps {
 }
 
 export default function ViewMap({ post }: ViewMapProps) {
-  const lat = post.location.geometry.coordinates[1]
-  const lon = post.location.geometry.coordinates[0]
+  const lat = post.latitude
+  const lon = post.longitude
   return (
     <Box
       sx={{

@@ -69,10 +69,18 @@ export default function ActionButton({
           onClick={onClick}
           loading={loading}
           loadingPosition='start'
-          startIcon={<Icon />}
+          startIcon={<Icon className='m-0' />}
           size={size}
           variant={variant}
           color={color}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            '& .MuiButton-startIcon': {
+              margin: 0, // ← removes the margin from the icon
+            },
+          }}
         >
           {label ?? null}
         </Button>

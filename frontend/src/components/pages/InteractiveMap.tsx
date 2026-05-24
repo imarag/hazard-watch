@@ -88,8 +88,8 @@ export default function InteractiveMap() {
             <Marker
               key={post.id}
               position={[
-                post.location.geometry.coordinates[1],
-                post.location.geometry.coordinates[0],
+                post.latitude,
+                post.longitude,
               ]}
             >
               <MarkerTooltip post={post} />

@@ -3,34 +3,21 @@ export interface CurrentUser {
   email: string
 }
 
-type BaseUser = {
+export type User = {
+  id: string
   email: string
-  password: string
   name: string
 }
 
-export type UserInDb = BaseUser & {
-  id: string
-}
+export type UserLogin = Omit<User, 'name' | 'id'>
 
-export type UserPublic = Omit<BaseUser, 'password'> & {
-  id: string
-}
+export type UserRegister = Omit<User, 'id'>
 
-export type UserLogin = Omit<BaseUser, 'name'>
+export type UserForgotPassword = Pick<User, 'email'>
 
-export type UserRegister = BaseUser
-
-export type UserForgotPassword = Pick<BaseUser, 'email'>
 export type UserResetPassword = {
   token: string | null
   newPassword: string
-}
-
-export type UserPayload = {
-  id: string
-  email: string
-  tokenType: 'access' | 'refresh'
 }
 
 export type LoginResponse = {

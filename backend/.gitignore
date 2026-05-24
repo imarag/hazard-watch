@@ -43,3 +43,4 @@ Thumbs.db
 
 # db seed
 seed.ts
+/generated/prisma

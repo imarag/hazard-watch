@@ -1,86 +1,80 @@
 import type {
-  PostInDb,
   CreatePostData,
   UpdatePostData,
-  SearchParams,
-  SearchResult,
-} from '../types/posts.js'
-import { PostModel } from '../models/posts.js'
-import { escapeRegex } from '../utils/route.js'
+  SearchParams, } from '../models/posts.ts'
+  import type { SearchResult } from '../types/posts.ts'
 import { AppError } from '../errors.js'
-import { addLikedByUser } from '../utils/db.ts'
+import { prisma } from '../lib/prisma.ts'
+import type { Post } from '../generated/prisma/client.js'
 
-const getAllPosts = async (
-  currentUserId: string | undefined,
-): Promise<PostInDb[]> => {
-  const posts = await PostModel.find().populate('user')
-  return addLikedByUser(posts, currentUserId)
+const getAllPosts = async (): Promise<Post[]> => {
+  const posts = await prisma.post.findMany({  include: { author: true } })
+  return posts
 }
 
 const searchPosts = async (
   { q, page, limit }: SearchParams,
-  currentUserId: string | undefined,
 ): Promise<SearchResult> => {
   const query: Record<string, unknown> = {}
 
   const trimmed = q?.trim()
   if (trimmed) {
-    const regex = new RegExp(escapeRegex(trimmed), 'i')
-    query['$or'] = [
-      { title: regex },
-      { description: regex },
-      { hazardType: regex },
+    query['OR'] = [
+      { title: { contains: trimmed, mode: 'insensitive' } },
+      { description: { contains: trimmed, mode: 'insensitive' } },
+      { hazardType: { contains: trimmed, mode: 'insensitive' } },
     ]
   }
   const offset = (page - 1) * limit
   const [posts, totalPosts] = await Promise.all([
-    PostModel.find(query)
-      .sort({ createdAt: -1 })
-      .skip(offset)
-      .limit(limit)
-      .populate('user'),
-    PostModel.countDocuments(query),
+    prisma.post.findMany({ 
+      where: query, 
+      orderBy: { createdAt: 'desc' },
+      skip: offset,
+      take: limit, 
+      include: { author: true }
+    }),
+    prisma.post.count({ where: query })
   ])
-  const postsWithLikes = await addLikedByUser(posts, currentUserId)
   return {
-    posts: postsWithLikes,
+    posts: posts,
     hasMore: totalPosts > offset + posts.length,
   }
 }
 
 const getPostById = async (
   id: string,
-  currentUserId: string | undefined,
-): Promise<PostInDb> => {
-  const post = await PostModel.findById(id).populate('user')
+): Promise<Post> => {
+  const post = await prisma.post.findUnique({ where: { id: id }, include: { author: true}})
   if (!post) throw new AppError(404, 'Post not found')
-
-  const posts = await addLikedByUser([post], currentUserId)
-  return posts[0]!
+  return post
 }
 
-const createPost = async (post: CreatePostData): Promise<PostInDb> => {
-  const newPost = new PostModel(post)
-  await newPost.save()
-  return newPost.populate('user')
+const createPost = async (post: CreatePostData): Promise<Post> => {
+  const newPost = await prisma.post.create({ data: post, include: { author: true} })
+  return newPost
 }
 
 const updatePost = async (
   post: UpdatePostData,
   id: string,
-): Promise<PostInDb> => {
-  const updatedPost = await PostModel.findByIdAndUpdate(id, post, {
-    new: true,
-  }).populate('user')
-  if (!updatedPost) {
+): Promise<Post> => {
+  try {
+    const updatedPost = await prisma.post.update({
+      where: { id },
+      data: post,
+      include: { author: true }
+    })
+    return updatedPost
+  } catch {
     throw new AppError(404, 'Post not found')
   }
-  return updatedPost
 }
 
 const deletePost = async (id: string): Promise<void> => {
-  const deletedPost = await PostModel.findByIdAndDelete(id)
-  if (!deletedPost) {
+  try {
+    await prisma.post.delete({ where: { id } })
+  } catch {
     throw new AppError(404, 'Post not found')
   }
 }

@@ -11,15 +11,15 @@ interface ViewInfoBodyProps {
 }
 
 export default function ViewInfoBody({ post }: ViewInfoBodyProps) {
-  const lon = post.location.geometry.coordinates[0]
-  const lat = post.location.geometry.coordinates[1]
+  const lon = post.longitude
+  const lat = post.latitude
   return (
     <Stack spacing={2}>
       <PostCardItem label='Description'>
         <PostCardText text={post.description} />
       </PostCardItem>
       <PostCardItem label='Author'>
-        <PostCardText text={post.user.name} />
+        <PostCardText text={post.author.name} />
       </PostCardItem>
       <PostCardItem label='Hazard type'>
         <PostCardText

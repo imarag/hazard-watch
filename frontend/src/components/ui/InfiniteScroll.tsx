@@ -3,7 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { getErrorMessage } from '@/utils/auth'
-import { useNotification } from '@/contexts/NotificationContext'
+import { useNotificationActions } from '@/stores/notification'
 import EmptyPostsMessage from '@/components/features/posts/EmptyPostsMessage'
 import postsService from '@/services/posts'
 import Loading from '@/components/ui/Loading'
@@ -17,7 +17,7 @@ export default function InfiniteScroll({
   searchParam,
   children,
 }: InfiniteScrollProps) {
-  const { createNotification, showNotification } = useNotification()
+  const { createNotification, showNotification } = useNotificationActions()
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({

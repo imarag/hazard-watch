@@ -1,12 +1,5 @@
 import { Typography, Box } from '@mui/material'
 import { useMapEvents } from 'react-leaflet'
-import type {
-  Feature,
-  Point,
-  Coords,
-  Properties,
-  Location,
-} from '@/types/hazards'
 import Map from '@/components/features/map/Map'
 import { formatCoordinates } from '@/utils/geometry'
 import MapMarker from '@/components/features/map/MapMarker'
@@ -15,7 +8,7 @@ import FlyToLocation from '@/components/features/map/FlyToLocation'
 function LocationPicker({
   onLocationSelect,
 }: {
-  onLocationSelect: (loc: Coords) => void
+  onLocationSelect: (loc) => void
 }) {
   useMapEvents({
     click(e) {
@@ -25,17 +18,22 @@ function LocationPicker({
   return null
 }
 
-export default function HazardMap({
-  location,
-  setLocation,
-  isLoading,
-  flyToLocation,
-}: {
-  location: Location | null
-  setLocation: React.Dispatch<React.SetStateAction<Location | null>>
+interface HazardMapProps {
+  longitude: number | null | undefined
+  latitude: number | null | undefined
+  onLocationSelect: (longitude: number, latitude: number) => void
   isLoading: boolean
   flyToLocation: boolean
-}) {
+}
+
+export default function HazardMap({
+  longitude,
+  latitude,
+  onLocationSelect,
+  isLoading,
+  flyToLocation,
+}: HazardMapProps) {
+  const hazardLocationExists = longitude && latitude
   return (
     <Box>
       <Typography variant='caption' color='text.secondary'>
@@ -47,39 +45,19 @@ export default function HazardMap({
             if (isLoading) {
               return
             }
-            const point: Point = {
-              type: 'Point',
-              coordinates: [loc.longitude, loc.latitude],
-            }
-            const feature: Feature<Point, Properties> = {
-              type: 'Feature',
-              geometry: point,
-              properties: {},
-            }
-            setLocation(feature)
+            onLocationSelect(loc.longitude, loc.latitude)
           }}
         />
-        {location && (
+        {hazardLocationExists && (
           <>
-            <MapMarker
-              lat={location.geometry.coordinates[1]}
-              lon={location.geometry.coordinates[0]}
-            />
-            {flyToLocation && (
-              <FlyToLocation
-                lat={location.geometry.coordinates[1]}
-                lon={location.geometry.coordinates[0]}
-              />
-            )}
+            <MapMarker lat={latitude} lon={longitude} />
+            {flyToLocation && <FlyToLocation lat={latitude} lon={longitude} />}
           </>
         )}
       </Map>
       <Typography variant='caption' color='text.secondary'>
-        {location
-          ? formatCoordinates(
-            location.geometry.coordinates[0],
-            location.geometry.coordinates[1],
-          )
+        {hazardLocationExists
+          ? formatCoordinates(longitude, latitude)
           : 'You have not selected any location yet'}
       </Typography>
     </Box>

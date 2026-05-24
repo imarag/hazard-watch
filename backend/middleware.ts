@@ -41,9 +41,9 @@ export const requireOwnership = async (
   next: NextFunction,
 ) => {
   const postId = String(req.params['id'])
-  const existingPost = await postService.getPostById(postId, req['userId'])
+  const existingPost = await postService.getPostById(postId)
 
-  if (existingPost.user.id !== req['userId']) {
+  if (existingPost.authorId !== req['userId']) {
     throw new AppError(403, 'Unauthorized')
   }
 
