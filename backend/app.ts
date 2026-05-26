@@ -6,6 +6,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 import AuthRouter from './routes/auth.js'
 import PostsRouter from './routes/posts.js'
+import HazardsRouter from './routes/hazards.js'
 import config from './config.js'
 import { extractToken, errorHandler, routeNotFound } from './middleware.js'
 
@@ -31,6 +32,7 @@ app.use(extractToken)
 
 app.use('/api/auth', AuthRouter)
 app.use('/api/posts', PostsRouter)
+app.use('/api/hazards', HazardsRouter)
 
 // Static frontend (production only — in dev, Vite serves it)
 if (config.NODE_ENV === 'production') {

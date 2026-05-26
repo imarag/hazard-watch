@@ -32,7 +32,7 @@ const createPost = async (post: CreatePost): Promise<Post> => {
   return res.data
 }
 
-const updatePost = async (post: CreatePost, id: string): Promise<Post> => {
+const updatePost = async (id: string, post: CreatePost): Promise<Post> => {
   const res = await api.put(`${baseUrl}/${id}`, post)
   return res.data
 }

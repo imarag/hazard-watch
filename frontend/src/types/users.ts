@@ -9,9 +9,13 @@ export type User = {
   name: string
 }
 
-export type UserLogin = Omit<User, 'name' | 'id'>
+export type UserLogin = Omit<User, 'name' | 'id'> & {
+  password: string
+}
 
-export type UserRegister = Omit<User, 'id'>
+export type UserRegister = Omit<User, 'id'> & {
+  password: string
+}
 
 export type UserForgotPassword = Pick<User, 'email'>
 

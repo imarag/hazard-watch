@@ -1,21 +1,21 @@
 import { Routes, Route } from 'react-router'
 import { CssBaseline } from '@mui/material'
-import Login from '@/components/pages/Login'
-import ForgotPassword from '@/components/pages/ForgotPassword'
-import ResetPassword from '@/components/pages/ResetPassword'
-import Register from '@/components/pages/Register'
-import Home from '@/components/pages/Home'
-import AppLayout from '@/components/layouts/AppLayout'
-import MainLayout from '@/components/layouts/MainLayout'
-import AuthLayout from '@/components/layouts/AuthLayout'
-import CreatePost from '@/components/pages/CreatePost'
-import ViewPost from '@/components/pages/ViewPost'
-import EditPost from '@/components/pages/EditPost'
-import InteractiveMap from '@/components/pages/InteractiveMap'
-import About from '@/components/pages/About'
-import Search from '@/components/pages/Search'
-import ProtectedRoute from '@/components/auth/ProtectedRoute'
-import AuthGate from '@/components/auth/AuthGate'
+import Login from '@/pages/Login'
+import Register from '@/pages/Register'
+import ForgotPassword from '@/pages/ForgotPassword'
+import ResetPassword from '@/pages/ResetPassword'
+import Home from '@/pages/Home'
+import CreatePost from '@/pages/CreatePost'
+import ViewPost from '@/pages/ViewPost'
+import EditPost from '@/pages/EditPost'
+import Explore from '@/pages/Explore'
+import About from '@/pages/About'
+import Search from '@/pages/Search'
+import ProtectedRoute from '@/features/auth/components/ProtectedRoute'
+import AuthGate from '@/features/auth/components/AuthGate'
+import AppLayout from '@/components/layout/AppLayout'
+import MainLayout from '@/components/layout/MainLayout'
+import AuthLayout from '@/components/layout/AuthLayout'
 import { appRoutes } from '@/constants/routes'
 
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
@@ -51,7 +51,7 @@ function App() {
               </Route>
               <Route path={appRoutes.search.path} element={<Search />} />
               <Route path={appRoutes.viewPost.path} element={<ViewPost />} />
-              <Route path={appRoutes.map.path} element={<InteractiveMap />} />
+              <Route path={appRoutes.map.path} element={<Explore />} />
               <Route path={appRoutes.about.path} element={<About />} />
             </Route>
           </Route>
