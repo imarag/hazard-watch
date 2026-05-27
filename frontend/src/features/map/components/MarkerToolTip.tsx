@@ -1,57 +1,40 @@
 import { Box, Stack, Typography, Divider } from '@mui/material'
 import { Tooltip } from 'react-leaflet'
-import type { Post } from '@/types/posts'
-import { formatDate } from '@/utils/typography'
-import HazardChip from '@/components/features/posts/HazardChip'
 
-export default function MarkerTooltip({ post }: { post: Post }) {
+export default function MarkerTooltip({
+  tooltip,
+}: {
+  tooltip: Record<string, unknown>
+}) {
   return (
-    <Tooltip direction='bottom' offset={[0, 20]} opacity={1}>
-      <Stack spacing={0.5} sx={{ padding: 1.5, minWidth: 300, maxWidth: 360 }}>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: 1,
-          }}
-        >
-          <Typography
-            variant='body2'
-            sx={{ fontWeight: 'fontWeightBold', textWrap: 'wrap' }}
-            noWrap
+    <Tooltip direction='bottom' offset={[0, 0]} opacity={1}>
+      <Stack
+        sx={{
+          padding: 2,
+          minWidth: 200,
+          maxWidth: 360,
+          overflowY: 'scroll',
+        }}
+        spacing={0.5}
+      >
+        {Object.keys(tooltip).map((key, index) => (
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'start',
+              justifyContent: 'space-between',
+              gap: 0.1,
+            }}
           >
-            {post.title}
-          </Typography>
-          <HazardChip hazard={post.hazardType} />
-        </Box>
-
-        <Typography variant='caption' color='text.disabled'>
-          {formatDate(post.createdAt)}
-        </Typography>
-
-        <Divider />
-
-        <Typography
-          variant='caption'
-          color='text.secondary'
-          sx={{ textWrap: 'wrap' }}
-        >
-          {post.description}
-        </Typography>
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            gap: 1,
-          }}
-        >
-          <Typography variant='caption' sx={{ fontStyle: 'italic' }}>
-            {post.author.name}
-          </Typography>
-        </Box>
+            <Typography variant='body2' sx={{ fontWeight: 'fontWeightBold' }}>
+              {key}
+            </Typography>
+            <Typography variant='body2' sx={{ fontWeight: 500 }}>
+              {String(tooltip[key])}
+            </Typography>
+          </Box>
+        ))}
       </Stack>
     </Tooltip>
   )

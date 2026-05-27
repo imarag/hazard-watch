@@ -4,12 +4,13 @@ import { useNavigate } from 'react-router'
 import { HazardType } from '@/types/hazards'
 import type { Post } from '@/types/posts'
 import useField from '@/hooks/useField'
-import HazardMap from '@/features/map/components/HazardMap'
+import PostMap from '@/features/map/components/PostMap'
 import FormContainer from '@/components/ui/FormContainer'
 import postsService from '@/services/posts'
 import { useNotificationActions } from '@/stores/notification'
 import { appRoutes } from '@/constants/routes'
 import { getErrorMessage } from '@/utils/auth'
+import type { HazardPosition } from '@/types/hazards'
 
 interface EditPostFormProps {
   post: Post
@@ -23,17 +24,16 @@ export default function EditPostForm({ post }: EditPostFormProps) {
   const title = useField(post.title)
   const description = useField(post.description)
   const hazardType = useField<HazardType>(post.hazardType)
-  const hazardLongitude = useField(post.longitude)
-  const hazardLatitude = useField(post.latitude)
+  const hazardPosition = useField<HazardPosition | null>(null)
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () =>
+    mutationFn: (position: HazardPosition) =>
       postsService.updatePost(post.id, {
         title: title.value,
         description: description.value,
         hazardType: hazardType.value,
-        longitude: hazardLongitude.value,
-        latitude: hazardLatitude.value,
+        longitude: position.longitude,
+        latitude: position.latitude,
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })
@@ -53,22 +53,12 @@ export default function EditPostForm({ post }: EditPostFormProps) {
     },
   })
 
-  const hasLocation =
-    hazardLongitude.value != null && hazardLatitude.value != null
-  const canSubmit =
-    hasLocation && !!title.value && !!description.value && !isPending
-
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!canSubmit) {
+    if (!hazardPosition.value) {
       return
     }
-    mutate()
-  }
-
-  function handleLocationSelect(longitude: number, latitude: number) {
-    hazardLongitude.setValue(longitude)
-    hazardLatitude.setValue(latitude)
+    mutate(hazardPosition.value)
   }
 
   return (
@@ -106,14 +96,24 @@ export default function EditPostForm({ post }: EditPostFormProps) {
           </MenuItem>
         ))}
       </TextField>
-      <HazardMap
-        onLocationSelect={handleLocationSelect}
-        longitude={hazardLongitude.value}
-        latitude={hazardLatitude.value}
+      <PostMap
+        onLocationSelect={(longitude: number, latitude: number) =>
+          hazardPosition.setValue({ longitude, latitude })
+        }
+        longitude={hazardPosition.value?.longitude}
+        latitude={hazardPosition.value?.latitude}
         isLoading={isPending}
         flyToLocation={false}
+        setHazardPosition={hazardPosition.setValue}
       />
-      <Button disabled={!canSubmit} type='submit' variant='contained' fullWidth>
+      <Button
+        disabled={
+          !hazardPosition || !title.value || !description.value || isPending
+        }
+        type='submit'
+        variant='contained'
+        fullWidth
+      >
         {isPending ? 'Updating...' : 'Update report'}
       </Button>
     </FormContainer>

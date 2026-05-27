@@ -1,5 +1,5 @@
 import FilterListIcon from '@mui/icons-material/FilterList'
-import MapButton from '@/components/features/map/MapButton'
+import MapButton from '@/features/map/components/MapButton'
 import type { MapPosition } from '@/types/map'
 import { Box } from '@mui/material'
 import { getPositionProps } from '@/constants/map'

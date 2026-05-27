@@ -1,4 +1,4 @@
-import MapButton from '@/components/features/map/MapButton'
+import MapButton from '@/features/map/components/MapButton'
 import { useMap } from 'react-leaflet'
 import type { MapPosition } from '@/types/map'
 import RemoveIcon from '@mui/icons-material/Remove'

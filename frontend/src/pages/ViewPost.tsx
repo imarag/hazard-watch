@@ -5,10 +5,10 @@ import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
 import postsService from '@/services/posts'
 import ViewPostInfoCard from '@/features/posts/components/ViewPostInfoCard'
-import ViewMap from '@/components/features/view-post/ViewMap'
-import DeletePostAction from '@/features/actions/DeletePostAction'
-import GoToEditPostAction from '@/features/actions/GoToEditPostAction'
-import ActionBar from '@/features/actions/ActionBar'
+// import ViewMap from '@/features/posts/components/ViewMap'
+import DeletePostAction from '@/features/posts/components/DeletePostAction'
+import GoToEditPostAction from '@/features/posts/components/GoToEditPostAction'
+import ActionBar from '@/components/ui/ActionBar'
 import { useNotificationActions } from '@/stores/notification'
 import { useCurrentUser, useIsUserLoggedIn } from '@/stores/auth'
 
@@ -76,7 +76,7 @@ export default function ViewPost() {
               size={{ xs: 12, lg: 6, xl: 8 }}
               sx={{ height: { xs: '400px', sm: '100%' } }}
             >
-              <ViewMap post={post} />
+              {/* <ViewMap post={post} /> */}
             </Grid>
           </Grid>
         )}

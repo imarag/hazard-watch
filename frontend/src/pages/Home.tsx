@@ -1,5 +1,5 @@
-import GoToCreatePostAction from '../actions/GoToCreatePostAction'
-import ActionBar from '@/features/actions/ActionBar'
+import GoToCreatePostAction from '@/features/posts/components/GoToCreatePostAction'
+import ActionBar from '@/components/ui/ActionBar'
 import { Box } from '@mui/material'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
@@ -7,10 +7,10 @@ import { getErrorMessage } from '@/utils/auth'
 import { useNotificationActions } from '@/stores/notification'
 import { useIsUserLoggedIn } from '@/stores/auth'
 
-import EmptyPostsMessage from '@/components/features/posts/EmptyPostsMessage'
+import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
 import postsService from '@/services/posts'
 import Loading from '@/components/ui/Loading'
-import HomePostCard from '@/components/features/posts/HomePostCard'
+import HomePostCard from '@/features/posts/components/HomePostCard'
 import type { SearchResult } from '@/types/posts'
 
 export default function Home() {

@@ -4,7 +4,7 @@ import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 import { getErrorMessage } from '@/utils/auth'
 import { useNotificationActions } from '@/stores/notification'
-import EmptyPostsMessage from '@/components/features/posts/EmptyPostsMessage'
+import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
 import postsService from '@/services/posts'
 import Loading from '@/components/ui/Loading'
 
@@ -53,7 +53,9 @@ export default function InfiniteScroll({
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
 
-  if (isLoading) {return <Loading text='Loading posts' />}
+  if (isLoading) {
+    return <Loading text='Loading posts' />
+  }
 
   const posts = data?.pages.flatMap((page) => page.data) ?? []
 

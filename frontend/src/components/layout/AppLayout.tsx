@@ -1,5 +1,5 @@
 import { Box, Stack } from '@mui/material'
-import NavigationBar from '../structure/NavigationBar'
+import NavigationBar from '@/components/layout/NavigationBar'
 import { Outlet } from 'react-router'
 
 export default function MainLayout() {

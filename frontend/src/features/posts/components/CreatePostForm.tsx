@@ -1,19 +1,10 @@
 import { HazardType } from '@/types/hazards'
-import HazardMap from '@/components/features/map/HazardMap'
+import PostMap from '@/features/map/components/PostMap'
 import useField from '@/hooks/useField'
-import { useState, useEffect } from 'react'
-import {
-  TextField,
-  Button,
-  MenuItem,
-  ToggleButtonGroup,
-  ToggleButton,
-  Typography,
-  Box,
-} from '@mui/material'
+import { TextField, Button, MenuItem } from '@mui/material'
 import postsService from '@/services/posts'
 import { useNavigate } from 'react-router'
-import type { HazardPosition, HazardPositionMode } from '@/types/hazards'
+import type { HazardPosition } from '@/types/hazards'
 import { getErrorMessage } from '@/utils/auth'
 import type { CreatePost } from '@/types/posts'
 import { appRoutes } from '@/constants/routes'
@@ -22,38 +13,14 @@ import FormContainer from '@/components/ui/FormContainer'
 import { useNotificationActions } from '@/stores/notification'
 
 export default function CreatePostForm() {
+  const navigate = useNavigate()
+  const queryClient = useQueryClient()
+  const { showNotification, createNotification } = useNotificationActions()
+
   const title = useField('')
   const description = useField('')
   const hazardType = useField<HazardType>('earthquake')
-  const [selectLocationMode, setSelectLocationMode] =
-    useState<HazardPositionMode>('current')
-  const [hazardPosition, setHazardPosition] = useState<HazardPosition | null>(
-    null,
-  )
-
-  const getCurrentPosition = () => {
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        setHazardPosition({
-          longitude: pos.coords.longitude,
-          latitude: pos.coords.latitude,
-        })
-      },
-      (err) => {
-        console.error(err)
-        setHazardPosition(null)
-      },
-    )
-  }
-
-  useEffect(() => {
-    getCurrentPosition()
-  }, [])
-
-  const { showNotification, createNotification } = useNotificationActions()
-
-  const navigate = useNavigate()
-  const queryClient = useQueryClient()
+  const hazardPosition = useField<HazardPosition | null>(null)
 
   const { mutate, isPending } = useMutation({
     mutationFn: (post: CreatePost) => postsService.createPost(post),
@@ -74,31 +41,16 @@ export default function CreatePostForm() {
 
   function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (!hazardPosition) {
+    if (!hazardPosition.value) {
       return
     }
     mutate({
       title: title.value,
       description: description.value,
       hazardType: hazardType.value,
-      longitude: hazardPosition['longitude'],
-      latitude: hazardPosition['latitude'],
+      longitude: hazardPosition.value['longitude'],
+      latitude: hazardPosition.value['latitude'],
     })
-  }
-
-  function handleChangeSelectLocationMode(
-    _event: React.MouseEvent<HTMLElement, MouseEvent>,
-    newMode: HazardPositionMode,
-  ) {
-    if (!newMode) {
-      setHazardPosition(null)
-    }
-
-    if (newMode === 'current') {
-      getCurrentPosition()
-    }
-
-    setSelectLocationMode(newMode)
   }
 
   return (
@@ -139,47 +91,16 @@ export default function CreatePostForm() {
           </MenuItem>
         ))}
       </TextField>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'start',
-          justifyContent: 'center',
-          gap: 2,
-        }}
-      >
-        <Typography
-          component='p'
-          variant='body2'
-          sx={{ margin: 0, fontSize: '', color: 'text.disabled' }}
-        >
-          Set the hazard location
-        </Typography>
-
-        <ToggleButtonGroup
-          color='primary'
-          value={selectLocationMode}
-          exclusive
-          onChange={handleChangeSelectLocationMode}
-          aria-label='Location selection mode'
-          size='small'
-        >
-          <ToggleButton value='current'>Use current location</ToggleButton>
-
-          <ToggleButton value='map'>Select on map</ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
-      {selectLocationMode === 'map' && (
-        <HazardMap
-          onLocationSelect={(longitude: number, latitude: number) =>
-            setHazardPosition({ longitude, latitude })
-          }
-          longitude={hazardPosition?.longitude}
-          latitude={hazardPosition?.latitude}
-          isLoading={isPending}
-          flyToLocation={false}
-        />
-      )}
+      <PostMap
+        onLocationSelect={(longitude: number, latitude: number) =>
+          hazardPosition.setValue({ longitude, latitude })
+        }
+        longitude={hazardPosition.value?.longitude}
+        latitude={hazardPosition.value?.latitude}
+        isLoading={isPending}
+        flyToLocation={false}
+        setHazardPosition={hazardPosition.setValue}
+      />
       <Button
         disabled={
           !hazardPosition || !title.value || !description.value || isPending

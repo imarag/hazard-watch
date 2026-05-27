@@ -4,7 +4,7 @@ import RoomIcon from '@mui/icons-material/Room'
 import { Link as RouterLink } from 'react-router'
 import { formatDate } from '@/utils/typography'
 import { formatCoordinates } from '@/utils/geometry'
-import HazardChip from '@/components/features/posts/HazardChip'
+import HazardChip from '@/features/hazards/components/HazardChip'
 
 interface SearchPostCardProps {
   post: Post
@@ -75,10 +75,7 @@ export default function SearchPostCard({ post }: SearchPostCardProps) {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                 <RoomIcon sx={{ fontSize: 13 }} />
                 <Typography variant='caption' sx={{ fontFamily: 'monospace' }}>
-                  {formatCoordinates(
-                    post.longitude,
-                    post.latitude,
-                  )}
+                  {formatCoordinates(post.longitude, post.latitude)}
                 </Typography>
               </Box>
             </Box>

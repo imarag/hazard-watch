@@ -1,6 +1,6 @@
 import MyLocationIcon from '@mui/icons-material/MyLocation'
 import { useMapEvents } from 'react-leaflet'
-import MapButton from '@/components/map/MapButton'
+import MapButton from '@/features/map/components/MapButton'
 import type { MapPosition } from '@/types/map'
 import { getPositionProps } from '@/constants/map'
 import { Box } from '@mui/material'

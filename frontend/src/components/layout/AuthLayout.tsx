@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import BackToHomeAction from '../actions/BackToHomeAction'
+import BackToHomeAction from '@/components/ui/BackToHomeAction'
 import { Outlet } from 'react-router'
 
 export default function AuthLayout() {

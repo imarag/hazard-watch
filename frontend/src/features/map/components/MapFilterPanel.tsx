@@ -1,11 +1,11 @@
 import { Box, Divider } from '@mui/material'
 import type { Post } from '@/types/posts'
 import { HazardType, type DateFilterValue } from '@/types/hazards'
-import HazardTypeFilter from '@/components/features/map/HazardTypeFilter'
-import PostDateFilter from '@/components/features/map/PostDateFilter'
-import FilterPanelHeader from '@/components/features/interactive-map/FilterPanelHeader'
-import FilterPanelFooter from '@/components/features/interactive-map/FilterPanelFooter'
-import FilterPanelSection from '@/components/features/interactive-map/FilterPanelSection'
+import HazardTypeFilter from '@/features/map/components/HazardTypeFilter'
+import PostDateFilter from '@/features/map/components/PostDateFilter'
+import FilterPanelHeader from '@/features/map/components/FilterPanelHeader'
+import FilterPanelFooter from '@/features/map/components/FilterPanelFooter'
+import FilterPanelSection from '@/features/map/components/FilterPanelSection'
 
 interface FiltersPanelProps {
   posts: Post[]

@@ -1,12 +1,18 @@
-import { Marker } from 'react-leaflet'
-import Map from '@/components/features/map/Map'
-import MarkerTooltip from '@/components/features/interactive-map/MarkerToolTip'
-import MapLoading from '@/components/features/map/MapLoading'
-import MapFilterPanel from '@/components/features/map/MapFilterPanel'
+import Map from '@/features/map/components/Map'
+import MarkerTooltip from '@/features/map/components/MarkerToolTip'
+import MapMarker from '@/features/map/components/MapMarker'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-import OpenFilterPanelButton from '@/components/features/interactive-map/OpenFilterPanelButton'
+import type { Post } from '@/types/posts'
+import { hazardMeta } from '@/constants/hazards'
+import { postMeta } from '@/constants/posts'
 
-export default function MainMap() {
+interface MainMapProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  hazardsData: any[]
+  posts: Post[]
+}
+
+export default function MainMap({ hazardsData, posts }: MainMapProps) {
   return (
     <Map
       height='100%'
@@ -15,7 +21,36 @@ export default function MainMap() {
       attributionControl={false}
       buttonIconSize='large'
     >
-      <></>
+      {hazardsData.map(({ hazard, data }) => (
+        <MarkerClusterGroup key={hazard}>
+          {data.features.map((feature) => {
+            const [lon, lat] = feature.geometry.coordinates
+            return (
+              <MapMarker
+                key={feature.properties?.id}
+                lat={lat}
+                lon={lon}
+                color={hazardMeta[hazard]['backgroundColor']}
+                icon={hazardMeta[hazard]['muiIcon']}
+              />
+            )
+          })}
+        </MarkerClusterGroup>
+      ))}
+      <MarkerClusterGroup>
+        {posts.map((post) => (
+          <MapMarker
+            key={post.id}
+            lat={post.latitude}
+            lon={post.longitude}
+            color={postMeta['backgroundColor']}
+            icon={postMeta['muiIcon']}
+            tooltip={post}
+          />
+          //   <MarkerTooltip post={post} />
+          // </MapMarker>
+        ))}
+      </MarkerClusterGroup>
       {/* <MapLoading text='Loading posts...' open={isLoading} />
       {!openFilterPanel && (
         <OpenFilterPanelButton
@@ -35,13 +70,6 @@ export default function MainMap() {
           onClosePanel={() => setOpenFilterPanel(false)}
         />
       )} */}
-      {/* <MarkerClusterGroup>
-        {filteredPosts.map((post) => (
-          <Marker key={post.id} position={[post.latitude, post.longitude]}>
-            <MarkerTooltip post={post} />
-          </Marker>
-        ))}
-      </MarkerClusterGroup> */}
     </Map>
   )
 }

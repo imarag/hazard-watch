@@ -1,8 +1,8 @@
 import type { Post } from '@/types/posts'
 import { Card, Divider, Box } from '@mui/material'
-import HomePostCardActions from '@/components/features/posts/HomePostCardActions'
-import HomePostCardBody from '@/components/features/posts/HomePostCardBody'
-import HomePostCardTitle from '@/components/features/posts/HomePostCardTitle'
+import HomePostCardActions from '@/features/posts/components/HomePostCardActions'
+import HomePostCardBody from '@/features/posts/components/HomePostCardBody'
+import HomePostCardTitle from '@/features/posts/components/HomePostCardTitle'
 
 interface PostProps {
   post: Post

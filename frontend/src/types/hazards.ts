@@ -36,3 +36,72 @@ export type HazardPosition = {
   longitude: number
   latitude: number
 }
+
+export type USGSEarthquakeResponse = {
+  type: 'FeatureCollection'
+  metadata: object
+  features: {
+    type: 'Feature'
+    id: string
+    properties: {
+      mag: number | null
+      place: string | null
+      time: number
+      tsunami: number
+      status: 'reviewed' | 'automatic'
+      url: string
+      alert: 'green' | 'yellow' | 'orange' | 'red' | null
+    }
+    geometry: {
+      type: 'Point'
+      coordinates: [number, number, number]
+    }
+  }[]
+}
+
+export type GVPVolcanoResponse = {
+  type: 'FeatureCollection'
+  features: {
+    type: 'Feature'
+    id: string
+    properties: {
+      Volcano_Number: number
+      Volcano_Name: string
+      Primary_Volcano_Type: string | null
+      Country: string | null
+      Region: string | null
+      Subregion: string | null
+      Elevation: number | null
+      Dominant_Rock_Type: string | null
+      Tectonic_Setting: string | null
+      Last_Known_Eruption: string | null
+    }
+    geometry: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+  }[]
+}
+
+export type GVPEruptionResponse = {
+  type: 'FeatureCollection'
+  features: {
+    type: 'Feature'
+    id: string
+    properties: {
+      Volcano_Number: number
+      Volcano_Name: string
+      Eruption_Number: number
+      Eruption_Category: string | null
+      Start_Year: number | null
+      End_Year: number | null
+      VEI: number | null
+      VEI_Modifier: string | null
+      Evidence_Method_Dating: string | null
+    }
+    geometry: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+  }[]
+}

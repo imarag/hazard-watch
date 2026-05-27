@@ -2,7 +2,7 @@ import type { Post } from '@/types/posts'
 import { Stack, Avatar, Typography, Box } from '@mui/material'
 import { formatDate } from '@/utils/typography'
 import type { User } from '@/types/users'
-import HazardChip from '@/components/features/posts/HazardChip'
+import HazardChip from '@/features/hazards/components/HazardChip'
 
 interface HomePostCardTitleProps {
   user: User | null

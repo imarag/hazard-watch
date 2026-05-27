@@ -3,8 +3,8 @@ import { formatCoordinates } from '@/utils/geometry'
 import { hazardIconMapping } from '@/constants/hazards'
 import { formatDate } from '@/utils/typography'
 import type { Post } from '@/types/posts'
-import PostCardText from '@/components/features/view-post/PostCardText'
-import PostCardItem from '@/components/features/view-post/PostCardItem'
+import PostCardText from '@/features/posts/components/PostCardText'
+import PostCardItem from '@/features/posts/components/PostCardItem'
 
 interface PostViewInfoBodyProps {
   post: Post

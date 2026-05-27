@@ -1,25 +1,39 @@
 import { Box } from '@mui/material'
 import { useState } from 'react'
-import postsService from '@/services/posts'
-import { DateFilter, HazardType, type DateFilterValue } from '@/types/hazards'
-import { filterDate } from '@/utils/date'
-import { useQuery } from '@tanstack/react-query'
+import { HazardType } from '@/types/hazards'
+import ExploreHazardSidebar from '@/features/hazards/components/ExploreHazardSidebar'
+import MainMap from '@/features/map/components/MainMap'
+import { useQueries, useQuery } from '@tanstack/react-query'
+import { fetchHazard } from '@/services/hazards'
 import { useNotificationActions } from '@/stores/notification'
 import { getErrorMessage } from '@/utils/auth'
-import MainMap from '../features/interactive-map/MainMap'
+import postsService from '@/services/posts'
 
 export default function Explore() {
   const { showNotification, createNotification } = useNotificationActions()
+  const [enabledHazards, setEnabledHazards] = useState<HazardType[]>([])
+  const [showPosts, setShowPosts] = useState(false)
 
-  const allHazards: HazardType[] = Object.values(HazardType)
-  const [openFilterPanel, setOpenFilterPanel] = useState(false)
-  const [hazardTypeSelected, setHazardTypeSelected] = useState<HazardType[]>(
-    () => allHazards,
+  const hazardQueries = useQueries({
+    queries: enabledHazards.map((hazard) => ({
+      queryKey: ['hazards', hazard],
+      queryFn: () => fetchHazard(hazard),
+      staleTime: 5 * 60 * 1000,
+    })),
+  })
+
+  const hazardsData = hazardQueries
+    .map((q, index) => ({
+      hazard: enabledHazards[index],
+      data: q.data,
+    }))
+    .filter((h) => h.data !== undefined)
+
+  const hazardQueryMap = Object.fromEntries(
+    enabledHazards.map((hazard, index) => [hazard, hazardQueries[index]]),
   )
-  const [postDateSelected, setPostDateSelected] =
-    useState<DateFilterValue>('all')
 
-  const { data: posts = [], isLoading } = useQuery({
+  const { data: postsData = [], isLoading: postsLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
       try {
@@ -36,27 +50,25 @@ export default function Explore() {
       }
     },
     staleTime: 5 * 60 * 1000,
+    enabled: showPosts,
   })
 
-  function handleClearFilters() {
-    setHazardTypeSelected(allHazards)
-    setPostDateSelected(DateFilter[DateFilter.length - 1].value)
-  }
-
-  const filteredPosts = posts.filter(
-    (post) =>
-      hazardTypeSelected.includes(post.hazardType) &&
-      filterDate(post.createdAt, postDateSelected),
-  )
+  const posts = showPosts ? postsData : []
 
   return (
     <Box sx={{ height: '100%', position: 'relative', display: 'flex' }}>
-      <div></div>
-      <Box sx={{ flexGrow: 1, height: '100%' }}>
-        <MainMap
-          openFilterPanel={openFilterPanel}
-          setOpenFilterPanel={setOpenFilterPanel}
+      <Box sx={{ paddingInline: 2, paddingBlock: 4, width: 200 }}>
+        <ExploreHazardSidebar
+          enabledHazards={enabledHazards}
+          setEnabledHazards={setEnabledHazards}
+          hazardQueryMap={hazardQueryMap}
+          postsLoading={postsLoading}
+          showPosts={showPosts}
+          setShowPosts={setShowPosts}
         />
+      </Box>
+      <Box sx={{ flexGrow: 1, height: '100%' }}>
+        <MainMap hazardsData={hazardsData} posts={posts} />
       </Box>
     </Box>
   )

@@ -1,7 +1,7 @@
 import FloodIcon from '@mui/icons-material/Flood'
-import LandslideIcon from '@mui/icons-material/Landslide'
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm'
+import PublicIcon from '@mui/icons-material/Public'
 import type { HazardType, HazardMeta } from '@/types/hazards'
 import type { SortField } from '@/types/posts'
 
@@ -9,25 +9,25 @@ export const hazardMeta: Record<HazardType, HazardMeta> = {
   flood: {
     name: 'Flood',
     muiIcon: FloodIcon,
-    backgroundColor: '#3b6c8a',
+    backgroundColor: '#1e6091', // deeper blue
     color: '#ffffff',
   },
   earthquake: {
     name: 'Earthquake',
-    muiIcon: LandslideIcon,
-    backgroundColor: '#8c4a3f',
+    muiIcon: PublicIcon, // ✅ globe cracks = earthquake
+    backgroundColor: '#7d4e3a', // earthy brown
     color: '#ffffff',
   },
   wildfire: {
     name: 'Wildfire',
     muiIcon: LocalFireDepartmentIcon,
-    backgroundColor: '#b8693a',
+    backgroundColor: '#c0392b', // stronger red
     color: '#ffffff',
   },
   storm: {
     name: 'Storm',
     muiIcon: ThunderstormIcon,
-    backgroundColor: '#5a4e7a',
+    backgroundColor: '#4a3f6b', // deeper purple
     color: '#ffffff',
   },
 }
@@ -41,7 +41,7 @@ export const sortOptions: { value: SortField; label: string }[] = [
 
 export const hazardIconMapping = {
   flood: FloodIcon,
-  earthquake: LandslideIcon,
+  earthquake: PublicIcon, // ✅ consistent with hazardMeta
   storm: ThunderstormIcon,
   wildfire: LocalFireDepartmentIcon,
 }

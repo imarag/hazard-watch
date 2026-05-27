@@ -1,4 +1,5 @@
 import type { HazardType } from '@/types/hazards'
+import type { SvgIconComponent } from '@mui/icons-material'
 
 export type Post = {
   id: string
@@ -13,7 +14,10 @@ export type Post = {
   latitude: number
 }
 
-export type CreatePost = Pick<Post, 'title' | 'hazardType' | 'description' | 'longitude' | 'latitude' >
+export type CreatePost = Pick<
+  Post,
+  'title' | 'hazardType' | 'description' | 'longitude' | 'latitude'
+>
 
 export type SortField = 'createdAt' | 'hazardType' | 'title' | 'author'
 
@@ -27,4 +31,10 @@ export type SearchParams = {
 export type SearchResult = {
   posts: Post[]
   hasMore: boolean
+}
+
+export type PostMeta = {
+  muiIcon: SvgIconComponent
+  color: string
+  backgroundColor: string
 }

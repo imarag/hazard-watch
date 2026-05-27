@@ -1,6 +1,6 @@
 import { MapContainer, TileLayer, AttributionControl } from 'react-leaflet'
-import ZoomControlButtons from '@/components/features/map/ZoomControlButtons'
-import GetCurrentPosition from '@/components/features/map/GeCurrentPosition'
+import ZoomControlButtons from '@/features/map/components/ZoomControlButtons'
+import GetCurrentPositionButton from '@/features/map/components/GetCurrentPositionButton'
 import React from 'react'
 
 interface MapProps {
@@ -37,7 +37,7 @@ export default function Map({
       <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
       <AttributionControl position='bottomleft' />
       <ZoomControlButtons size={buttonIconSize} position='topleft' />
-      <GetCurrentPosition size={buttonIconSize} position='bottomright' />
+      <GetCurrentPositionButton size={buttonIconSize} position='bottomright' />
       {children}
     </MapContainer>
   )

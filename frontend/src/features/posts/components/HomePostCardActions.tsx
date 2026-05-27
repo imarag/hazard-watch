@@ -1,9 +1,9 @@
 import type { Post } from '@/types/posts'
 import { Box } from '@mui/material'
 import { useCurrentUser } from '@/stores/auth'
-import GoToEditPostAction from '@/features/actions/GoToEditPostAction'
-import DeletePostAction from '@/features/actions/DeletePostAction'
-import ViewPostAction from '@/features/actions/ViewPostAction'
+import GoToEditPostAction from '@/features/posts/components/GoToEditPostAction'
+import DeletePostAction from '@/features/posts/components/DeletePostAction'
+import ViewPostAction from '@/features/posts/components/ViewPostAction'
 
 interface HomePostCardActionsProps {
   post: Post
