@@ -7,7 +7,7 @@ import { useQueries, useQuery } from '@tanstack/react-query'
 import { fetchHazard } from '@/services/hazards'
 import { useNotificationActions } from '@/stores/notification'
 import { getErrorMessage } from '@/utils/auth'
-import postsService from '@/services/posts'
+import { getAllPosts } from '@/services/posts'
 
 export default function Explore() {
   const { showNotification, createNotification } = useNotificationActions()
@@ -27,17 +27,25 @@ export default function Explore() {
       hazard: enabledHazards[index],
       data: q.data,
     }))
-    .filter((h) => h.data !== undefined)
+    .filter((q) => q.data !== undefined)
 
+  // to check which hazard is currenly loading
   const hazardQueryMap = Object.fromEntries(
     enabledHazards.map((hazard, index) => [hazard, hazardQueries[index]]),
   )
+
+  const hazardCounts = Object.fromEntries(
+    hazardQueries.map((q, index) => [
+      enabledHazards[index],
+      q.data?.features.length ?? 0,
+    ]),
+  ) as Partial<Record<HazardType, number>>
 
   const { data: postsData = [], isLoading: postsLoading } = useQuery({
     queryKey: ['posts'],
     queryFn: async () => {
       try {
-        return await postsService.getAllPosts()
+        return await getAllPosts()
       } catch (error: unknown) {
         const errorMessage = getErrorMessage(error)
         showNotification(
@@ -57,7 +65,7 @@ export default function Explore() {
 
   return (
     <Box sx={{ height: '100%', position: 'relative', display: 'flex' }}>
-      <Box sx={{ paddingInline: 2, paddingBlock: 4, width: 200 }}>
+      <Box sx={{ paddingInline: 2, paddingBlock: 4, width: 300 }}>
         <ExploreHazardSidebar
           enabledHazards={enabledHazards}
           setEnabledHazards={setEnabledHazards}
@@ -65,6 +73,8 @@ export default function Explore() {
           postsLoading={postsLoading}
           showPosts={showPosts}
           setShowPosts={setShowPosts}
+          totalPosts={posts.length}
+          hazardCounts={hazardCounts}
         />
       </Box>
       <Box sx={{ flexGrow: 1, height: '100%' }}>

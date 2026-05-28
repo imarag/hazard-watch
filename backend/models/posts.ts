@@ -16,8 +16,7 @@ const descriptionField = z
 
 const hazardTypeField = z.enum([
   HazardType.EARTHQUAKE,
-  HazardType.FLOOD,
-  HazardType.STORM,
+  HazardType.ERUPTION,
   HazardType.WILDFIRE,
 ])
 

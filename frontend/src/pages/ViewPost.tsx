@@ -3,7 +3,7 @@ import Loading from '@/components/ui/Loading'
 import { getErrorMessage } from '@/utils/auth'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import postsService from '@/services/posts'
+import { getPostById } from '@/services/posts'
 import ViewPostInfoCard from '@/features/posts/components/ViewPostInfoCard'
 // import ViewMap from '@/features/posts/components/ViewMap'
 import DeletePostAction from '@/features/posts/components/DeletePostAction'
@@ -23,7 +23,7 @@ export default function ViewPost() {
     enabled: !!postId,
     queryFn: async () => {
       try {
-        return await postsService.getPostById(postId!)
+        return await getPostById(postId!)
       } catch (error: unknown) {
         showNotification(
           createNotification(

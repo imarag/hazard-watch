@@ -8,11 +8,11 @@ import type {
 
 const baseUrl = '/posts'
 
-const getAllPosts = async (): Promise<Post[]> => {
+export const getAllPosts = async (): Promise<Post[]> => {
   const res = await api.get(baseUrl)
   return res.data
 }
-const searchPosts = async ({
+export const searchPosts = async ({
   page,
   q,
 }: SearchParams): Promise<SearchResult> => {
@@ -22,42 +22,24 @@ const searchPosts = async ({
   return res.data
 }
 
-const getPostById = async (id: string): Promise<Post> => {
+export const getPostById = async (id: string): Promise<Post> => {
   const res = await api.get(`${baseUrl}/${id}`)
   return res.data
 }
 
-const createPost = async (post: CreatePost): Promise<Post> => {
+export const createPost = async (post: CreatePost): Promise<Post> => {
   const res = await api.post(baseUrl, post)
   return res.data
 }
 
-const updatePost = async (id: string, post: CreatePost): Promise<Post> => {
+export const updatePost = async (
+  id: string,
+  post: CreatePost,
+): Promise<Post> => {
   const res = await api.put(`${baseUrl}/${id}`, post)
   return res.data
 }
 
-const deletePost = async (id: string): Promise<void> => {
+export const deletePost = async (id: string): Promise<void> => {
   await api.delete(`${baseUrl}/${id}`)
-}
-
-const likePost = async (postId: string): Promise<Post> => {
-  const res = await api.post(`${baseUrl}/${postId}/likes`)
-  return res.data
-}
-
-const unlikePost = async (postId: string): Promise<Post> => {
-  const res = await api.delete(`${baseUrl}/${postId}/likes`)
-  return res.data
-}
-
-export default {
-  getAllPosts,
-  getPostById,
-  createPost,
-  updatePost,
-  deletePost,
-  searchPosts,
-  likePost,
-  unlikePost,
 }

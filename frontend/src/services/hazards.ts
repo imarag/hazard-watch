@@ -4,6 +4,6 @@ import { HazardType } from '@/types/hazards'
 const baseUrl = '/hazards'
 
 export const fetchHazard = async (type: HazardType) => {
-  const res = await plainAxios.get(`${baseUrl}/${type}`)
+  const res = await plainAxios.get(`${baseUrl}/${type}s`)
   return res.data
 }

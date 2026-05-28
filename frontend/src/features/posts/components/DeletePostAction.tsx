@@ -3,7 +3,7 @@ import ActionButton from '@/components/ui/ActionButton'
 import { getErrorMessage } from '@/utils/auth'
 import { appRoutes } from '@/constants/routes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import postsService from '@/services/posts'
+import { deletePost } from '@/services/posts'
 import { useNavigate } from 'react-router'
 import { useCurrentUser, useIsUserLoggedIn } from '@/stores/auth'
 import type { Post } from '@/types/posts'
@@ -21,7 +21,7 @@ export default function DeletePostAction({ post }: DeletePostActionProps) {
   const isUserLoggedIn = useIsUserLoggedIn()
 
   const { mutate, isPending } = useMutation({
-    mutationFn: () => postsService.deletePost(post.id),
+    mutationFn: () => deletePost(post.id),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })
       navigate(appRoutes.home.path)

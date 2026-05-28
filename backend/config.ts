@@ -26,6 +26,7 @@ const envConfig = {
   RESEND_API_KEY: process.env['RESEND_API_KEY'],
   MAIL_FROM: process.env['MAIL_FROM'],
   CLIENT_URL: process.env['CLIENT_URL'],
+  FIRMS_MAP_KEY: process.env['FIRMS_MAP_KEY'],
 }
 
 const rawConfig = {
@@ -48,6 +49,7 @@ const configSchema = z.object({
   CLIENT_URL: z.string(),
   REFRESH_TOKEN_DUR: z.number(),
   ACCESS_TOKEN_DUR: z.number(),
+  FIRMS_MAP_KEY: z.string(),
 })
 
 const config = configSchema.parse(rawConfig)

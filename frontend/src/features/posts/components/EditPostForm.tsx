@@ -6,7 +6,7 @@ import type { Post } from '@/types/posts'
 import useField from '@/hooks/useField'
 import PostMap from '@/features/map/components/PostMap'
 import FormContainer from '@/components/ui/FormContainer'
-import postsService from '@/services/posts'
+import { updatePost } from '@/services/posts'
 import { useNotificationActions } from '@/stores/notification'
 import { appRoutes } from '@/constants/routes'
 import { getErrorMessage } from '@/utils/auth'
@@ -28,7 +28,7 @@ export default function EditPostForm({ post }: EditPostFormProps) {
 
   const { mutate, isPending } = useMutation({
     mutationFn: (position: HazardPosition) =>
-      postsService.updatePost(post.id, {
+      updatePost(post.id, {
         title: title.value,
         description: description.value,
         hazardType: hazardType.value,

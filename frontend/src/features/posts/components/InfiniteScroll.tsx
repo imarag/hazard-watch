@@ -5,7 +5,7 @@ import { useInView } from 'react-intersection-observer'
 import { getErrorMessage } from '@/utils/auth'
 import { useNotificationActions } from '@/stores/notification'
 import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
-import postsService from '@/services/posts'
+import { searchPosts } from '@/services/posts'
 import Loading from '@/components/ui/Loading'
 
 interface InfiniteScrollProps {
@@ -26,7 +26,7 @@ export default function InfiniteScroll({
         : ['posts', 'feed'],
       queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
         try {
-          return await postsService.searchPosts({
+          return await searchPosts({
             cursor: pageParam,
             limit: 3,
             q: searchParam,

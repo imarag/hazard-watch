@@ -24,14 +24,14 @@ export default function HazardMarker({
   lon: number
   icon: SvgIconComponent
   color: string
-  tooltip: Record<string, unknown>
+  tooltip?: Record<string, unknown>
 }) {
   if (lat == null || lon == null) {
     return null
   }
   return (
     <Marker position={[lat, lon]} icon={createIcon(icon, color)}>
-      <MarkerTooltip tooltip={tooltip} />
+      {tooltip && <MarkerTooltip tooltip={tooltip} />}
     </Marker>
   )
 }

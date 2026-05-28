@@ -6,7 +6,7 @@ import useInfiniteScroll from '@/hooks/useInfiniteScroll'
 import { getErrorMessage } from '@/utils/auth'
 import { useNotificationActions } from '@/stores/notification'
 import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
-import postsService from '@/services/posts'
+import { searchPosts } from '@/services/posts'
 import Loading from '@/components/ui/Loading'
 import type { Post, SearchResult } from '@/types/posts'
 
@@ -50,7 +50,7 @@ export default function Search() {
       queryKey: ['posts', 'search', searchParam],
       queryFn: async ({ pageParam }: { pageParam: number }) => {
         try {
-          return await postsService.searchPosts({
+          return await searchPosts({
             page: pageParam,
             q: searchParam,
           })

@@ -1,4 +1,4 @@
-import { Box, Stack, Typography, Divider } from '@mui/material'
+import { Box, Stack, Typography } from '@mui/material'
 import { Tooltip } from 'react-leaflet'
 
 export default function MarkerTooltip({

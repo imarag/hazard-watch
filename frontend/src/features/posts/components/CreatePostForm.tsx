@@ -2,7 +2,7 @@ import { HazardType } from '@/types/hazards'
 import PostMap from '@/features/map/components/PostMap'
 import useField from '@/hooks/useField'
 import { TextField, Button, MenuItem } from '@mui/material'
-import postsService from '@/services/posts'
+import { createPost } from '@/services/posts'
 import { useNavigate } from 'react-router'
 import type { HazardPosition } from '@/types/hazards'
 import { getErrorMessage } from '@/utils/auth'
@@ -23,7 +23,7 @@ export default function CreatePostForm() {
   const hazardPosition = useField<HazardPosition | null>(null)
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (post: CreatePost) => postsService.createPost(post),
+    mutationFn: (post: CreatePost) => createPost(post),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['posts'] })
       showNotification(

@@ -8,7 +8,7 @@ import { useNotificationActions } from '@/stores/notification'
 import { useIsUserLoggedIn } from '@/stores/auth'
 
 import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
-import postsService from '@/services/posts'
+import { searchPosts } from '@/services/posts'
 import Loading from '@/components/ui/Loading'
 import HomePostCard from '@/features/posts/components/HomePostCard'
 import type { SearchResult } from '@/types/posts'
@@ -22,7 +22,7 @@ export default function Home() {
       queryKey: ['posts', 'search'],
       queryFn: async ({ pageParam }: { pageParam: number }) => {
         try {
-          return await postsService.searchPosts({
+          return await searchPosts({
             page: pageParam,
           })
         } catch (error: unknown) {

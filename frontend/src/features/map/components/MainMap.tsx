@@ -1,5 +1,4 @@
 import Map from '@/features/map/components/Map'
-import MarkerTooltip from '@/features/map/components/MarkerToolTip'
 import MapMarker from '@/features/map/components/MapMarker'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import type { Post } from '@/types/posts'
@@ -32,6 +31,7 @@ export default function MainMap({ hazardsData, posts }: MainMapProps) {
                 lon={lon}
                 color={hazardMeta[hazard]['backgroundColor']}
                 icon={hazardMeta[hazard]['muiIcon']}
+                tooltip={feature.properties}
               />
             )
           })}
@@ -47,8 +47,6 @@ export default function MainMap({ hazardsData, posts }: MainMapProps) {
             icon={postMeta['muiIcon']}
             tooltip={post}
           />
-          //   <MarkerTooltip post={post} />
-          // </MapMarker>
         ))}
       </MarkerClusterGroup>
       {/* <MapLoading text='Loading posts...' open={isLoading} />

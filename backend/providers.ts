@@ -1,3 +1,5 @@
+import config from "./config.ts"
+
 export const providers = {
   usgs: {
     earthquakes: {
@@ -7,18 +9,7 @@ export const providers = {
       },
     },
   },
-
   gvp: {
-    volcanoes: {
-      baseUrl: 'https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows',
-      defaults: {
-        service: 'WFS',
-        version: '1.1.0',
-        request: 'GetFeature',
-        outputFormat: 'application/json',
-        typeName: 'GVP-VOTW:Smithsonian_VOTW_Holocene_Volcanoes',
-      },
-    },
     eruptions: {
       baseUrl: 'https://webservices.volcano.si.edu/geoserver/GVP-VOTW/ows',
       defaults: {
@@ -30,4 +21,14 @@ export const providers = {
       },
     },
   },
+  firms: {
+  wildfires: {
+    baseUrl: `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${config.FIRMS_MAP_KEY}`,
+    defaults: {
+      source: 'VIIRS_SNPP_NRT',
+      area: 'world',
+      dayRange: 1,
+    },
+  },
+},
 } as const
