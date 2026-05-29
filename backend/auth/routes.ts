@@ -1,21 +1,21 @@
 import express from 'express'
-import type { UserLogin, UserRegister } from '../models/users.js'
+import type { UserLogin, UserRegister } from '../users/schema.ts'
 import {
   UserForgotPasswordSchema,
   UserLoginSchema,
   UserRegisterSchema,
   UserResetPasswordSchema,
-} from '../models/users.js'
-import usersService from '../services/users.js'
+} from '../users/schema.ts'
+import usersService from '../users/services.ts'
 import {
   compareHashed,
   verifyJWTToken,
   createJWTToken,
   hashPassword,
-} from '../utils/auth.js'
-import config from '../config.js'
-import { sendMail } from '../utils/mailer.js'
-import { logger } from '../utils/logger.js'
+} from '../auth/utils.ts'
+import config from '../lib/config.js'
+import { sendMail } from '../lib/mailer.js'
+import { logger } from '../lib/logger.js'
 import { AppError } from '../errors.js'
 import { prisma } from '../lib/prisma.ts'
 
@@ -124,7 +124,7 @@ router.post('/forgot-password', async (req, res) => {
   const body = req.body
   const payload = UserForgotPasswordSchema.parse(body)
 
-  const user = await prisma.user.findUnique({ where: { email: payload.email} })
+  const user = await prisma.user.findUnique({ where: { email: payload.email } })
 
   // Always return the same message to prevent email enumeration
   const genericResponse = {
@@ -187,7 +187,10 @@ router.post('/reset-password', async (req, res) => {
 
   const hashedPassword = await hashPassword(payload.newPassword)
 
-  await prisma.user.update({ where: { id: decoded.id }, data: { password: hashedPassword }})
+  await prisma.user.update({
+    where: { id: decoded.id },
+    data: { password: hashedPassword },
+  })
 
   return res.json({ message: 'Password reset successful' })
 })

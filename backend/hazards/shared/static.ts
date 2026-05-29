@@ -1,4 +1,4 @@
-import config from "./config.ts"
+import config from '../../lib/config.ts'
 
 export const providers = {
   usgs: {
@@ -22,13 +22,9 @@ export const providers = {
     },
   },
   firms: {
-  wildfires: {
-    baseUrl: `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${config.FIRMS_MAP_KEY}`,
-    defaults: {
-      source: 'VIIRS_SNPP_NRT',
-      area: 'world',
-      dayRange: 1,
+    wildfires: {
+      baseUrl: `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${config.FIRMS_MAP_KEY}`,
+      defaults: {},
     },
   },
-},
 } as const

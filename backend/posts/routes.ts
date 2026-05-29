@@ -1,12 +1,12 @@
 import express from 'express'
-import postService from '../services/posts.js'
+import postService from '../posts/services.ts'
 import {
   CreatePostPayloadSchema,
   UpdatePostPayloadSchema,
-} from '../models/posts.js'
-import type { CreatePostData } from '../models/posts.js'
+} from '../posts/schema.ts'
+import type { CreatePostData } from '../posts/schema.ts'
 import { requireAuth, requireOwnership } from '../middleware.js'
-import { SearchParamsSchema } from '../models/posts.js'
+import { SearchParamsSchema } from '../posts/schema.ts'
 
 const router = express.Router()
 
@@ -51,6 +51,5 @@ router.delete('/:id', requireAuth, requireOwnership, async (req, res) => {
   await postService.deletePost(postId)
   return res.status(204).send()
 })
-
 
 export default router

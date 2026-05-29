@@ -1,16 +1,14 @@
 import express from 'express'
 import { z } from 'zod'
-import { getEarthquakes, getEruptions, getWildfires } from '../services/hazards.ts'
-import {
-  earthquakeQueryParamsSchema,
-  eruptionQueryParamsSchema,
-  wildfireQueryParamsSchema
-} from '../models/hazards.ts'
+import { getEarthquakes, getEruptions, getWildfires } from './services.ts'
+import { USGSEarthquakeQueryParamsSchema } from '../earthquakes/schema.ts'
+import { GVPEruptionQueryParamsSchema } from '../eruptions/schema.ts'
+import { FIRMSQueryParamsSchema } from '../wildfires/schema.ts'
 
 const router = express.Router()
 
 router.get('/earthquakes', async (req, res) => {
-  const parsed = earthquakeQueryParamsSchema.safeParse(req.query)
+  const parsed = USGSEarthquakeQueryParamsSchema.safeParse(req.query)
   if (!parsed.success) {
     return res.status(400).json({ errors: z.treeifyError(parsed.error) })
   }
@@ -19,7 +17,7 @@ router.get('/earthquakes', async (req, res) => {
 })
 
 router.get('/eruptions', async (req, res) => {
-  const parsed = eruptionQueryParamsSchema.safeParse(req.query)
+  const parsed = GVPEruptionQueryParamsSchema.safeParse(req.query)
   if (!parsed.success) {
     return res.status(400).json({ errors: z.treeifyError(parsed.error) })
   }
@@ -28,7 +26,7 @@ router.get('/eruptions', async (req, res) => {
 })
 
 router.get('/wildfires', async (req, res) => {
-  const parsed = wildfireQueryParamsSchema.safeParse(req.query)
+  const parsed = FIRMSQueryParamsSchema.safeParse(req.query)
   if (!parsed.success) {
     return res.status(400).json({ errors: z.treeifyError(parsed.error) })
   }

@@ -1,10 +1,10 @@
 import type { Request, Response, NextFunction } from 'express'
-import { verifyJWTToken } from './utils/auth.js'
-import postService from './services/posts.js'
+import { verifyJWTToken } from './auth/utils.ts'
+import postService from './posts/services.ts'
 import { z } from 'zod'
-import config from './config.js'
+import config from './lib/config.ts'
 import axios from 'axios'
-import { logger } from './utils/logger.js'
+import { logger } from './lib/logger.ts'
 import { AppError } from './errors.js'
 
 export const extractToken = (

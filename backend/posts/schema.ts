@@ -1,6 +1,6 @@
 import { z } from 'zod'
-import { HazardType } from '../types/hazards.js'
-import { LongitudeSchema, LatitudeSchema } from './hazards.js'
+import { HazardType } from '../hazards/shared/types.ts'
+import { LongitudeSchema, LatitudeSchema } from '../hazards/shared/schema.ts'
 
 const titleField = z
   .string()
@@ -25,7 +25,7 @@ export const CreatePostPayloadSchema = z.object({
   description: descriptionField,
   hazardType: hazardTypeField,
   longitude: LongitudeSchema,
-  latitude: LatitudeSchema
+  latitude: LatitudeSchema,
 })
 
 export const UpdatePostPayloadSchema = CreatePostPayloadSchema.partial()
@@ -48,4 +48,3 @@ export type CreatePostData = CreatePostPayload & {
 export type UpdatePostData = UpdatePostPayload
 
 export type SearchParams = z.infer<typeof SearchParamsSchema>
-
