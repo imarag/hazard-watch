@@ -1,11 +1,11 @@
 import { ToggleButtonGroup, ToggleButton, Typography, Box } from '@mui/material'
 import { useMapEvents } from 'react-leaflet'
 import Map from '@/features/map/components/Map'
-import { formatCoordinates } from '@/utils/geometry'
+import { formatCoordinates } from '@/shared/utils/geometry'
 import MapMarker from '@/features/map/components/MapMarker'
 import FlyToLocation from '@/features/map/components/FlyToLocation'
 import { useState } from 'react'
-import type { HazardPositionMode, HazardPosition } from '@/types/hazards'
+import type { HazardPositionMode, HazardPosition } from '@/features/hazards/types'
 import useCurrentPosition from '@/hooks/useCurrentPosition'
 
 function LocationPicker({

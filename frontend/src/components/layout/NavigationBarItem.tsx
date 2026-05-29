@@ -1,7 +1,7 @@
 import { Button } from '@mui/material'
 import type { SxProps, Theme } from '@mui/material'
 import { NavLink } from 'react-router'
-import { useSidebarActions } from '@/stores/sidenav'
+import { useSidebarActions } from '@/shared/stores/sidenav'
 
 interface NavigationBarItemProps {
   to?: string

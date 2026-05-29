@@ -1,6 +1,6 @@
 import { Paper, IconButton, Divider, InputBase } from '@mui/material'
 import { useNavigate } from 'react-router'
-import { appRoutes } from '@/constants/routes'
+import { appRoutes } from '@/shared/constants/routes'
 import { useState } from 'react'
 import SearchIcon from '@mui/icons-material/Search'
 

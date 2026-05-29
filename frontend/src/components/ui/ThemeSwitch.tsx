@@ -1,7 +1,7 @@
 import { Box, Switch } from '@mui/material'
 import LightModeIcon from '@mui/icons-material/LightMode'
 import DarkModeIcon from '@mui/icons-material/DarkMode'
-import { useThemeModeActions, useThemeMode } from '@/stores/theme'
+import { useThemeModeActions, useThemeMode } from '@/shared/stores/theme'
 
 export default function ThemeSwitch() {
   const themeMode = useThemeMode()

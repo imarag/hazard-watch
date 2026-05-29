@@ -16,7 +16,7 @@ import AuthGate from '@/features/auth/components/AuthGate'
 import AppLayout from '@/components/layout/AppLayout'
 import MainLayout from '@/components/layout/MainLayout'
 import AuthLayout from '@/components/layout/AuthLayout'
-import { appRoutes } from '@/constants/routes'
+import { appRoutes } from '@/shared/constants/routes'
 
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'

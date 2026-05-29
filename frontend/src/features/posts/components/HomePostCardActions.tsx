@@ -1,6 +1,6 @@
-import type { Post } from '@/types/posts'
+import type { Post } from '@/features/posts/types'
 import { Box } from '@mui/material'
-import { useCurrentUser } from '@/stores/auth'
+import { useCurrentUser } from '@/features/auth/store'
 import GoToEditPostAction from '@/features/posts/components/GoToEditPostAction'
 import DeletePostAction from '@/features/posts/components/DeletePostAction'
 import ViewPostAction from '@/features/posts/components/ViewPostAction'

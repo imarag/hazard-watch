@@ -1,7 +1,7 @@
 import AddIcon from '@mui/icons-material/Add'
 import ActionButton from '@/components/ui/ActionButton'
-import { appRoutes } from '@/constants/routes'
-import { useIsUserLoggedIn } from '@/stores/auth'
+import { appRoutes } from '@/shared/constants/routes'
+import { useIsUserLoggedIn } from '@/features/auth/store'
 
 export default function GoToCreatePostAction() {
   const isUserLoggedIn = useIsUserLoggedIn()

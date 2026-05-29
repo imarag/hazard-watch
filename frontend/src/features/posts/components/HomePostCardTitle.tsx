@@ -1,7 +1,7 @@
-import type { Post } from '@/types/posts'
+import type { Post } from '@/features/posts/types'
 import { Stack, Avatar, Typography, Box } from '@mui/material'
-import { formatDate } from '@/utils/typography'
-import type { User } from '@/types/users'
+import { formatDate } from '@/shared/utils/typography'
+import type { User } from '@/features/users/types'
 import HazardChip from '@/features/hazards/components/HazardChip'
 
 interface HomePostCardTitleProps {

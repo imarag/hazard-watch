@@ -1,8 +1,8 @@
 import { Stack } from '@mui/material'
-import { formatCoordinates } from '@/utils/geometry'
-import { hazardIconMapping } from '@/constants/hazards'
-import { formatDate } from '@/utils/typography'
-import type { Post } from '@/types/posts'
+import { formatCoordinates } from '@/shared/utils/geometry'
+import { hazardIconMapping } from '@/features/hazards/constants'
+import { formatDate } from '@/shared/utils/typography'
+import type { Post } from '@/features/posts/types'
 import PostCardText from '@/features/posts/components/PostCardText'
 import PostCardItem from '@/features/posts/components/PostCardItem'
 

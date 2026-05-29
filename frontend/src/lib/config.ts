@@ -1,4 +1,4 @@
-import type { ThemeMode } from '@/types/theme'
+import type { ThemeMode } from '@/shared/types/theme'
 
 const initialThemeValue: ThemeMode = 'dark'
 const themeStorageKey = 'theme'

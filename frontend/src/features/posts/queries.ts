@@ -1,7 +1,7 @@
 import { queryOptions } from '@tanstack/react-query'
 import type { UseQueryOptions } from '@tanstack/react-query'
-import { getAllPosts, getPostById } from '@/services/posts'
-import { getErrorMessage } from '@/utils/auth'
+import { getAllPosts, getPostById } from '@/features/posts/services'
+import { getErrorMessage } from '../auth/utils'
 
 type PostQueryOptions = Omit<
   UseQueryOptions,

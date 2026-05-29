@@ -62,9 +62,4 @@ export const appRoutes = {
 } as const
 
 export type RouteKey = keyof typeof appRoutes
-export type AppRoute = {
-  path: string
-  title: string
-  pageTitle: string
-}
-export type AppRoutes = Record<RouteKey, AppRoute>
+export type AppRoute = typeof appRoutes[RouteKey]

@@ -1,9 +1,5 @@
-import { api } from '@/services/api'
-import type {
-  User,
-  UserRegister,
-  UserForgotPassword,
-} from '@/types/users.js'
+import { api } from '@/lib/api'
+import type { User, UserRegister, UserForgotPassword } from '@/features/users/types'
 
 const baseUrl = '/users'
 

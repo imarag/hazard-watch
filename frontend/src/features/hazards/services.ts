@@ -1,5 +1,5 @@
-import { plainAxios } from './api'
-import { HazardType } from '@/types/hazards'
+import { plainAxios } from '@/lib/api'
+import { HazardType } from '@/features/hazards/types'
 
 const baseUrl = '/hazards'
 

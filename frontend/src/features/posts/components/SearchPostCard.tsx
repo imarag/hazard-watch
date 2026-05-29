@@ -1,9 +1,9 @@
-import type { Post } from '@/types/posts'
+import type { Post } from '@/features/posts/types'
 import { Card, CardActionArea, Box, Typography } from '@mui/material'
 import RoomIcon from '@mui/icons-material/Room'
 import { Link as RouterLink } from 'react-router'
-import { formatDate } from '@/utils/typography'
-import { formatCoordinates } from '@/utils/geometry'
+import { formatDate } from '@/shared/utils/typography'
+import { formatCoordinates } from '@/shared/utils/geometry'
 import HazardChip from '@/features/hazards/components/HazardChip'
 
 interface SearchPostCardProps {

@@ -1,13 +1,13 @@
 import FormContainer from '@/components/ui/FormContainer'
-import { appRoutes } from '@/constants/routes'
+import { appRoutes } from '@/shared/constants/routes'
 import useField from '@/hooks/useField'
 import { Button, TextField } from '@mui/material'
 import { useNavigate } from 'react-router'
 import { useMutation } from '@tanstack/react-query'
-import type { UserForgotPassword } from '@/types/users'
-import { getErrorMessage } from '@/utils/auth'
-import { useAuthActions } from '@/stores/auth'
-import { useNotificationActions } from '@/stores/notification'
+import type { UserForgotPassword } from '@/features/users/types'
+import { getErrorMessage } from '@/features/auth/utils'
+import { useAuthActions } from '@/features/auth/store'
+import { useNotificationActions } from '@/shared/stores/notification'
 
 export default function ForgotPasswordForm() {
   const { showNotification, createNotification } = useNotificationActions()

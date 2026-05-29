@@ -1,5 +1,5 @@
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { appRoutes } from '@/constants/routes'
+import { appRoutes } from '@/shared/constants/routes'
 import ActionButton from '@/components/ui/ActionButton'
 
 interface ViewPostActionProps {

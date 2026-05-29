@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material'
-import { useThemeMode } from '@/stores/theme'
-import config from '@/config'
+import { useThemeMode } from '@/shared/stores/theme'
+import config from '@/lib/config'
 
 interface AppThemeProviderProps {
   children: React.ReactNode

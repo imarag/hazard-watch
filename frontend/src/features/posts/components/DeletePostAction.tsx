@@ -1,13 +1,13 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import ActionButton from '@/components/ui/ActionButton'
-import { getErrorMessage } from '@/utils/auth'
-import { appRoutes } from '@/constants/routes'
+import { getErrorMessage } from '@/features/auth/utils'
+import { appRoutes } from '@/shared/constants/routes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { deletePost } from '@/services/posts'
+import { deletePost } from '@/features/posts/services'
 import { useNavigate } from 'react-router'
-import { useCurrentUser, useIsUserLoggedIn } from '@/stores/auth'
-import type { Post } from '@/types/posts'
-import { useNotificationActions } from '@/stores/notification'
+import { useCurrentUser, useIsUserLoggedIn } from '@/features/auth/store'
+import type { Post } from '@/features/posts/types'
+import { useNotificationActions } from '@/shared/stores/notification'
 
 interface DeletePostActionProps {
   post: Post

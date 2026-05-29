@@ -1,9 +1,9 @@
 import Map from '@/features/map/components/Map'
 import MapMarker from '@/features/map/components/MapMarker'
 import MarkerClusterGroup from 'react-leaflet-cluster'
-import type { Post } from '@/types/posts'
-import { hazardMeta } from '@/constants/hazards'
-import { postMeta } from '@/constants/posts'
+import type { Post } from '@/features/posts/types'
+import { hazardMeta } from '@/features/hazards/constants'
+import { postMeta } from '@/features/posts/constants'
 
 interface MainMapProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

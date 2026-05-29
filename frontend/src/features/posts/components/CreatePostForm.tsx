@@ -1,16 +1,16 @@
-import { HazardType } from '@/types/hazards'
+import { HazardType } from '@/features/hazards/types'
 import PostMap from '@/features/map/components/PostMap'
 import useField from '@/hooks/useField'
 import { TextField, Button, MenuItem } from '@mui/material'
-import { createPost } from '@/services/posts'
+import { createPost } from '@/features/posts/services'
 import { useNavigate } from 'react-router'
-import type { HazardPosition } from '@/types/hazards'
-import { getErrorMessage } from '@/utils/auth'
-import type { CreatePost } from '@/types/posts'
-import { appRoutes } from '@/constants/routes'
+import type { HazardPosition } from '@/features/hazards/types'
+import { getErrorMessage } from '@/features/auth/utils'
+import type { CreatePost } from '@/features/posts/types'
+import { appRoutes } from '@/shared/constants/routes'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import FormContainer from '@/components/ui/FormContainer'
-import { useNotificationActions } from '@/stores/notification'
+import { useNotificationActions } from '@/shared/stores/notification'
 
 export default function CreatePostForm() {
   const navigate = useNavigate()

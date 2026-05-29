@@ -2,10 +2,10 @@ import { Box } from '@mui/material'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
-import { getErrorMessage } from '@/utils/auth'
-import { useNotificationActions } from '@/stores/notification'
+import { getErrorMessage } from '@/features/auth/utils'
+import { useNotificationActions } from '@/shared/stores/notification'
 import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
-import { searchPosts } from '@/services/posts'
+import { searchPosts } from '@/features/posts/services'
 import Loading from '@/components/ui/Loading'
 
 interface InfiniteScrollProps {

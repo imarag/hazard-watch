@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material'
 import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
-import type { Post } from '@/types/posts'
+import type { Post } from '@/features/posts/types'
 import HomePostCard from '@/features/posts/components/HomePostCard'
 
 interface PostsListProps {

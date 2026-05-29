@@ -1,9 +1,8 @@
 import EditIcon from '@mui/icons-material/Edit'
 import ActionButton from '@/components/ui/ActionButton'
-import { appRoutes } from '@/constants/routes'
-import { useCurrentUser, useIsUserLoggedIn } from '@/stores/auth'
-
-import type { Post } from '@/types/posts'
+import { appRoutes } from '@/shared/constants/routes'
+import { useCurrentUser, useIsUserLoggedIn } from '@/features/auth/store'
+import type { Post } from '@/features/posts/types'
 
 interface GoToEditPostActionProps {
   post: Post

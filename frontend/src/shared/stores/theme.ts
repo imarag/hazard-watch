@@ -1,7 +1,7 @@
 import { create } from 'zustand'
-import type { ThemeMode } from '@/types/theme'
+import type { ThemeMode } from '@/shared/types/theme'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import config from '@/config'
+import config from '@/lib/config'
 
 type State = {
   themeMode: ThemeMode

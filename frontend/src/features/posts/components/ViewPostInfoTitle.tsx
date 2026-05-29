@@ -1,5 +1,5 @@
 import { Typography, Box } from '@mui/material'
-import type { HazardType } from '@/types/hazards'
+import { HazardType } from '@/features/hazards/types'
 import HazardChip from '@/features/hazards/components/HazardChip'
 
 interface PostViewInfoTitleProps {

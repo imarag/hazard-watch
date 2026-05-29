@@ -1,7 +1,7 @@
-import type { Post } from '@/types/posts'
+import type { Post } from '@/features/posts/types'
 import { Stack, Typography } from '@mui/material'
 import RoomIcon from '@mui/icons-material/Room'
-import { formatCoordinates } from '@/utils/geometry'
+import { formatCoordinates } from '@/shared/utils/geometry'
 
 interface HomePostCardBodyProps {
   post: Post

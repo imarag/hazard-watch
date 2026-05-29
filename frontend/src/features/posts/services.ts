@@ -1,10 +1,10 @@
-import { api } from '@/services/api'
+import { api } from '@/lib/api'
 import type {
   Post,
   CreatePost,
   SearchParams,
   SearchResult,
-} from '@/types/posts'
+} from '@/features/posts/types'
 
 const baseUrl = '/posts'
 

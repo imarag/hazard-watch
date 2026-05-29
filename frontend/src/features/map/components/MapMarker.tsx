@@ -22,8 +22,8 @@ export default function HazardMarker({
 }: {
   lat: number
   lon: number
-  icon: SvgIconComponent
-  color: string
+  icon?: SvgIconComponent
+  color?: string
   tooltip?: Record<string, unknown>
 }) {
   if (lat == null || lon == null) {

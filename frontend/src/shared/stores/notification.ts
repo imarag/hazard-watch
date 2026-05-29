@@ -1,5 +1,8 @@
 import { create } from 'zustand'
-import type { Notification, NotificationType } from '@/types/notification'
+import type {
+  Notification,
+  NotificationType,
+} from '@/shared/types/notification'
 
 type State = {
   notification: Notification | null

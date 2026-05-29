@@ -5,9 +5,9 @@ import type {
   UserRegister,
   UserForgotPassword,
   UserResetPassword,
-} from '@/types/users'
-import authService from '@/services/auth'
-import { setToken } from '@/services/api'
+} from '@/features/users/types'
+import authService from '@/features/auth/services'
+import { setToken } from '@/lib/api'
 
 type State = {
   currentUser: CurrentUser | null

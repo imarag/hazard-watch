@@ -1,6 +1,6 @@
 import axios from 'axios'
-import authService from '@/services/auth.js'
-import { appRoutes } from '@/constants/routes'
+import authService from '@/features/auth/services.js'
+import { appRoutes } from '@/shared/constants/routes'
 
 let accessToken: string | null = null
 

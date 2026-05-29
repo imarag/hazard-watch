@@ -1,16 +1,15 @@
 import { TextField, Button, MenuItem } from '@mui/material'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
-import { HazardType } from '@/types/hazards'
-import type { Post } from '@/types/posts'
+import type { Post } from '@/features/posts/types'
 import useField from '@/hooks/useField'
 import PostMap from '@/features/map/components/PostMap'
 import FormContainer from '@/components/ui/FormContainer'
-import { updatePost } from '@/services/posts'
-import { useNotificationActions } from '@/stores/notification'
-import { appRoutes } from '@/constants/routes'
-import { getErrorMessage } from '@/utils/auth'
-import type { HazardPosition } from '@/types/hazards'
+import { updatePost } from '@/features/posts/services'
+import { useNotificationActions } from '@/shared/stores/notification'
+import { appRoutes } from '@/shared/constants/routes'
+import { getErrorMessage } from '@/features/auth/utils'
+import type { HazardPosition, HazardType } from '@/features/hazards/types'
 
 interface EditPostFormProps {
   post: Post

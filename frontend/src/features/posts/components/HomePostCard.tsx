@@ -1,4 +1,4 @@
-import type { Post } from '@/types/posts'
+import type { Post } from '@/features/posts/types'
 import { Card, Divider, Box } from '@mui/material'
 import HomePostCardActions from '@/features/posts/components/HomePostCardActions'
 import HomePostCardBody from '@/features/posts/components/HomePostCardBody'

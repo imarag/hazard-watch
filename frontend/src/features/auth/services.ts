@@ -1,11 +1,11 @@
-import { api, plainAxios } from '@/services/api'
+import { api, plainAxios } from '@/lib/api'
 import type {
   UserLogin,
   UserRegister,
   LoginResponse,
   UserForgotPassword,
   UserResetPassword,
-} from '@/types/users'
+} from '@/features/users/types'
 
 const baseUrl = '/auth'
 

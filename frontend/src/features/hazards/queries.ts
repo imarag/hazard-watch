@@ -1,8 +1,8 @@
 import { queryOptions } from '@tanstack/react-query'
-import type { HazardType } from '@/types/hazards'
-import { fetchHazard } from '@/services/hazards'
+import type { HazardType } from '@/features/hazards/types'
+import { fetchHazard } from '@/features/hazards/services'
 import type { UseQueryOptions } from '@tanstack/react-query'
-import { getErrorMessage } from '@/utils/auth'
+import { getErrorMessage } from '@/features/auth/utils'
 
 type PostQueryOptions = Omit<
   UseQueryOptions,

@@ -1,9 +1,9 @@
 import { Box } from '@mui/material'
-import Map from '@/components/features/map/Map'
-import MapMarker from '@/components/features/map/MapMarker'
-import FlyToLocation from '@/components/features/map/FlyToLocation'
-import type { Post } from '@/types/posts'
-import PostCardTitle from '@/components/features/view-post/PostCardTitle'
+import Map from '@/features/map/components/Map'
+import MapMarker from '@/features/map/components/MapMarker'
+import FlyToLocation from '@/features/map/components/FlyToLocation'
+import type { Post } from '@/features/posts/types'
+import PostCardTitle from '@/features/posts/components/PostCardTitle'
 
 interface PostViewMapProps {
   post: Post

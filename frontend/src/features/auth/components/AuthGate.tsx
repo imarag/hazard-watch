@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
-import authService from '@/services/auth'
-import { setToken } from '@/services/api'
-import { useAuthActions } from '@/stores/auth'
+import authService from '@/features/auth/services'
+import { setToken } from '@/lib/api'
+import { useAuthActions } from '@/features/auth/store'
 
 interface AuthGateProps {
   children: React.ReactNode

@@ -7,7 +7,7 @@ import {
 } from '@mui/material'
 import type {
   FormFieldProps
-} from '@/types/form'
+} from '@/shared/types/form'
 
 export default function FormField(props: FormFieldProps) {
   switch (props.type) {

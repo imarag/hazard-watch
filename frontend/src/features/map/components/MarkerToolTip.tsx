@@ -17,7 +17,7 @@ export default function MarkerTooltip({
         }}
         spacing={0.5}
       >
-        {Object.keys(tooltip).map((key, index) => (
+        {Object.keys(tooltip).map((key) => (
           <Box
             sx={{
               display: 'flex',

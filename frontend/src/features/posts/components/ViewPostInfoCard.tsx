@@ -1,6 +1,4 @@
-import { Card, CardContent, Divider } from '@mui/material'
-import ViewPostInfoTitle from '@/features/posts/components/ViewPostInfoTitle'
-import ViewPostInfoBody from '@/features/posts/components/ViewPostInfoBody'
+import { Card } from '@mui/material'
 
 export default function ViewPostInfoCard() {
   return (

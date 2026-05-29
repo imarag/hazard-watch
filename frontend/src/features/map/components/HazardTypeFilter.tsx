@@ -1,6 +1,6 @@
 import { Stack, Chip } from '@mui/material'
-import { HazardType } from '@/types/hazards'
-import { hazardMeta } from '@/constants/hazards'
+import { HazardType } from '@/features/hazards/types'
+import { hazardMeta } from '@/features/hazards/constants'
 
 interface HazardTypeFilterProps {
   hazardTypeSelected: HazardType[]

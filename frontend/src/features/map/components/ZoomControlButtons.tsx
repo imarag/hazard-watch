@@ -1,10 +1,10 @@
 import MapButton from '@/features/map/components/MapButton'
 import { useMap } from 'react-leaflet'
-import type { MapPosition } from '@/types/map'
+import type { MapPosition } from '@/features/map/types'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
 import { Box } from '@mui/material'
-import { getPositionProps } from '@/constants/map'
+import { getPositionProps } from '@/features/map/constants'
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap'
 
 interface ZoomControlButtonsProps {

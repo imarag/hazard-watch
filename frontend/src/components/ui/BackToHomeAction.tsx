@@ -1,5 +1,5 @@
 import HomeIcon from '@mui/icons-material/Home'
-import { appRoutes } from '@/constants/routes'
+import { appRoutes } from '@/shared/constants/routes'
 import ActionButton from '@/components/ui/ActionButton'
 
 export default function BackToHomeAction() {
