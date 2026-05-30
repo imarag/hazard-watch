@@ -4,14 +4,45 @@ import MarkerClusterGroup from 'react-leaflet-cluster'
 import type { Post } from '@/features/posts/types'
 import { hazardMeta } from '@/features/hazards/constants'
 import { postMeta } from '@/features/posts/constants'
+import { useMapEvents } from 'react-leaflet'
 
-interface MainMapProps {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  hazardsData: any[]
-  posts: Post[]
+function MapBoundsListener({
+  onBoundsChange,
+}: {
+  onBoundsChange: (bounds: L.LatLngBounds) => void
+}) {
+  useMapEvents({
+    moveend: (e) => onBoundsChange(e.target.getBounds()),
+    zoomend: (e) => onBoundsChange(e.target.getBounds()),
+  })
+  return null
 }
 
-export default function MainMap({ hazardsData, posts }: MainMapProps) {
+interface MainMapProps {
+  hazardsData: any[]
+  posts: Post[]
+  setHazardParams: any
+}
+
+export default function MainMap({
+  hazardsData,
+  posts,
+  setHazardParams,
+}: MainMapProps) {
+  function handleBoundsChange(bounds: L.LatLngBounds) {
+    setHazardParams((prev) => ({
+      ...prev,
+      global: {
+        ...prev.global,
+        bounds: {
+          minLat: Math.max(bounds.getSouth(), -90),
+          maxLat: Math.min(bounds.getNorth(), 90),
+          minLng: Math.max(bounds.getWest(), -180),
+          maxLng: Math.min(bounds.getEast(), 180),
+        },
+      },
+    }))
+  }
   return (
     <Map
       height='100%'
@@ -20,6 +51,7 @@ export default function MainMap({ hazardsData, posts }: MainMapProps) {
       attributionControl={false}
       buttonIconSize='large'
     >
+      <MapBoundsListener onBoundsChange={handleBoundsChange} />
       {hazardsData.map(({ hazard, data }) => (
         <MarkerClusterGroup key={hazard}>
           {data.features.map((feature) => {
@@ -49,25 +81,6 @@ export default function MainMap({ hazardsData, posts }: MainMapProps) {
           />
         ))}
       </MarkerClusterGroup>
-      {/* <MapLoading text='Loading posts...' open={isLoading} />
-      {!openFilterPanel && (
-        <OpenFilterPanelButton
-          position='centerright'
-          onClick={() => setOpenFilterPanel(!openFilterPanel)}
-        />
-      )} */}
-
-      {/* {openFilterPanel && (
-        <MapFilterPanel
-          posts={filteredPosts}
-          hazardTypeSelected={hazardTypeSelected}
-          setHazardTypeSelected={setHazardTypeSelected}
-          postDateSelected={postDateSelected}
-          setPostDateSelected={setPostDateSelected}
-          onClearFilters={handleClearFilters}
-          onClosePanel={() => setOpenFilterPanel(false)}
-        />
-      )} */}
     </Map>
   )
 }

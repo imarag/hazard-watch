@@ -13,7 +13,7 @@ const FIRMSWildfireRowSchema = z.object({
 
 export const FIRMSWildfireResponseSchema = z.array(FIRMSWildfireRowSchema)
 
-export const FIRMSQueryParamsSchema = z.object({
+export const WildfireQueryParamsSchema = z.object({
   source: z
     .enum([
       'LANDSAT_NRT',
@@ -26,10 +26,9 @@ export const FIRMSQueryParamsSchema = z.object({
       'VIIRS_SNPP_SP',
     ])
     .default('VIIRS_SNPP_NRT'),
-  area: z.string().default('world'),
   dayRange: z.coerce.number().int().min(1).max(10).default(1),
 })
 
 export type FIRMSWildfireResponse = z.infer<typeof FIRMSWildfireResponseSchema>
-export type FIRMSQueryParams = z.infer<typeof FIRMSQueryParamsSchema>
+export type WildfireQueryParams = z.infer<typeof WildfireQueryParamsSchema>
 export type FIRMSWildfireRow = z.infer<typeof FIRMSWildfireRowSchema>

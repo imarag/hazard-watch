@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material'
-import { aboutApp } from '@/constants/about'
+import { aboutApp } from '@/pages/about/constants'
 
 export default function AboutProjectSection() {
   return (

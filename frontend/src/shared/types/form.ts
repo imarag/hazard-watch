@@ -12,19 +12,19 @@ export type BaseFieldProps = {
 export type TextFieldProps = BaseFieldProps & {
   type: 'text'
   value: string
-  setValue: (value: string) => void
+  onChange?: (value: string) => void
 }
 
 export type DateFieldProps = BaseFieldProps & {
   type: 'date'
   value: string
-  setValue: (value: string) => void
+  onChange?: (value: string) => void
 }
 
 export type NumberFieldProps = BaseFieldProps & {
   type: 'number'
   value: number | null
-  setValue: (value: number | null) => void
+  onChange?: (value: number | null) => void
   min?: number
   max?: number
 }
@@ -32,7 +32,7 @@ export type NumberFieldProps = BaseFieldProps & {
 export type SelectFieldProps = BaseFieldProps & {
   type: 'select'
   value: string
-  setValue: (value: string) => void
+  onChange?: (value: string) => void
   options: Option[]
 }
 

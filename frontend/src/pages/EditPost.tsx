@@ -2,9 +2,9 @@ import { useParams, Navigate } from 'react-router'
 import { useQuery } from '@tanstack/react-query'
 import EditPostForm from '@/features/posts/components/EditPostForm'
 import Loading from '@/components/ui/Loading'
-import { getPostById } from '@/services/posts'
-import { useNotificationActions } from '@/stores/notification'
-import { getErrorMessage } from '@/utils/auth'
+import { getPostById } from '@/features/posts/services'
+import { useNotificationActions } from '@/shared/stores/notification'
+import { getErrorMessage } from '@/features/auth/utils'
 
 export default function EditPost() {
   const { id: postId } = useParams<{ id: string }>()

@@ -1,5 +1,5 @@
 import { Box, Typography, Chip } from '@mui/material'
-import { techStack } from '@/constants/about'
+import { techStack } from '@/pages/about/constants'
 
 export default function TechStackSection() {
   return (

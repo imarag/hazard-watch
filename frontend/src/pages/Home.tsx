@@ -3,15 +3,15 @@ import ActionBar from '@/components/ui/ActionBar'
 import { Box } from '@mui/material'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
-import { getErrorMessage } from '@/utils/auth'
-import { useNotificationActions } from '@/stores/notification'
-import { useIsUserLoggedIn } from '@/stores/auth'
+import { getErrorMessage } from '@/features/auth/utils'
+import { useNotificationActions } from '@/shared/stores/notification'
+import { useIsUserLoggedIn } from '@/features/auth/store'
 
 import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
-import { searchPosts } from '@/services/posts'
+import { searchPosts } from '@/features/posts/services'
 import Loading from '@/components/ui/Loading'
 import HomePostCard from '@/features/posts/components/HomePostCard'
-import type { SearchResult } from '@/types/posts'
+import type { SearchResult } from '@/features/posts/types'
 
 export default function Home() {
   const { showNotification, createNotification } = useNotificationActions()

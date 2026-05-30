@@ -28,22 +28,14 @@ export const USGSEarthquakeResponseSchema = z.object({
   features: z.array(USGSEarthquakeFeatureSchema),
 })
 
-export const USGSEarthquakeQueryParamsSchema = z.object({
-  starttime: z.iso.datetime().optional(),
-  endtime: z.iso.datetime().optional(),
+export const EarthquakeQueryParamsSchema = z.object({
   minmagnitude: z.coerce.number().min(-1).max(10).default(3),
   maxmagnitude: z.coerce.number().min(-1).max(10).optional(),
   mindepth: z.coerce.number().min(-100).max(1000).optional(),
   maxdepth: z.coerce.number().min(-100).max(1000).optional(),
-  minlatitude: z.coerce.number().min(-90).max(90).optional(),
-  maxlatitude: z.coerce.number().min(-90).max(90).optional(),
-  minlongitude: z.coerce.number().min(-360).max(360).optional(),
-  maxlongitude: z.coerce.number().min(-360).max(360).optional(),
 })
 
-export type USGSEarthquakeQueryParams = z.infer<
-  typeof USGSEarthquakeQueryParamsSchema
->
+export type EarthquakeQueryParams = z.infer<typeof EarthquakeQueryParamsSchema>
 export type USGSEarthquakeResponse = z.infer<
   typeof USGSEarthquakeResponseSchema
 >

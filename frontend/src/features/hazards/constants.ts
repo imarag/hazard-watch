@@ -1,56 +1,62 @@
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import PublicIcon from '@mui/icons-material/Public'
 import VolcanoIcon from '@mui/icons-material/Volcano'
-import { HazardType, type HazardMeta } from '@/features/hazards/types'
+import type { FormFieldProps } from '@/shared/types/form'
+import type {
+  HazardMeta,
+  EarthquakeQueryParams,
+  WildfireQueryParams,
+  EruptionQueryParams,
+  GlobalHazardParams,
+} from '@/features/hazards/types'
+import { daysAgo } from './utils'
 
-export const hazardMeta: Record<HazardType, HazardMeta> = {
+export const hazardMeta: HazardMeta = {
   earthquake: {
     name: 'Earthquake',
     muiIcon: PublicIcon,
-    backgroundColor: '#c08968', // warm tan-brown, much brighter
+    backgroundColor: '#c08968',
     color: '#ffffff',
   },
   eruption: {
     name: 'Eruption',
     muiIcon: VolcanoIcon,
-    backgroundColor: '#e8590c', // vivid orange-red, lava-like
+    backgroundColor: '#e8590c',
     color: '#ffffff',
   },
   wildfire: {
     name: 'Wildfire',
     muiIcon: LocalFireDepartmentIcon,
-    backgroundColor: '#f03e3e', // saturated bright red
+    backgroundColor: '#f03e3e',
     color: '#ffffff',
   },
 }
 
-export const hazardIconMapping = {
-  earthquake: PublicIcon,
-  eruption: VolcanoIcon,
-  wildfire: LocalFireDepartmentIcon,
-}
-
-export const daysAgo = (days: number): string => {
-  const d = new Date()
-  d.setUTCDate(d.getUTCDate() - days)
-  return d.toISOString() // "2026-05-22T08:34:12.123Z"
+type HazardFormConfig = {
+  global: Record<keyof Omit<GlobalHazardParams, 'bounds'>, FormFieldProps>
+  earthquake: Record<keyof EarthquakeQueryParams, FormFieldProps>
+  wildfire: Record<keyof WildfireQueryParams, FormFieldProps>
+  eruption: Record<keyof EruptionQueryParams, FormFieldProps>
 }
 
 export const hazardFormConfig = {
-  earthquake: {
+  global: {
     starttime: {
       id: 'start-time',
-      type: 'select',
-      label: 'Date Range',
+      type: 'date',
+      label: 'Start date',
       value: daysAgo(3),
-      options: [
-        { label: 'Last 24 hours', value: daysAgo(1) },
-        { label: 'Last 3 days', value: daysAgo(3) },
-        { label: 'Last 7 days', value: daysAgo(7) },
-        { label: 'Last 30 days', value: daysAgo(30) },
-      ],
       size: 'small',
     },
+    endtime: {
+      id: 'end-time',
+      type: 'date',
+      label: 'End date',
+      value: daysAgo(0),
+      size: 'small',
+    },
+  },
+  earthquake: {
     minmagnitude: {
       id: 'min-magnitude',
       type: 'number',
@@ -75,7 +81,7 @@ export const hazardFormConfig = {
       label: 'Min depth (km)',
       value: 0,
       min: 0,
-      max: 9999,
+      max: 1000,
       size: 'small',
     },
     maxdepth: {
@@ -84,7 +90,7 @@ export const hazardFormConfig = {
       label: 'Max depth (km)',
       value: 700,
       min: 1,
-      max: 10000,
+      max: 1000,
       size: 'small',
     },
   },
@@ -103,7 +109,7 @@ export const hazardFormConfig = {
       size: 'small',
     },
     dayRange: {
-      id: 'days-back',
+      id: 'day-range',
       type: 'number',
       label: 'Days back',
       value: 1,
@@ -111,39 +117,6 @@ export const hazardFormConfig = {
       max: 10,
       size: 'small',
     },
-    date: {
-      id: 'date',
-      type: 'date',
-      label: 'Date (optional)',
-      value: '',
-      size: 'small',
-    },
   },
-  eruption: {
-    maxFeatures: {
-      id: 'max-features',
-      type: 'number',
-      label: 'Max results',
-      value: 500,
-      min: 1,
-      max: 5000,
-      size: 'small',
-    },
-  },
-} as const
-
-function extractDefaults<T extends Record<string, FormFieldProps>>(
-  config: T,
-): Record<keyof T, string | number | null> {
-  return Object.fromEntries(
-    Object.entries(config).map(([k, v]) => [k, v.value]),
-  ) as Record<keyof T, string | number | null>
-}
-
-export const hazardDefaults = {
-  earthquake: extractDefaults(
-    hazardFormConfig.earthquake,
-  ) as EarthquakeQueryParams,
-  wildfire: extractDefaults(hazardFormConfig.wildfire) as WildfireQueryParams,
-  eruption: extractDefaults(hazardFormConfig.eruption) as EruptionQueryParams,
-}
+  eruption: {},
+} satisfies HazardFormConfig

@@ -8,10 +8,11 @@ import type {
 
 const baseUrl = '/posts'
 
-export const getAllPosts = async (): Promise<Post[]> => {
-  const res = await api.get(baseUrl)
+export const getAllPosts = async (params?: Record<string, unknown>): Promise<Post[]> => {
+  const res = await api.get(baseUrl, { params })
   return res.data
 }
+
 export const searchPosts = async ({
   page,
   q,

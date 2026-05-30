@@ -30,8 +30,7 @@ model Post {
 }
 
 enum HazardType {
-  flood
+  eruption
   earthquake
   wildfire
-  storm
 }

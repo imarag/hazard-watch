@@ -7,9 +7,24 @@ import type { SearchResult } from '../posts/types.ts'
 import { AppError } from '../errors.js'
 import { prisma } from '../lib/prisma.ts'
 import type { Post } from '../generated/prisma/client.js'
+import type { GlobalHazardParams } from '../hazards/shared/schema.ts'
 
-const getAllPosts = async (): Promise<Post[]> => {
-  const posts = await prisma.post.findMany({ include: { author: true } })
+const getAllPosts = async (params: GlobalHazardParams): Promise<Post[]> => {
+  const posts = await prisma.post.findMany({
+    where: {
+      ...(params.starttime && {
+        createdAt: {
+          gte: new Date(params.starttime),
+          ...(params.endtime && { lte: new Date(params.endtime) }),
+        },
+      }),
+      ...(params.minLat !== undefined && {
+        latitude: { gte: params.minLat, lte: params.maxLat },
+        longitude: { gte: params.minLng, lte: params.maxLng },
+      }),
+    },
+    include: { author: true },
+  })
   return posts
 }
 

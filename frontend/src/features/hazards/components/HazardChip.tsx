@@ -1,6 +1,6 @@
 import { Chip, type SxProps } from '@mui/material'
 import { HazardType } from '@/features/hazards/types'
-import { hazardMeta } from '@/constants/hazards'
+import { hazardMeta } from '@/features/hazards/constants'
 
 interface HazardChipProps {
   hazard: HazardType

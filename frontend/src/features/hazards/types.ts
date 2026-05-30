@@ -1,12 +1,12 @@
 import type { SvgIconComponent } from '@mui/icons-material'
 
-
-export type HazardMeta = {
+type HazardMetaItem = {
   name: string
   muiIcon: SvgIconComponent
   color: string
   backgroundColor: string
 }
+export type HazardMeta = Record<HazardType, HazardMetaItem>
 
 export type HazardPositionMode = 'current' | 'map'
 
@@ -23,20 +23,37 @@ export const HazardType = {
 
 export type HazardType = (typeof HazardType)[keyof typeof HazardType]
 
-
-export interface EruptionDisplayProperties {
-  volcanoName: string
-  activityArea: string | null
-  startYear: number | null
-  explosivityIndex: number | null
-  confirmed: boolean
+export type MapBounds = {
+  minLat: number
+  maxLat: number
+  minLng: number
+  maxLng: number
 }
 
-export interface WildfireDisplayProperties {
-  frp: number           // Fire Radiative Power, MW
-  brightness: number    // Kelvin
-  confidence: 'low' | 'nominal' | 'high'
-  acquiredAt: number    // unix ms, UTC
-  daynight: 'day' | 'night'
-  satellite: string
+export type GlobalHazardParams = {
+  starttime?: string
+  endtime?: string
+  bounds?: MapBounds
+}
+
+export type EarthquakeQueryParams = {
+  minmagnitude: number
+  maxmagnitude?: number
+  mindepth?: number
+  maxdepth?: number
+}
+
+export type EruptionQueryParams = Record<string, never>
+
+export type WildfireQueryParams = {
+  source:
+    | 'LANDSAT_NRT'
+    | 'MODIS_NRT'
+    | 'MODIS_SP'
+    | 'VIIRS_NOAA20_NRT'
+    | 'VIIRS_NOAA20_SP'
+    | 'VIIRS_NOAA21_NRT'
+    | 'VIIRS_SNPP_NRT'
+    | 'VIIRS_SNPP_SP'
+  dayRange: number
 }

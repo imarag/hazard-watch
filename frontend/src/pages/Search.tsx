@@ -3,12 +3,12 @@ import { useSearchParams } from 'react-router'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import SearchPostCard from '@/features/posts/components/SearchPostCard'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
-import { getErrorMessage } from '@/utils/auth'
-import { useNotificationActions } from '@/stores/notification'
+import { getErrorMessage } from '@/features/auth/utils'
+import { useNotificationActions } from '@/shared/stores/notification'
 import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
-import { searchPosts } from '@/services/posts'
+import { searchPosts } from '@/features/posts/services'
 import Loading from '@/components/ui/Loading'
-import type { Post, SearchResult } from '@/types/posts'
+import type { Post, SearchResult } from '@/features/posts/types'
 
 function SearchPostsStatus({
   searchParam,

@@ -5,3 +5,4 @@ export const HazardType = {
 } as const
 
 export type HazardType = (typeof HazardType)[keyof typeof HazardType]
+

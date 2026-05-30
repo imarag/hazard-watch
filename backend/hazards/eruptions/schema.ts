@@ -27,11 +27,7 @@ export const GVPEruptionResponseSchema = z.object({
   features: z.array(GVPEruptionFeatureSchema),
 })
 
-export const GVPEruptionQueryParamsSchema = z.object({
-  maxFeatures: z.coerce.number().int().min(1).max(5000).default(500),
-})
+export const EruptionQueryParamsSchema = z.object({})
 
 export type GVPEruptionResponse = z.infer<typeof GVPEruptionResponseSchema>
-export type GVPEruptionQueryParams = z.infer<
-  typeof GVPEruptionQueryParamsSchema
->
+export type EruptionQueryParams = z.infer<typeof EruptionQueryParamsSchema>

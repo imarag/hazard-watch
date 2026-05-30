@@ -5,9 +5,7 @@ import {
   Select,
   MenuItem,
 } from '@mui/material'
-import type {
-  FormFieldProps
-} from '@/shared/types/form'
+import type { FormFieldProps } from '@/shared/types/form'
 
 export default function FormField(props: FormFieldProps) {
   switch (props.type) {
@@ -20,7 +18,7 @@ export default function FormField(props: FormFieldProps) {
           required={props.required}
           size={props.size}
           value={props.value}
-          onChange={(e) => props.setValue(e.target.value)}
+          onChange={props.onChange}
           disabled={props.disabled}
           fullWidth
         />
@@ -36,7 +34,7 @@ export default function FormField(props: FormFieldProps) {
           required={props.required}
           size={props.size}
           value={props.value}
-          onChange={(e) => props.setValue(e.target.value)}
+          onChange={props.onChange}
           slotProps={{ inputLabel: { shrink: true } }}
           disabled={props.disabled}
           fullWidth
@@ -52,10 +50,7 @@ export default function FormField(props: FormFieldProps) {
           label={props.label}
           required={props.required}
           size={props.size}
-          onChange={(e) => {
-            const v = e.target.value
-            props.setValue(v === '' ? null : Number(v))
-          }}
+          onChange={props.onChange}
           value={props.value ?? ''}
           slotProps={{
             htmlInput: { min: props.min, max: props.max, step: 'any' },
@@ -80,7 +75,7 @@ export default function FormField(props: FormFieldProps) {
             name={props.name}
             label={props.label}
             value={props.value}
-            onChange={(e) => props.setValue(e.target.value)}
+            onChange={props.onChange}
           >
             {props.options.map((option) => (
               <MenuItem key={option.value} value={option.value}>

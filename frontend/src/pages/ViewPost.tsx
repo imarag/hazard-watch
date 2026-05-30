@@ -1,16 +1,15 @@
 import { Typography, Grid, Box } from '@mui/material'
 import Loading from '@/components/ui/Loading'
-import { getErrorMessage } from '@/utils/auth'
+import { getErrorMessage } from '@/features/auth/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { getPostById } from '@/services/posts'
+import { getPostById } from '@/features/posts/services'
 import ViewPostInfoCard from '@/features/posts/components/ViewPostInfoCard'
-// import ViewMap from '@/features/posts/components/ViewMap'
 import DeletePostAction from '@/features/posts/components/DeletePostAction'
 import GoToEditPostAction from '@/features/posts/components/GoToEditPostAction'
 import ActionBar from '@/components/ui/ActionBar'
-import { useNotificationActions } from '@/stores/notification'
-import { useCurrentUser, useIsUserLoggedIn } from '@/stores/auth'
+import { useNotificationActions } from '@/shared/stores/notification'
+import { useCurrentUser, useIsUserLoggedIn } from '@/features/auth/store'
 
 export default function ViewPost() {
   const { showNotification, createNotification } = useNotificationActions()
