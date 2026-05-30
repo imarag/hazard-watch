@@ -5,6 +5,8 @@ import type { Post } from '@/features/posts/types'
 import { hazardMeta } from '@/features/hazards/constants'
 import { postMeta } from '@/features/posts/constants'
 import { useMapEvents } from 'react-leaflet'
+import type { FilterParamsDefaults } from '@/shared/types/config'
+import type { HazardType } from '@/features/hazards/types'
 
 function MapBoundsListener({
   onBoundsChange,
@@ -19,27 +21,30 @@ function MapBoundsListener({
 }
 
 interface MainMapProps {
-  hazardsData: any[]
+  hazardsData: {
+    hazard: HazardType
+    data: any
+  }[]
   posts: Post[]
-  setHazardParams: any
+  setFilterParamsDefaults: React.Dispatch<
+    React.SetStateAction<FilterParamsDefaults>
+  >
 }
 
 export default function MainMap({
   hazardsData,
   posts,
-  setHazardParams,
+  setFilterParamsDefaults,
 }: MainMapProps) {
   function handleBoundsChange(bounds: L.LatLngBounds) {
-    setHazardParams((prev) => ({
+    setFilterParamsDefaults((prev) => ({
       ...prev,
       global: {
         ...prev.global,
-        bounds: {
-          minLat: Math.max(bounds.getSouth(), -90),
-          maxLat: Math.min(bounds.getNorth(), 90),
-          minLng: Math.max(bounds.getWest(), -180),
-          maxLng: Math.min(bounds.getEast(), 180),
-        },
+        minLat: Math.max(bounds.getSouth(), -90),
+        maxLat: Math.min(bounds.getNorth(), 90),
+        minLng: Math.max(bounds.getWest(), -180),
+        maxLng: Math.min(bounds.getEast(), 180),
       },
     }))
   }

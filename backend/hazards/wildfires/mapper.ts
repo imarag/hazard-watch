@@ -1,6 +1,7 @@
 import type { FIRMSWildfireResponse } from './schema.ts'
 import type { FeatureCollection, Point, Feature } from 'geojson'
 import type { WildfireDisplayProperties } from './types.ts'
+import { providers } from '../shared/static.ts'
 
 const CONFIDENCE_MAP = { l: 'low', n: 'nominal', h: 'high' } as const
 
@@ -33,7 +34,8 @@ export const mapWildfire = (
         confidence: parseConfidence(r.confidence),
         acquiredAt: parseAcquiredAt(r.acq_date, r.acq_time),
         daynight: r.daynight === 'D' ? 'day' : 'night',
-        satellite: 'Suomi NPP', // VIIRS_SNPP_NRT is hardcoded as default source
+        satellite:
+          providers.firms.wildfires.defaults.source ?? 'VIIRS_SNPP_NRT',
       },
     }),
   ),

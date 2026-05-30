@@ -4,11 +4,13 @@ import type {
   CreatePost,
   SearchParams,
   SearchResult,
+  PostQueryParams,
 } from '@/features/posts/types'
+import type { GlobalHazardParams } from '../hazards/types'
 
 const baseUrl = '/posts'
 
-export const getAllPosts = async (params?: Record<string, unknown>): Promise<Post[]> => {
+export const getAllPosts = async (params: GlobalHazardParams & PostQueryParams): Promise<Post[]> => {
   const res = await api.get(baseUrl, { params })
   return res.data
 }

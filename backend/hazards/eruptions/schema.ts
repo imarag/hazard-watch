@@ -1,5 +1,9 @@
 import z from 'zod'
-import { LongitudeSchema, LatitudeSchema } from '../shared/schema.ts'
+import {
+  LongitudeSchema,
+  LatitudeSchema,
+  GlobalHazardParamsSchema,
+} from '../shared/schema.ts'
 
 const GVPEruptionPropertiesSchema = z.object({
   Volcano_Name: z.string(),
@@ -27,7 +31,9 @@ export const GVPEruptionResponseSchema = z.object({
   features: z.array(GVPEruptionFeatureSchema),
 })
 
-export const EruptionQueryParamsSchema = z.object({})
+export const EruptionQueryParamsSchema = z.object({
+  ...GlobalHazardParamsSchema.shape,
+})
 
 export type GVPEruptionResponse = z.infer<typeof GVPEruptionResponseSchema>
 export type EruptionQueryParams = z.infer<typeof EruptionQueryParamsSchema>

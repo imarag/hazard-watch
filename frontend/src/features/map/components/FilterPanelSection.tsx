@@ -1,23 +1,24 @@
-import { Stack, Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 
 interface FilterPanelSectionProps {
   title: string
+  direction?: 'row' | 'column'
   children: React.ReactNode
 }
 
-export default function FilterPanelSection({
+export default function FilterPanelSelction({
   title,
+  direction = 'column',
   children,
 }: FilterPanelSectionProps) {
   return (
-    <Stack direction='column' spacing={1}>
-      <Typography
-        variant='subtitle1'
-        sx={{ fontWeight: 'fontWeightMedium', color: 'text.secondary' }}
-      >
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Typography variant='subtitle2' color='text.secondary'>
         {title}
       </Typography>
-      {children}
-    </Stack>
+      <Box sx={{ display: 'flex', flexDirection: direction, gap: 2 }}>
+        {children}
+      </Box>
+    </Box>
   )
 }

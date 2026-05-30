@@ -1,15 +1,9 @@
 import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment'
 import PublicIcon from '@mui/icons-material/Public'
 import VolcanoIcon from '@mui/icons-material/Volcano'
-import type { FormFieldProps } from '@/shared/types/form'
-import type {
-  HazardMeta,
-  EarthquakeQueryParams,
-  WildfireQueryParams,
-  EruptionQueryParams,
-  GlobalHazardParams,
-} from '@/features/hazards/types'
+import type { HazardMeta } from '@/features/hazards/types'
 import { daysAgo } from './utils'
+import type { FilterParamsConfig } from '@/shared/types/config'
 
 export const hazardMeta: HazardMeta = {
   earthquake: {
@@ -32,14 +26,7 @@ export const hazardMeta: HazardMeta = {
   },
 }
 
-type HazardFormConfig = {
-  global: Record<keyof Omit<GlobalHazardParams, 'bounds'>, FormFieldProps>
-  earthquake: Record<keyof EarthquakeQueryParams, FormFieldProps>
-  wildfire: Record<keyof WildfireQueryParams, FormFieldProps>
-  eruption: Record<keyof EruptionQueryParams, FormFieldProps>
-}
-
-export const hazardFormConfig = {
+export const filterParamsConfig = {
   global: {
     starttime: {
       id: 'start-time',
@@ -94,29 +81,22 @@ export const hazardFormConfig = {
       size: 'small',
     },
   },
-  wildfire: {
-    source: {
-      id: 'source',
+  wildfire: {},
+  eruption: {},
+  posts: {
+    hazardType: {
+      id: 'hazard-type',
       type: 'select',
-      label: 'Source',
-      value: 'VIIRS_SNPP_NRT',
+      label: 'Hazard Type',
+      value: '',
       options: [
-        { label: 'VIIRS Suomi-NPP (NRT)', value: 'VIIRS_SNPP_NRT' },
-        { label: 'VIIRS NOAA-20 (NRT)', value: 'VIIRS_NOAA20_NRT' },
-        { label: 'VIIRS NOAA-21 (NRT)', value: 'VIIRS_NOAA21_NRT' },
-        { label: 'MODIS (NRT)', value: 'MODIS_NRT' },
+        { label: 'All', value: '' },
+        ...Object.entries(hazardMeta).map(([value, { name }]) => ({
+          label: name,
+          value,
+        })),
       ],
       size: 'small',
     },
-    dayRange: {
-      id: 'day-range',
-      type: 'number',
-      label: 'Days back',
-      value: 1,
-      min: 1,
-      max: 10,
-      size: 'small',
-    },
   },
-  eruption: {},
-} satisfies HazardFormConfig
+} satisfies FilterParamsConfig

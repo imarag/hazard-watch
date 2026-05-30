@@ -7,24 +7,39 @@ import type { SearchResult } from '../posts/types.ts'
 import { AppError } from '../errors.js'
 import { prisma } from '../lib/prisma.ts'
 import type { Post } from '../generated/prisma/client.js'
-import type { GlobalHazardParams } from '../hazards/shared/schema.ts'
+import type { PostQueryParams } from '../posts/schema.ts'
+import { Prisma } from '../generated/prisma/client.js'
 
-const getAllPosts = async (params: GlobalHazardParams): Promise<Post[]> => {
+const getAllPosts = async (params: PostQueryParams): Promise<Post[]> => {
+  const hasBounds =
+    params.minLat !== undefined &&
+    params.maxLat !== undefined &&
+    params.minLng !== undefined &&
+    params.maxLng !== undefined
+
+  const where: Prisma.PostWhereInput = {}
+
+  if (params.hazardType) {
+    where.hazardType = params.hazardType
+  }
+
+  if (params.starttime || params.endtime) {
+    where.createdAt = {
+      ...(params.starttime && { gte: new Date(params.starttime) }),
+      ...(params.endtime && { lte: new Date(params.endtime) }),
+    }
+  }
+
+  if (hasBounds) {
+    where.latitude = { gte: params.minLat, lte: params.maxLat }
+    where.longitude = { gte: params.minLng, lte: params.maxLng }
+  }
+
   const posts = await prisma.post.findMany({
-    where: {
-      ...(params.starttime && {
-        createdAt: {
-          gte: new Date(params.starttime),
-          ...(params.endtime && { lte: new Date(params.endtime) }),
-        },
-      }),
-      ...(params.minLat !== undefined && {
-        latitude: { gte: params.minLat, lte: params.maxLat },
-        longitude: { gte: params.minLng, lte: params.maxLng },
-      }),
-    },
+    where,
     include: { author: true },
   })
+
   return posts
 }
 

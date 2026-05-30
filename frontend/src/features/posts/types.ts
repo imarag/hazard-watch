@@ -34,3 +34,7 @@ export type PostMeta = {
   color: string
   backgroundColor: string
 }
+
+export type PostQueryParams = {
+  hazardType: HazardType
+}

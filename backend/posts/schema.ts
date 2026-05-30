@@ -1,6 +1,7 @@
 import { z } from 'zod'
 import { HazardType } from '../hazards/shared/types.ts'
 import { LongitudeSchema, LatitudeSchema } from '../hazards/shared/schema.ts'
+import { GlobalHazardParamsSchema } from '../hazards/shared/schema.ts'
 
 const titleField = z
   .string()
@@ -48,3 +49,10 @@ export type CreatePostData = CreatePostPayload & {
 export type UpdatePostData = UpdatePostPayload
 
 export type SearchParams = z.infer<typeof SearchParamsSchema>
+
+export const postQueryParamsSchema = z.object({
+  ...GlobalHazardParamsSchema.shape,
+  hazardType: z.enum(HazardType).optional(),
+})
+
+export type PostQueryParams = z.infer<typeof postQueryParamsSchema>

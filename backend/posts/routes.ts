@@ -7,18 +7,18 @@ import {
 import type { CreatePostData } from '../posts/schema.ts'
 import { requireAuth, requireOwnership } from '../middleware.js'
 import { SearchParamsSchema } from '../posts/schema.ts'
-import { GlobalHazardParamsSchema } from '../hazards/shared/schema.ts'
+import { postQueryParamsSchema } from '../posts/schema.ts'
 import postsService from './services.ts'
 import z from 'zod'
 
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  const globalParsed = GlobalHazardParamsSchema.safeParse(req.query)
-  if (!globalParsed.success) {
-    return res.status(400).json({ errors: z.treeifyError(globalParsed.error) })
+  const parsedParams = postQueryParamsSchema.safeParse(req.query)
+  if (!parsedParams.success) {
+    return res.status(400).json({ errors: z.treeifyError(parsedParams.error) })
   }
-  const posts = await postsService.getAllPosts(globalParsed.data)
+  const posts = await postsService.getAllPosts(parsedParams.data)
   return res.status(200).json(posts)
 })
 

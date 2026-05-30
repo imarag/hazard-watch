@@ -14,77 +14,63 @@ import type {
   GVPEruptionResponse,
   EruptionQueryParams,
 } from '../eruptions/schema.ts'
-import type { GlobalHazardParams } from '../shared/schema.ts'
 
-export const getEarthquakes = async (
-  params: EarthquakeQueryParams,
-  global: GlobalHazardParams,
-) => {
+export const getEarthquakes = async (params: EarthquakeQueryParams) => {
+  console.log(params, '****')
   const response = await axios.get<USGSEarthquakeResponse>(
     providers.usgs.earthquakes.baseUrl,
     {
       params: {
         ...providers.usgs.earthquakes.defaults,
-        ...params,
-        starttime: global.starttime,
-        endtime: global.endtime,
-        ...(global.minLat && {
-          minlatitude: global.minLat,
-          maxlatitude: global.maxLat,
-          minlongitude: global.minLng,
-          maxlongitude: global.maxLng,
-        }),
+        starttime: params.starttime,
+        endtime: params.endtime,
+        minmagnitude: params.minmagnitude,
+        maxmagnitude: params.maxmagnitude,
+        mindepth: params.mindepth,
+        maxdepth: params.maxdepth,
+        minlatitude: params.minLat,
+        maxlatitude: params.maxLat,
+        minlongitude: params.minLng,
+        maxlongitude: params.maxLng,
       },
     },
   )
   return mapEarthquake(response.data)
 }
 
-export const getEruptions = async (
-  params: EruptionQueryParams,
-  global: GlobalHazardParams,
-) => {
-  const cqlFilters = []
+export const getEruptions = async (params: EruptionQueryParams) => {
+  const hasBbox =
+    params.minLng !== undefined &&
+    params.minLat !== undefined &&
+    params.maxLng !== undefined &&
+    params.maxLat !== undefined
 
-  if (global.minLng !== undefined) {
-    cqlFilters.push(
-      `BBOX(GeoLocation,${global.minLng},${global.minLat},${global.maxLng},${global.maxLat})`,
-    )
-  }
+  const bbox = hasBbox
+    ? `${params.minLng},${params.minLat},${params.maxLng},${params.maxLat}`
+    : undefined
 
   const response = await axios.get<GVPEruptionResponse>(
     providers.gvp.eruptions.baseUrl,
     {
       params: {
         ...providers.gvp.eruptions.defaults,
-        ...params,
-        ...(cqlFilters.length > 0 && { CQL_FILTER: cqlFilters.join(' AND ') }),
+        BBOX: bbox,
       },
     },
   )
   return mapEruption(response.data)
 }
 
-export const getWildfires = async (
-  params: WildfireQueryParams,
-  global: GlobalHazardParams,
-) => {
-  const { source, dayRange } = params
+export const getWildfires = async (params: WildfireQueryParams) => {
   const area =
-    global.minLng !== undefined
-      ? `${global.minLng},${global.minLat},${global.maxLng},${global.maxLat}`
+    params.minLng !== undefined &&
+    params.minLat !== undefined &&
+    params.maxLng !== undefined &&
+    params.maxLat !== undefined
+      ? `${params.minLng},${params.minLat},${params.maxLng},${params.maxLat}`
       : 'world'
-  const resolvedDayRange = global.starttime
-    ? Math.min(
-        Math.ceil(
-          (Date.now() - new Date(global.starttime).getTime()) /
-            (1000 * 60 * 60 * 24),
-        ),
-        10,
-      )
-    : dayRange
 
-  const url = `${providers.firms.wildfires.baseUrl}/${source}/${area}/${resolvedDayRange}`
+  const url = `${providers.firms.wildfires.baseUrl}/${providers.firms.wildfires.defaults.source}/${area}/${providers.firms.wildfires.defaults.dayRange}`
 
   const response = await axios.get(url, { responseType: 'text' })
   const csv = Papa.parse<Record<string, string>>(response.data, {

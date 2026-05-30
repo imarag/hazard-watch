@@ -33,8 +33,7 @@ export type MapBounds = {
 export type GlobalHazardParams = {
   starttime?: string
   endtime?: string
-  bounds?: MapBounds
-}
+} & MapBounds
 
 export type EarthquakeQueryParams = {
   minmagnitude: number
@@ -45,15 +44,4 @@ export type EarthquakeQueryParams = {
 
 export type EruptionQueryParams = Record<string, never>
 
-export type WildfireQueryParams = {
-  source:
-    | 'LANDSAT_NRT'
-    | 'MODIS_NRT'
-    | 'MODIS_SP'
-    | 'VIIRS_NOAA20_NRT'
-    | 'VIIRS_NOAA20_SP'
-    | 'VIIRS_NOAA21_NRT'
-    | 'VIIRS_SNPP_NRT'
-    | 'VIIRS_SNPP_SP'
-  dayRange: number
-}
+export type WildfireQueryParams = Record<string, never>

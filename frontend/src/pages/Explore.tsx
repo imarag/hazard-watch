@@ -9,26 +9,29 @@ import { useNotificationActions } from '@/shared/stores/notification'
 import { getErrorMessage } from '@/features/auth/utils'
 import { getAllPosts } from '@/features/posts/services'
 import { extractFormValues } from '@/features/hazards/utils'
-import { hazardFormConfig } from '@/features/hazards/constants'
+import { filterParamsConfig } from '@/features/hazards/constants'
+import type { FilterParamsDefaults } from '@/shared/types/config'
 
 export default function Explore() {
   const { showNotification, createNotification } = useNotificationActions()
   const [enabledHazards, setEnabledHazards] = useState<HazardType[]>([])
   const [showPosts, setShowPosts] = useState(false)
-  const [hazardParams, setHazardParams] = useState(() =>
-    extractFormValues(hazardFormConfig),
-  )
+  const [filterParamsDefaults, setFilterParamsDefaults] =
+    useState<FilterParamsDefaults>(() => extractFormValues(filterParamsConfig))
+
   const hazardQueries = useQueries({
     queries: enabledHazards.map((hazard) => ({
-      queryKey: ['hazards', hazard, hazardParams[hazard], hazardParams.global],
-      queryFn: () => {
-        const { bounds, ...globalRest } = hazardParams.global
-        return fetchHazard(hazard, {
-          ...globalRest, // starttime, endtime
-          ...(bounds ?? {}), // minLat, maxLat, minLng, maxLng flat
-          ...hazardParams[hazard], // hazard specific
-        })
-      },
+      queryKey: [
+        'hazards',
+        hazard,
+        filterParamsDefaults[hazard],
+        filterParamsDefaults.global,
+      ],
+      queryFn: () =>
+        fetchHazard(hazard, {
+          ...filterParamsDefaults.global,
+          ...filterParamsDefaults[hazard],
+        }),
       staleTime: 5 * 60 * 1000,
     })),
   })
@@ -53,14 +56,23 @@ export default function Explore() {
   ) as Partial<Record<HazardType, number>>
 
   const { data: postsData = [], isLoading: postsLoading } = useQuery({
-    queryKey: ['posts'],
+    queryKey: [
+      'posts',
+      filterParamsDefaults['posts'],
+      filterParamsDefaults.global,
+    ],
     queryFn: async () => {
-      const { bounds, ...globalRest } = hazardParams.global
       try {
-        return await getAllPosts({
-          ...globalRest,
-          ...(bounds ?? {}),
-        })
+        const rawParams = {
+          ...filterParamsDefaults.global,
+          ...filterParamsDefaults.posts,
+        }
+        const params = Object.fromEntries(
+          Object.entries(rawParams).filter(
+            ([_, v]) => v !== '' && v !== null && v !== undefined,
+          ),
+        )
+        return await getAllPosts(params)
       } catch (error: unknown) {
         const errorMessage = getErrorMessage(error)
         showNotification(
@@ -90,14 +102,14 @@ export default function Explore() {
           setShowPosts={setShowPosts}
           totalPosts={posts.length}
           hazardCounts={hazardCounts}
-          setHazardParams={setHazardParams}
+          setFilterParamsDefaults={setFilterParamsDefaults}
         />
       </Box>
       <Box sx={{ flexGrow: 1, height: '100%' }}>
         <MainMap
           hazardsData={hazardsData}
           posts={posts}
-          setHazardParams={setHazardParams}
+          setFilterParamsDefaults={setFilterParamsDefaults}
         />
       </Box>
     </Box>

@@ -1,37 +1,30 @@
-import { Box, Typography, Button } from '@mui/material'
+import { Button, Box } from '@mui/material'
 
 interface FilterPanelFooterProps {
-  onClearFilters: () => void
-  totalPosts: number
+  resetConfig: () => void
 }
 
 export default function FilterPanelFooter({
-  onClearFilters,
-  totalPosts,
+  resetConfig,
 }: FilterPanelFooterProps) {
   return (
     <Box
       sx={{
         display: 'flex',
-        flexDirection: { xs: 'column', sm: 'row' },
-        justifyContent: 'space-between',
+        flexShrink: 0,
+        flexDirection: 'row',
+        gap: 2,
         alignItems: 'center',
-        gap: 1,
+        justifyContent: 'center',
       }}
     >
-      <Typography variant='body2' sx={{ color: 'text.disabled' }}>
-        Found{' '}
-        <Typography
-          component='span'
-          variant='body2'
-          sx={{ fontWeight: 'fontWeightBold' }}
-        >
-          {totalPosts}
-        </Typography>{' '}
-        reports.
-      </Typography>
-      <Button size='small' variant='outlined' onClick={onClearFilters}>
-        Clear filters
+      <Button
+        onClick={resetConfig}
+        size='small'
+        color='error'
+        variant='outlined'
+      >
+        restore defaults
       </Button>
     </Box>
   )

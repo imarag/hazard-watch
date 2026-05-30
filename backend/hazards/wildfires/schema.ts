@@ -1,4 +1,5 @@
 import z from 'zod'
+import { GlobalHazardParamsSchema } from '../shared/schema.ts'
 
 const FIRMSWildfireRowSchema = z.object({
   latitude: z.coerce.number(),
@@ -14,19 +15,7 @@ const FIRMSWildfireRowSchema = z.object({
 export const FIRMSWildfireResponseSchema = z.array(FIRMSWildfireRowSchema)
 
 export const WildfireQueryParamsSchema = z.object({
-  source: z
-    .enum([
-      'LANDSAT_NRT',
-      'MODIS_NRT',
-      'MODIS_SP',
-      'VIIRS_NOAA20_NRT',
-      'VIIRS_NOAA20_SP',
-      'VIIRS_NOAA21_NRT',
-      'VIIRS_SNPP_NRT',
-      'VIIRS_SNPP_SP',
-    ])
-    .default('VIIRS_SNPP_NRT'),
-  dayRange: z.coerce.number().int().min(1).max(10).default(1),
+  ...GlobalHazardParamsSchema.shape,
 })
 
 export type FIRMSWildfireResponse = z.infer<typeof FIRMSWildfireResponseSchema>

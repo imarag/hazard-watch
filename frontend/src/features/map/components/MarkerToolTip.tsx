@@ -1,4 +1,4 @@
-import { Box, Stack, Typography } from '@mui/material'
+import { Table, TableBody, TableCell, TableRow } from '@mui/material'
 import { Tooltip } from 'react-leaflet'
 
 export default function MarkerTooltip({
@@ -8,34 +8,34 @@ export default function MarkerTooltip({
 }) {
   return (
     <Tooltip direction='bottom' offset={[0, 0]} opacity={1}>
-      <Stack
-        sx={{
-          padding: 2,
-          minWidth: 200,
-          maxWidth: 360,
-          overflowY: 'scroll',
-        }}
-        spacing={0.5}
-      >
-        {Object.keys(tooltip).map((key) => (
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'start',
-              justifyContent: 'space-between',
-              gap: 0.1,
-            }}
-          >
-            <Typography variant='body2' sx={{ fontWeight: 'fontWeightBold' }}>
-              {key}
-            </Typography>
-            <Typography variant='body2' sx={{ fontWeight: 500 }}>
-              {String(tooltip[key])}
-            </Typography>
-          </Box>
-        ))}
-      </Stack>
+      <Table size='small' sx={{ minWidth: 200, maxWidth: 360 }}>
+        <TableBody>
+          {Object.entries(tooltip).map(([key, value]) => (
+            <TableRow key={key}>
+              <TableCell
+                sx={{
+                  fontWeight: 'bold',
+                  whiteSpace: 'nowrap',
+                  color: 'inherit',
+                  borderColor: 'divider',
+                  padding: '2px 8px',
+                }}
+              >
+                {key}
+              </TableCell>
+              <TableCell
+                sx={{
+                  color: 'inherit',
+                  borderColor: 'divider',
+                  padding: '2px 8px',
+                }}
+              >
+                {String(value)}
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
     </Tooltip>
   )
 }

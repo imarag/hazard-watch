@@ -18,13 +18,17 @@ export const providers = {
         request: 'GetFeature',
         outputFormat: 'application/json',
         typeName: 'GVP-VOTW:Smithsonian_VOTW_Holocene_Eruptions',
+        maxFeatures: 500,
       },
     },
   },
   firms: {
     wildfires: {
       baseUrl: `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${config.FIRMS_MAP_KEY}`,
-      defaults: {},
+      defaults: {
+        source: 'VIIRS_SNPP_NRT',
+        dayRange: 1,
+      },
     },
   },
 } as const

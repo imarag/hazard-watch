@@ -76,6 +76,7 @@ export default function FormField(props: FormFieldProps) {
             label={props.label}
             value={props.value}
             onChange={props.onChange}
+            displayEmpty={true}
           >
             {props.options.map((option) => (
               <MenuItem key={option.value} value={option.value}>
