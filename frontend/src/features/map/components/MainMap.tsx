@@ -7,6 +7,9 @@ import { postMeta } from '@/features/posts/constants'
 import { useMapEvents } from 'react-leaflet'
 import type { FilterParamsDefaults } from '@/shared/types/config'
 import type { HazardType } from '@/features/hazards/types'
+import { useRef, useCallback } from 'react'
+import { Box } from '@mui/material'
+import MapSpinner from './MapSpinner'
 
 function MapBoundsListener({
   onBoundsChange,
@@ -29,25 +32,39 @@ interface MainMapProps {
   setFilterParamsDefaults: React.Dispatch<
     React.SetStateAction<FilterParamsDefaults>
   >
+  loading: boolean
 }
 
 export default function MainMap({
   hazardsData,
   posts,
   setFilterParamsDefaults,
+  loading,
 }: MainMapProps) {
-  function handleBoundsChange(bounds: L.LatLngBounds) {
-    setFilterParamsDefaults((prev) => ({
-      ...prev,
-      global: {
-        ...prev.global,
-        minLat: Math.max(bounds.getSouth(), -90),
-        maxLat: Math.min(bounds.getNorth(), 90),
-        minLng: Math.max(bounds.getWest(), -180),
-        maxLng: Math.min(bounds.getEast(), 180),
-      },
-    }))
-  }
+  const boundsTimer = useRef<ReturnType<typeof setTimeout>>(null)
+
+  const handleBoundsChange = useCallback(
+    (bounds: L.LatLngBounds) => {
+      if (boundsTimer.current) {
+        clearTimeout(boundsTimer.current)
+      }
+
+      boundsTimer.current = setTimeout(() => {
+        setFilterParamsDefaults((prev) => ({
+          ...prev,
+          global: {
+            ...prev.global,
+            // round in order not to cache every decimal of coords
+            minLat: Math.max(Math.round(bounds.getSouth()), -90),
+            maxLat: Math.min(Math.round(bounds.getNorth()), 90),
+            minLng: Math.max(Math.round(bounds.getWest()), -180),
+            maxLng: Math.min(Math.round(bounds.getEast()), 180),
+          },
+        }))
+      }, 500)
+    },
+    [setFilterParamsDefaults],
+  )
   return (
     <Map
       height='100%'
@@ -56,9 +73,10 @@ export default function MainMap({
       attributionControl={false}
       buttonIconSize='large'
     >
+      {loading && <MapSpinner />}
       <MapBoundsListener onBoundsChange={handleBoundsChange} />
       {hazardsData.map(({ hazard, data }) => (
-        <MarkerClusterGroup key={hazard}>
+        <MarkerClusterGroup key={hazard} chunkedLoading>
           {data.features.map((feature) => {
             const [lon, lat] = feature.geometry.coordinates
             return (

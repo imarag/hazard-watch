@@ -30,7 +30,7 @@ export default function MarkerTooltip({
                   padding: '2px 8px',
                 }}
               >
-                {String(value)}
+                {value ? String(value) : 'N/A'}
               </TableCell>
             </TableRow>
           ))}

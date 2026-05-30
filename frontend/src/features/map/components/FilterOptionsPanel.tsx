@@ -26,21 +26,34 @@ export default function FilterOptionsPanel({
   setFilterParamsDefaults,
 }: FilterOptionsPanelProps) {
   const [initialHazardConfig, setInitialHazardConfig] =
-    useState<FilterParamsConfig>(() => filterParamsConfig)
-  console.log(initialHazardConfig, '*****')
+    useState<FilterParamsConfig>(filterParamsConfig)
+  const [initialHazardConfigDraft, setInitialHazardConfigDraft] =
+    useState<FilterParamsConfig>(filterParamsConfig)
+
   function changeHazardConfig(e, key: string, option: string) {
     const newConfig = {
-      ...initialHazardConfig,
+      ...initialHazardConfigDraft,
       [key]: {
-        ...initialHazardConfig[key],
+        ...initialHazardConfigDraft[key],
         [option]: {
-          ...initialHazardConfig[key][option],
+          ...initialHazardConfigDraft[key][option],
           value: e.target.value,
         },
       },
     }
-    setInitialHazardConfig(newConfig)
-    setFilterParamsDefaults(extractFormValues(newConfig))
+    setInitialHazardConfigDraft(newConfig)
+  }
+
+  function applyQuerySettings() {
+    setInitialHazardConfig(initialHazardConfigDraft)
+    setFilterParamsDefaults(extractFormValues(initialHazardConfigDraft))
+    setShowOptionsMenu(false)
+  }
+
+  function restoreSettings() {
+    setInitialHazardConfig(filterParamsConfig)
+    setInitialHazardConfigDraft(filterParamsConfig) // ← reset draft too
+    setFilterParamsDefaults(extractFormValues(filterParamsConfig)) // ← also reset applied params
   }
 
   return (
@@ -72,13 +85,13 @@ export default function FilterOptionsPanel({
         >
           <FilterPanelSection direction='row' title='Date filters'>
             {(
-              Object.keys(initialHazardConfig.global) as Array<
-                keyof typeof initialHazardConfig.global
+              Object.keys(initialHazardConfigDraft.global) as Array<
+                keyof typeof initialHazardConfigDraft.global
               >
             ).map((option) => (
               <FormField
                 key={option}
-                {...initialHazardConfig.global[option]}
+                {...initialHazardConfigDraft.global[option]}
                 onChange={(value) =>
                   changeHazardConfig(value, 'global', option)
                 }
@@ -87,7 +100,7 @@ export default function FilterOptionsPanel({
           </FilterPanelSection>
           <Divider />
           <FilterPanelSection title='Hazard Filters'>
-            {Object.keys(initialHazardConfig)
+            {Object.keys(initialHazardConfigDraft)
               .filter((key) => !['global', 'posts'].includes(key))
               .map((hazard) => (
                 <FilterPanelAccordion
@@ -97,13 +110,13 @@ export default function FilterOptionsPanel({
                   color={hazardMeta[hazard].backgroundColor}
                 >
                   {(
-                    Object.keys(initialHazardConfig[hazard]) as Array<
-                      keyof (typeof initialHazardConfig)[typeof hazard]
+                    Object.keys(initialHazardConfigDraft[hazard]) as Array<
+                      keyof (typeof initialHazardConfigDraft)[typeof hazard]
                     >
                   ).map((option) => (
                     <FormField
-                      {...initialHazardConfig[hazard][option]}
-                      value={initialHazardConfig[hazard][option]['value']}
+                      {...initialHazardConfigDraft[hazard][option]}
+                      value={initialHazardConfigDraft[hazard][option]['value']}
                       onChange={(e) => changeHazardConfig(e, hazard, option)}
                     />
                   ))}
@@ -111,7 +124,7 @@ export default function FilterOptionsPanel({
               ))}
           </FilterPanelSection>
           <FilterPanelSection title='Posts Filters'>
-            {Object.keys(initialHazardConfig)
+            {Object.keys(initialHazardConfigDraft)
               .filter((key) => key === 'posts')
               .map((key) => (
                 <FilterPanelAccordion
@@ -121,13 +134,13 @@ export default function FilterOptionsPanel({
                   color={postMeta.backgroundColor}
                 >
                   {(
-                    Object.keys(initialHazardConfig[key]) as Array<
-                      keyof (typeof initialHazardConfig)[typeof key]
+                    Object.keys(initialHazardConfigDraft[key]) as Array<
+                      keyof (typeof initialHazardConfigDraft)[typeof key]
                     >
                   ).map((option) => (
                     <FormField
-                      {...initialHazardConfig[key][option]}
-                      value={initialHazardConfig[key][option]['value']}
+                      {...initialHazardConfigDraft[key][option]}
+                      value={initialHazardConfigDraft[key][option]['value']}
                       onChange={(e) => changeHazardConfig(e, key, option)}
                     />
                   ))}
@@ -136,7 +149,8 @@ export default function FilterOptionsPanel({
           </FilterPanelSection>
         </Box>
         <FilterPanelFooter
-          resetConfig={() => setInitialHazardConfig(filterParamsConfig)}
+          restoreSettings={restoreSettings}
+          applySettings={applyQuerySettings}
         />
       </Box>
     </Drawer>

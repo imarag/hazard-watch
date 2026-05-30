@@ -46,7 +46,7 @@ export const getEruptions = async (params: EruptionQueryParams) => {
     params.maxLat !== undefined
 
   const bbox = hasBbox
-    ? `${params.minLng},${params.minLat},${params.maxLng},${params.maxLat}`
+    ? `${params.minLng},${params.minLat},${params.maxLng},${params.maxLat},EPSG:4326`
     : undefined
 
   const response = await axios.get<GVPEruptionResponse>(
@@ -58,6 +58,14 @@ export const getEruptions = async (params: EruptionQueryParams) => {
       },
     },
   )
+  console.log(
+    axios.getUri({
+      url: providers.gvp.eruptions.baseUrl,
+      params: { ...providers.gvp.eruptions.defaults, BBOX: bbox },
+    }),
+    '****9',
+  )
+
   return mapEruption(response.data)
 }
 

@@ -33,6 +33,7 @@ export default function Explore() {
           ...filterParamsDefaults[hazard],
         }),
       staleTime: 5 * 60 * 1000,
+      placeholderData: (previousData) => previousData,
     })),
   })
 
@@ -86,9 +87,13 @@ export default function Explore() {
     },
     staleTime: 5 * 60 * 1000,
     enabled: showPosts,
+    placeholderData: (previousData) => previousData,
   })
 
   const posts = showPosts ? postsData : []
+
+  const dataLoading =
+    postsLoading || Object.values(hazardQueryMap).some((q) => q?.isLoading)
 
   return (
     <Box sx={{ height: '100%', position: 'relative', display: 'flex' }}>
@@ -110,6 +115,7 @@ export default function Explore() {
           hazardsData={hazardsData}
           posts={posts}
           setFilterParamsDefaults={setFilterParamsDefaults}
+          loading={dataLoading}
         />
       </Box>
     </Box>

@@ -1,11 +1,13 @@
 import { Button, Box } from '@mui/material'
 
 interface FilterPanelFooterProps {
-  resetConfig: () => void
+  applySettings: () => void
+  restoreSettings: () => void
 }
 
 export default function FilterPanelFooter({
-  resetConfig,
+  applySettings,
+  restoreSettings
 }: FilterPanelFooterProps) {
   return (
     <Box
@@ -19,7 +21,14 @@ export default function FilterPanelFooter({
       }}
     >
       <Button
-        onClick={resetConfig}
+        onClick={applySettings}
+        size='small'
+        variant='contained'
+      >
+        apply
+      </Button>
+      <Button
+        onClick={restoreSettings}
         size='small'
         color='error'
         variant='outlined'
