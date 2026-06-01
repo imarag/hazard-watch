@@ -3,50 +3,27 @@ import ActionBar from '@/components/ui/ActionBar'
 import { Box } from '@mui/material'
 import { useInfiniteQuery } from '@tanstack/react-query'
 import useInfiniteScroll from '@/hooks/useInfiniteScroll'
-import { getErrorMessage } from '@/features/auth/utils'
 import { useNotificationActions } from '@/shared/stores/notification'
 import { useIsUserLoggedIn } from '@/features/auth/store'
-
 import EmptyPostsMessage from '@/features/posts/components/EmptyPostsMessage'
-import { searchPosts } from '@/features/posts/services'
 import Loading from '@/components/ui/Loading'
 import HomePostCard from '@/features/posts/components/HomePostCard'
-import type { SearchResult } from '@/features/posts/types'
+import { searchPostsQueryOptions } from '@/features/posts/queries'
 
 export default function Home() {
   const { showNotification, createNotification } = useNotificationActions()
   const isUserLoggedIn = useIsUserLoggedIn()
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useInfiniteQuery({
-      queryKey: ['posts', 'search'],
-      queryFn: async ({ pageParam }: { pageParam: number }) => {
-        try {
-          return await searchPosts({
-            page: pageParam,
-          })
-        } catch (error: unknown) {
-          showNotification(
-            createNotification(
-              `Cannot fetch the posts: ${getErrorMessage(error)}`,
-              'error',
-            ),
-          )
-          throw error
-        }
-      },
-      initialPageParam: 1,
-      getNextPageParam: (
-        lastPage: SearchResult,
-        _allPages: SearchResult[],
-        lastPageParam: number,
-      ) => (lastPage.hasMore ? lastPageParam + 1 : undefined),
-    })
+    useInfiniteQuery(
+      searchPostsQueryOptions((errorMessage) => {
+        showNotification(createNotification(errorMessage, 'error'))
+      }),
+    )
 
   const sentinelRef = useInfiniteScroll({
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
+    enabled: hasNextPage && !isFetchingNextPage,
+    onVisible: fetchNextPage,
   })
 
   if (isLoading) {

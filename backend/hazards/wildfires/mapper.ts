@@ -1,6 +1,7 @@
 import type { FIRMSWildfireResponse } from './schema.ts'
+import { WildfireDisplaySchema } from './schema.ts'
+import type { WildfireDisplayProperties } from './schema.ts'
 import type { FeatureCollection, Point, Feature } from 'geojson'
-import type { WildfireDisplayProperties } from './types.ts'
 import { providers } from '../shared/static.ts'
 
 const CONFIDENCE_MAP = { l: 'low', n: 'nominal', h: 'high' } as const
@@ -28,15 +29,15 @@ export const mapWildfire = (
     (r): Feature<Point, WildfireDisplayProperties> => ({
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [r.longitude, r.latitude] },
-      properties: {
-        frp: r.frp,
-        brightness: r.bright_ti4,
+      properties: WildfireDisplaySchema.parse({
+        firepower: r.frp,
+        brightnessTemp: r.bright_ti4,
         confidence: parseConfidence(r.confidence),
-        acquiredAt: parseAcquiredAt(r.acq_date, r.acq_time),
-        daynight: r.daynight === 'D' ? 'day' : 'night',
+        detectedAt: parseAcquiredAt(r.acq_date, r.acq_time),
+        timeOfDay: r.daynight === 'D' ? 'day' : 'night',
         satellite:
           providers.firms.wildfires.defaults.source ?? 'VIIRS_SNPP_NRT',
-      },
+      }),
     }),
   ),
 })

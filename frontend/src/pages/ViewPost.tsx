@@ -1,15 +1,15 @@
 import { Typography, Grid, Box } from '@mui/material'
 import Loading from '@/components/ui/Loading'
-import { getErrorMessage } from '@/features/auth/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'react-router'
-import { getPostById } from '@/features/posts/services'
 import ViewPostInfoCard from '@/features/posts/components/ViewPostInfoCard'
 import DeletePostAction from '@/features/posts/components/DeletePostAction'
 import GoToEditPostAction from '@/features/posts/components/GoToEditPostAction'
 import ActionBar from '@/components/ui/ActionBar'
 import { useNotificationActions } from '@/shared/stores/notification'
 import { useCurrentUser, useIsUserLoggedIn } from '@/features/auth/store'
+import PostViewMap from '@/features/posts/components/PostViewMap'
+import { getPostQueryOptions } from '@/features/posts/queries'
 
 export default function ViewPost() {
   const { showNotification, createNotification } = useNotificationActions()
@@ -17,23 +17,12 @@ export default function ViewPost() {
   const currentUser = useCurrentUser()
   const isUserLoggedIn = useIsUserLoggedIn()
 
-  const { data: post = null, isLoading } = useQuery({
-    queryKey: ['post', postId],
-    enabled: !!postId,
-    queryFn: async () => {
-      try {
-        return await getPostById(postId!)
-      } catch (error: unknown) {
-        showNotification(
-          createNotification(
-            `Cannot fetch the post: ${getErrorMessage(error)}`,
-            'error',
-          ),
-        )
-        throw error
-      }
-    },
-  })
+  const { data: post = null, isLoading } = useQuery(
+    getPostQueryOptions(postId, (errorMessage: string) => {
+      showNotification(createNotification(errorMessage, 'error'))
+    }),
+  )
+
   const isSameUser = isUserLoggedIn && currentUser?.id === post?.author.id
   return (
     <Box
@@ -69,13 +58,13 @@ export default function ViewPost() {
                 overflowY: 'auto',
               }}
             >
-              <ViewPostInfoCard />
+              <ViewPostInfoCard post={post} />
             </Grid>
             <Grid
               size={{ xs: 12, lg: 6, xl: 8 }}
               sx={{ height: { xs: '400px', sm: '100%' } }}
             >
-              {/* <ViewMap post={post} /> */}
+              <PostViewMap post={post} />
             </Grid>
           </Grid>
         )}

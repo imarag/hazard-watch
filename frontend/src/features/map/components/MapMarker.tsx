@@ -4,9 +4,11 @@ import { renderToStaticMarkup } from 'react-dom/server'
 import type { SvgIconComponent } from '@mui/icons-material'
 import MarkerTooltip from '@/features/map/components/MarkerToolTip'
 
-const createIcon = (Icon: SvgIconComponent, color: string) =>
+const createIcon = (Icon: SvgIconComponent, color?: string) =>
   L.divIcon({
-    html: renderToStaticMarkup(<Icon style={{ color, fontSize: 32 }} />),
+    html: renderToStaticMarkup(
+      <Icon style={{ color: color ? color : 'inherit', fontSize: 32 }} />,
+    ),
     className: '',
     iconSize: [32, 32],
     iconAnchor: [16, 32],
@@ -29,8 +31,13 @@ export default function HazardMarker({
   if (lat == null || lon == null) {
     return null
   }
+  const markerProps: L.MarkerOptions & { position: [number, number] } = {
+    position: [lat, lon],
+    ...(icon && { icon: createIcon(icon, color) }),
+  }
+
   return (
-    <Marker position={[lat, lon]} icon={createIcon(icon, color)}>
+    <Marker {...markerProps}>
       {tooltip && <MarkerTooltip tooltip={tooltip} />}
     </Marker>
   )

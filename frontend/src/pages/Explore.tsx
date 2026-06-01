@@ -1,99 +1,54 @@
 import { Box } from '@mui/material'
 import { useState } from 'react'
-import { HazardType } from '@/features/hazards/types'
+import { HazardType, type HazardInfo } from '@/features/hazards/types'
 import ExploreHazardSidebar from '@/features/hazards/components/ExploreHazardSidebar'
 import MainMap from '@/features/map/components/MainMap'
-import { useQueries, useQuery } from '@tanstack/react-query'
-import { fetchHazard } from '@/features/hazards/services'
-import { useNotificationActions } from '@/shared/stores/notification'
-import { getErrorMessage } from '@/features/auth/utils'
-import { getAllPosts } from '@/features/posts/services'
+import { useQuery } from '@tanstack/react-query'
 import { extractFormValues } from '@/features/hazards/utils'
 import { filterParamsConfig } from '@/features/hazards/constants'
 import type { FilterParamsDefaults } from '@/shared/types/config'
+import { hazardQueryOptions } from '@/features/hazards/queries'
+import { postQueryOptions } from '@/features/posts/queries'
+import type { UseQueryResult } from '@tanstack/react-query'
 
 export default function Explore() {
-  const { showNotification, createNotification } = useNotificationActions()
   const [enabledHazards, setEnabledHazards] = useState<HazardType[]>([])
   const [showPosts, setShowPosts] = useState(false)
   const [filterParamsDefaults, setFilterParamsDefaults] =
     useState<FilterParamsDefaults>(() => extractFormValues(filterParamsConfig))
 
-  const hazardQueries = useQueries({
-    queries: enabledHazards.map((hazard) => ({
-      queryKey: [
-        'hazards',
-        hazard,
-        filterParamsDefaults[hazard],
-        filterParamsDefaults.global,
-      ],
-      queryFn: () =>
-        fetchHazard(hazard, {
-          ...filterParamsDefaults.global,
-          ...filterParamsDefaults[hazard],
-        }),
-      staleTime: 5 * 60 * 1000,
-      placeholderData: (previousData) => previousData,
-    })),
-  })
-
-  const hazardsData = hazardQueries
-    .map((q, index) => ({
-      hazard: enabledHazards[index],
-      data: q.data,
-    }))
-    .filter((q) => q.data !== undefined)
-
-  // to check which hazard is currenly loading
-  const hazardQueryMap = Object.fromEntries(
-    enabledHazards.map((hazard, index) => [hazard, hazardQueries[index]]),
+  const earthquakeQuery = useQuery(
+    hazardQueryOptions('earthquake', enabledHazards, filterParamsDefaults),
   )
+  const wildfireQuery = useQuery(
+    hazardQueryOptions('wildfire', enabledHazards, filterParamsDefaults),
+  )
+  const eruptionQuery = useQuery(
+    hazardQueryOptions('eruption', enabledHazards, filterParamsDefaults),
+  )
+  const tsunamiQuery = useQuery(
+    hazardQueryOptions('tsunami', enabledHazards, filterParamsDefaults),
+  )
+  const postsQuery = useQuery(postQueryOptions(showPosts, filterParamsDefaults))
 
-  const hazardCounts = Object.fromEntries(
-    hazardQueries.map((q, index) => [
-      enabledHazards[index],
-      q.data?.features.length ?? 0,
-    ]),
-  ) as Partial<Record<HazardType, number>>
+  const hazardQueryMap = {
+    earthquake: earthquakeQuery,
+    wildfire: wildfireQuery,
+    eruption: eruptionQuery,
+    tsunami: tsunamiQuery,
+  } satisfies Record<HazardType, UseQueryResult>
 
-  const { data: postsData = [], isLoading: postsLoading } = useQuery({
-    queryKey: [
-      'posts',
-      filterParamsDefaults['posts'],
-      filterParamsDefaults.global,
-    ],
-    queryFn: async () => {
-      try {
-        const rawParams = {
-          ...filterParamsDefaults.global,
-          ...filterParamsDefaults.posts,
-        }
-        const params = Object.fromEntries(
-          Object.entries(rawParams).filter(
-            ([_, v]) => v !== '' && v !== null && v !== undefined,
-          ),
-        )
-        return await getAllPosts(params)
-      } catch (error: unknown) {
-        const errorMessage = getErrorMessage(error)
-        showNotification(
-          createNotification(
-            `Cannot fetch the posts: ${errorMessage}`,
-            'error',
-          ),
-        )
-        throw error
-      }
-    },
-    staleTime: 5 * 60 * 1000,
-    enabled: showPosts,
-    placeholderData: (previousData) => previousData,
-  })
-
-  const posts = showPosts ? postsData : []
-
+  // any hazard or posts currently are loading
   const dataLoading =
-    postsLoading || Object.values(hazardQueryMap).some((q) => q?.isLoading)
+    postsQuery.isFetching ||
+    Object.values(hazardQueryMap).some((q) => q?.isFetching)
+
+  const postsInfo: HazardInfo = {
+    source: 'Hazard Watch Community',
+    sourceUrl: '',
+    description: 'User-submitted hazard reports',
+    totalFeatures: postsQuery.data?.length ?? 0,
+  }
 
   return (
     <Box sx={{ height: '100%', position: 'relative', display: 'flex' }}>
@@ -102,20 +57,21 @@ export default function Explore() {
           enabledHazards={enabledHazards}
           setEnabledHazards={setEnabledHazards}
           hazardQueryMap={hazardQueryMap}
-          postsLoading={postsLoading}
+          postsLoading={postsQuery.isFetching}
           showPosts={showPosts}
           setShowPosts={setShowPosts}
-          totalPosts={posts.length}
-          hazardCounts={hazardCounts}
           setFilterParamsDefaults={setFilterParamsDefaults}
+          postsInfo={postsInfo}
         />
       </Box>
       <Box sx={{ flexGrow: 1, height: '100%' }}>
         <MainMap
-          hazardsData={hazardsData}
-          posts={posts}
+          hazardQueryMap={hazardQueryMap}
+          postsQuery={postsQuery}
+          showPosts={showPosts}
           setFilterParamsDefaults={setFilterParamsDefaults}
           loading={dataLoading}
+          enabledHazards={enabledHazards}
         />
       </Box>
     </Box>

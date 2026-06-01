@@ -1,16 +1,23 @@
-import { Card } from '@mui/material'
+import { Card, Divider, CardContent } from '@mui/material'
+import ViewPostInfoBody from './ViewPostInfoBody'
+import ViewPostInfoTitle from './ViewPostInfoTitle'
+import type { Post } from '../types'
 
-export default function ViewPostInfoCard() {
+interface ViewPostInfoCardProps {
+  post: Post
+}
+
+export default function ViewPostInfoCard({ post }: ViewPostInfoCardProps) {
   return (
     <Card
       variant='outlined'
       sx={{ height: '100%', borderRadius: 4, overflowY: 'auto' }}
     >
-      {/* <CardContent sx={{ padding: 4 }}>
-        <ViewInfoTitle title={post.title} hazardType={post.hazardType} />
+      <CardContent sx={{ padding: 4 }}>
+        <ViewPostInfoTitle title={post.title} hazardType={post.hazardType} />
         <Divider sx={{ borderColor: 'divider', marginBlock: 2 }} />
-        <ViewInfoBody post={post} />
-      </CardContent> */}
+        <ViewPostInfoBody post={post} />
+      </CardContent>
     </Card>
   )
 }

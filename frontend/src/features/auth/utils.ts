@@ -5,7 +5,7 @@ export function getErrorMessage(
   fallback = 'Something went wrong',
 ) {
   if (axios.isAxiosError(error)) {
-    return error.response?.data?.message ?? fallback
+    return error.response?.data?.error.message ?? fallback
   }
   return fallback
 }

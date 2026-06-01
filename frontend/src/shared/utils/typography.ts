@@ -1,7 +1,8 @@
-export const formatKey = (key: string): string => key
-  .replace(/([A-Z])/g, ' $1')
-  .replace(/^./, (str) => str.toUpperCase())
-  .trim()
+export const formatKey = (key: string): string =>
+  key
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, (str) => str.toUpperCase())
+    .trim()
 
 export function formatDate(dateStr: string): string {
   return new Date(dateStr).toLocaleDateString('en-US', {
@@ -12,3 +13,9 @@ export function formatDate(dateStr: string): string {
     minute: '2-digit',
   })
 }
+
+export const camelToTitle = (key: string): string =>
+  key
+    .replace(/([A-Z])/g, ' $1')
+    .replace(/^./, (str) => str.toUpperCase())
+    .trim()

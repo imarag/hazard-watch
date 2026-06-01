@@ -1,33 +1,5 @@
-import z from 'zod'
+import { z } from 'zod'
 import { GlobalHazardParamsSchema } from '../shared/schema.ts'
-
-const USGSEarthquakePropertiesSchema = z.object({
-  mag: z.number().nullable(),
-  place: z.string().nullable(),
-  time: z.number(),
-  tsunami: z.number(),
-  status: z.string(),
-  url: z.url(),
-  alert: z.enum(['green', 'yellow', 'orange', 'red']).nullable(),
-})
-
-const USGSEarthquakeGeometrySchema = z.object({
-  type: z.literal('Point'),
-  coordinates: z.tuple([z.number(), z.number()]).rest(z.number()),
-})
-
-const USGSEarthquakeFeatureSchema = z.object({
-  type: z.literal('Feature'),
-  id: z.string(),
-  properties: USGSEarthquakePropertiesSchema,
-  geometry: USGSEarthquakeGeometrySchema,
-})
-
-export const USGSEarthquakeResponseSchema = z.object({
-  type: z.literal('FeatureCollection'),
-  metadata: z.any().optional(),
-  features: z.array(USGSEarthquakeFeatureSchema),
-})
 
 export const EarthquakeQueryParamsSchema = z.object({
   ...GlobalHazardParamsSchema.shape,
@@ -38,6 +10,31 @@ export const EarthquakeQueryParamsSchema = z.object({
 })
 
 export type EarthquakeQueryParams = z.infer<typeof EarthquakeQueryParamsSchema>
-export type USGSEarthquakeResponse = z.infer<
-  typeof USGSEarthquakeResponseSchema
+
+export type USGSEarthquakeResponse = {
+  type: 'FeatureCollection'
+  features: {
+    type: 'Feature'
+    id: string
+    properties: Record<string, unknown>
+    geometry: {
+      type: 'Point'
+      coordinates: number[]
+    }
+  }[]
+}
+
+export const EarthquakeDisplaySchema = z.object({
+  id: z.string(),
+  magnitude: z.number().nullable(),
+  place: z.string().nullable(),
+  date: z.string(),
+  depth: z.number().nullable(),
+  tsunami: z.boolean(),
+  status: z.string(),
+  alert: z.enum(['green', 'yellow', 'orange', 'red']).nullable(),
+})
+
+export type EarthquakeDisplayProperties = z.infer<
+  typeof EarthquakeDisplaySchema
 >

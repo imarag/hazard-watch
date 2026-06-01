@@ -1,39 +1,33 @@
-import z from 'zod'
-import {
-  LongitudeSchema,
-  LatitudeSchema,
-  GlobalHazardParamsSchema,
-} from '../shared/schema.ts'
-
-const GVPEruptionPropertiesSchema = z.object({
-  Volcano_Name: z.string(),
-  ActivityArea: z.string().nullable(),
-  Activity_Type: z.string().nullable(),
-  ExplosivityIndexMax: z.number().nullable(),
-  StartDateYear: z.number().nullable(),
-  EndDateYear: z.number().nullable(),
-})
-
-const GVPEruptionGeometrySchema = z.object({
-  type: z.literal('Point'),
-  coordinates: z.tuple([LongitudeSchema, LatitudeSchema]),
-})
-
-const GVPEruptionFeatureSchema = z.object({
-  type: z.literal('Feature'),
-  id: z.string(),
-  properties: GVPEruptionPropertiesSchema,
-  geometry: GVPEruptionGeometrySchema,
-})
-
-export const GVPEruptionResponseSchema = z.object({
-  type: z.literal('FeatureCollection'),
-  features: z.array(GVPEruptionFeatureSchema),
-})
+import { z } from 'zod'
+import { GlobalHazardParamsSchema } from '../shared/schema.ts'
 
 export const EruptionQueryParamsSchema = z.object({
   ...GlobalHazardParamsSchema.shape,
+  minExplosivity: z.coerce.number().int().min(0).max(8).optional(),
+  confirmedOnly: z.coerce.boolean().default(true),
 })
 
-export type GVPEruptionResponse = z.infer<typeof GVPEruptionResponseSchema>
 export type EruptionQueryParams = z.infer<typeof EruptionQueryParamsSchema>
+
+export type GVPEruptionResponse = {
+  type: 'FeatureCollection'
+  features: {
+    type: 'Feature'
+    id: string
+    properties: Record<string, unknown>
+    geometry: {
+      type: 'Point'
+      coordinates: [number, number]
+    }
+  }[]
+}
+
+export const EruptionDisplaySchema = z.object({
+  volcanoName: z.string(),
+  activityArea: z.string().nullable(),
+  startYear: z.number().nullable(),
+  explosivityIndex: z.number().nullable(),
+  confirmed: z.boolean(),
+})
+
+export type EruptionDisplayProperties = z.infer<typeof EruptionDisplaySchema>

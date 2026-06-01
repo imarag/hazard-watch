@@ -24,6 +24,12 @@ export const hazardMeta: HazardMeta = {
     backgroundColor: '#f03e3e',
     color: '#ffffff',
   },
+  tsunami: {
+    name: 'Tsunami',
+    muiIcon: PublicIcon,
+    backgroundColor: '#1c7ed6',
+    color: '#ffffff',
+  },
 }
 
 export const filterParamsConfig = {
@@ -82,7 +88,53 @@ export const filterParamsConfig = {
     },
   },
   wildfire: {},
-  eruption: {},
+  eruption: {
+    confirmedOnly: {
+      id: 'confirmed-only',
+      type: 'select',
+      label: 'Activity type',
+      value: 'true',
+      options: [
+        { label: 'Confirmed only', value: 'true' },
+        { label: 'All eruptions', value: 'false' },
+      ],
+      size: 'small',
+    },
+    minExplosivity: {
+      id: 'min-explosivity',
+      type: 'number',
+      label: 'Min explosivity (VEI)',
+      value: 0,
+      min: 0,
+      max: 8,
+      size: 'small',
+    },
+  },
+  tsunami: {
+    minMaxWaterHeight: {
+      id: 'min-water-height',
+      type: 'number',
+      label: 'Min wave height (m)',
+      value: 0,
+      min: 0,
+      max: 100,
+      size: 'small',
+    },
+    minDeathsAmountOrder: {
+      id: 'min-deaths',
+      type: 'select',
+      label: 'Min casualties',
+      value: '0',
+      options: [
+        { label: 'Any', value: '0' },
+        { label: 'Few (1-50)', value: '1' },
+        { label: 'Some (51-100)', value: '2' },
+        { label: 'Many (101-1000)', value: '3' },
+        { label: 'Very many (1000+)', value: '4' },
+      ],
+      size: 'small',
+    },
+  },
   posts: {
     hazardType: {
       id: 'hazard-type',

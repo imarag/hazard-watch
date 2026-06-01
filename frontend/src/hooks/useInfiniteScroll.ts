@@ -1,26 +1,24 @@
 import { useEffect } from 'react'
 import { useInView } from 'react-intersection-observer'
 
-interface UseInfiniteScrollParams {
-  hasNextPage: boolean | undefined
-  isFetchingNextPage: boolean
-  fetchNextPage: () => unknown
+interface UseInViewActionParams {
+  enabled?: boolean
+  onVisible: () => void
   rootMargin?: string
 }
 
-export default function useInfiniteScroll({
-  hasNextPage,
-  isFetchingNextPage,
-  fetchNextPage,
+export default function useInViewAction({
+  enabled = true,
+  onVisible,
   rootMargin = '200px',
-}: UseInfiniteScrollParams) {
+}: UseInViewActionParams) {
   const { ref, inView } = useInView({ rootMargin })
 
   useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage()
+    if (inView && enabled) {
+      onVisible()
     }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage])
+  }, [inView, enabled, onVisible])
 
   return ref
 }

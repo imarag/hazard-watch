@@ -1,11 +1,14 @@
-import { HazardType } from '@/features/hazards/types'
+import {
+  emptyInfo,
+  HazardType,
+  type HazardInfo,
+} from '@/features/hazards/types'
 import { Box, Button } from '@mui/material'
 import HazardLayerItem from '@/features/hazards/components/HazardLayerItem'
 import HazardLayerPanel from '@/features/hazards/components/HazardLayerPanel'
 import { hazardMeta } from '@/features/hazards/constants'
 import { postMeta } from '@/features/posts/constants'
 import type { UseQueryResult } from '@tanstack/react-query'
-import type { FeatureCollection } from 'geojson'
 import { useState } from 'react'
 import SettingsIcon from '@mui/icons-material/Settings'
 import FilterOptionsPanel from '@/features/map/components/FilterOptionsPanel'
@@ -14,13 +17,14 @@ import type { FilterParamsDefaults } from '@/shared/types/config'
 interface ExploreHazardSidebarProps {
   enabledHazards: HazardType[]
   setEnabledHazards: React.Dispatch<React.SetStateAction<HazardType[]>>
-  hazardQueryMap: Partial<Record<HazardType, UseQueryResult<FeatureCollection>>>
+  hazardQueryMap: Record<HazardType, UseQueryResult>
+  postsInfo: HazardInfo
   postsLoading: boolean
   showPosts: boolean
   setShowPosts: React.Dispatch<React.SetStateAction<boolean>>
-  totalPosts: number
-  hazardCounts: Partial<Record<HazardType, number>>
-  setFilterParamsDefaults: React.Dispatch<React.SetStateAction<FilterParamsDefaults>>
+  setFilterParamsDefaults: React.Dispatch<
+    React.SetStateAction<FilterParamsDefaults>
+  >
 }
 
 export default function ExploreHazardSidebar({
@@ -30,13 +34,11 @@ export default function ExploreHazardSidebar({
   postsLoading,
   showPosts,
   setShowPosts,
-  totalPosts,
-  hazardCounts,
+  postsInfo,
   setFilterParamsDefaults,
 }: ExploreHazardSidebarProps) {
   const [showOptionsMenu, setShowOptionsMenu] = useState(false)
   const allHazards: HazardType[] = Object.values(HazardType)
-
   function toggleHazard(hazard: HazardType) {
     setEnabledHazards((prev) =>
       prev.includes(hazard)
@@ -67,7 +69,7 @@ export default function ExploreHazardSidebar({
           loading={postsLoading}
           isEnabled={showPosts}
           onClick={() => setShowPosts((prev) => !prev)}
-          totalData={totalPosts}
+          info={postsInfo}
         />
       </HazardLayerPanel>
       <HazardLayerPanel title='Hazards'>
@@ -80,7 +82,7 @@ export default function ExploreHazardSidebar({
             loading={hazardQueryMap[hazardName]?.isLoading ?? false}
             isEnabled={enabledHazards.includes(hazardName)}
             onClick={() => toggleHazard(hazardName)}
-            totalData={hazardCounts[hazardName] ?? 0}
+            info={hazardQueryMap[hazardName]?.data?.info ?? emptyInfo}
           />
         ))}
       </HazardLayerPanel>

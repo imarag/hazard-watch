@@ -73,9 +73,8 @@ export default function Search() {
     })
 
   const sentinelRef = useInfiniteScroll({
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage,
+    enabled: hasNextPage && !isFetchingNextPage,
+    onVisible: fetchNextPage,
   })
 
   if (isLoading) {

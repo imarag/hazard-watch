@@ -4,6 +4,7 @@ import MapMarker from '@/features/map/components/MapMarker'
 import FlyToLocation from '@/features/map/components/FlyToLocation'
 import type { Post } from '@/features/posts/types'
 import PostCardTitle from '@/features/posts/components/PostCardTitle'
+import { createPostTooltip } from '../utils'
 
 interface PostViewMapProps {
   post: Post
@@ -12,6 +13,7 @@ interface PostViewMapProps {
 export default function PostViewMap({ post }: PostViewMapProps) {
   const lat = post.latitude
   const lon = post.longitude
+
   return (
     <Box
       sx={{
@@ -43,7 +45,7 @@ export default function PostViewMap({ post }: PostViewMapProps) {
       <Box sx={{ flexGrow: 1 }}>
         <Map height='100%'>
           <FlyToLocation lat={lat} lon={lon} />
-          <MapMarker lat={lat} lon={lon} />
+          <MapMarker lat={lat} lon={lon} tooltip={createPostTooltip(post)} />
         </Map>
       </Box>
     </Box>

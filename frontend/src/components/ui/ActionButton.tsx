@@ -76,6 +76,7 @@ export default function ActionButton({
           sx={{
             display: 'flex',
             alignItems: 'center',
+            gap: 0.5,
             justifyContent: 'center',
             '& .MuiButton-startIcon': {
               margin: 0, // ← removes the margin from the icon

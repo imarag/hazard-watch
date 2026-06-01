@@ -3,6 +3,7 @@ import type {
   EarthquakeQueryParams,
   WildfireQueryParams,
   EruptionQueryParams,
+  TsunamiQueryParams,
   MapBounds,
   HazardType,
 } from '@/features/hazards/types'
@@ -17,6 +18,7 @@ export type FilterParamsConfig = {
   earthquake: Record<keyof EarthquakeQueryParams, FormFieldProps>
   wildfire: Record<keyof WildfireQueryParams, FormFieldProps>
   eruption: Record<keyof EruptionQueryParams, FormFieldProps>
+  tsunami: Record<keyof TsunamiQueryParams, FormFieldProps>
   posts: Record<keyof PostQueryParams, FormFieldProps>
 }
 
@@ -25,5 +27,6 @@ export type FilterParamsDefaults = {
   earthquake: Record<keyof EarthquakeQueryParams, number | string>
   wildfire: Record<keyof WildfireQueryParams, number | string>
   eruption: Record<keyof EruptionQueryParams, number | string>
+  tsunami: Record<keyof TsunamiQueryParams, number | string>
   posts: Record<keyof PostQueryParams, HazardType>
 }
