@@ -33,7 +33,6 @@ export default function LoginForm() {
       navigate(appRoutes.home.path)
     },
     onError: (error: unknown) => {
-      console.log(error, '**', error.message)
       const errorMessage = getErrorMessage(error)
       showNotification(createNotification(errorMessage, 'error'))
     },

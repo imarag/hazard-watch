@@ -25,7 +25,7 @@ export default function FilterOptionsPanel({
   setShowOptionsMenu,
   setFilterParamsDefaults,
 }: FilterOptionsPanelProps) {
-  const [initialHazardConfig, setInitialHazardConfig] =
+  const [_initialHazardConfig, setInitialHazardConfig] =
     useState<FilterParamsConfig>(filterParamsConfig)
   const [initialHazardConfigDraft, setInitialHazardConfigDraft] =
     useState<FilterParamsConfig>(filterParamsConfig)

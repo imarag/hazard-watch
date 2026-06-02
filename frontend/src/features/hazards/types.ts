@@ -105,7 +105,7 @@ export const emptyInfo: HazardInfo = {
   totalFeatures: 0,
 }
 
-type HazardResponse<T> = {
+export type HazardResponse<T> = {
   data: FeatureCollection<Point, T>
   info: HazardInfo
 }

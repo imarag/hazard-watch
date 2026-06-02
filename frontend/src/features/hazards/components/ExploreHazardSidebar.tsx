@@ -1,7 +1,11 @@
 import {
   emptyInfo,
   HazardType,
+  type EarthquakeResponse,
+  type EruptionResponse,
   type HazardInfo,
+  type TsunamiResponse,
+  type WildfireResponse,
 } from '@/features/hazards/types'
 import { Box, Button } from '@mui/material'
 import HazardLayerItem from '@/features/hazards/components/HazardLayerItem'
@@ -13,14 +17,20 @@ import { useState } from 'react'
 import SettingsIcon from '@mui/icons-material/Settings'
 import FilterOptionsPanel from '@/features/map/components/FilterOptionsPanel'
 import type { FilterParamsDefaults } from '@/shared/types/config'
+import type { Post } from '@/features/posts/types'
 
 interface ExploreHazardSidebarProps {
   enabledHazards: HazardType[]
   setEnabledHazards: React.Dispatch<React.SetStateAction<HazardType[]>>
-  hazardQueryMap: Record<HazardType, UseQueryResult>
-  postsInfo: HazardInfo
+  hazardQueryMap: {
+    earthquake: UseQueryResult<EarthquakeResponse, Error>
+    wildfire: UseQueryResult<WildfireResponse, Error>
+    eruption: UseQueryResult<EruptionResponse, Error>
+    tsunami: UseQueryResult<TsunamiResponse, Error>
+  }
   postsLoading: boolean
   showPosts: boolean
+  postsQuery: UseQueryResult<Post[], Error>
   setShowPosts: React.Dispatch<React.SetStateAction<boolean>>
   setFilterParamsDefaults: React.Dispatch<
     React.SetStateAction<FilterParamsDefaults>
@@ -31,10 +41,10 @@ export default function ExploreHazardSidebar({
   setEnabledHazards,
   enabledHazards,
   hazardQueryMap,
+  postsQuery,
   postsLoading,
   showPosts,
   setShowPosts,
-  postsInfo,
   setFilterParamsDefaults,
 }: ExploreHazardSidebarProps) {
   const [showOptionsMenu, setShowOptionsMenu] = useState(false)
@@ -45,6 +55,13 @@ export default function ExploreHazardSidebar({
         ? prev.filter((h) => h !== hazard)
         : [...prev, hazard],
     )
+  }
+
+  const postsInfo: HazardInfo = {
+    source: 'Hazard Watch Community',
+    sourceUrl: '',
+    description: 'User-submitted hazard reports',
+    totalFeatures: postsQuery.data?.length ?? 0,
   }
 
   return (
@@ -65,7 +82,7 @@ export default function ExploreHazardSidebar({
         <HazardLayerItem
           icon={postMeta.muiIcon}
           iconColor={postMeta.backgroundColor}
-          label='add post'
+          label='Add posts'
           loading={postsLoading}
           isEnabled={showPosts}
           onClick={() => setShowPosts((prev) => !prev)}

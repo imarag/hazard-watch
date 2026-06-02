@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import { useState } from 'react'
-import { HazardType, type HazardInfo } from '@/features/hazards/types'
+import { HazardType } from '@/features/hazards/types'
 import ExploreHazardSidebar from '@/features/hazards/components/ExploreHazardSidebar'
 import MainMap from '@/features/map/components/MainMap'
 import { useQuery } from '@tanstack/react-query'
@@ -9,7 +9,6 @@ import { filterParamsConfig } from '@/features/hazards/constants'
 import type { FilterParamsDefaults } from '@/shared/types/config'
 import { hazardQueryOptions } from '@/features/hazards/queries'
 import { postQueryOptions } from '@/features/posts/queries'
-import type { UseQueryResult } from '@tanstack/react-query'
 
 export default function Explore() {
   const [enabledHazards, setEnabledHazards] = useState<HazardType[]>([])
@@ -36,19 +35,12 @@ export default function Explore() {
     wildfire: wildfireQuery,
     eruption: eruptionQuery,
     tsunami: tsunamiQuery,
-  } satisfies Record<HazardType, UseQueryResult>
+  }
 
   // any hazard or posts currently are loading
   const dataLoading =
     postsQuery.isFetching ||
     Object.values(hazardQueryMap).some((q) => q?.isFetching)
-
-  const postsInfo: HazardInfo = {
-    source: 'Hazard Watch Community',
-    sourceUrl: '',
-    description: 'User-submitted hazard reports',
-    totalFeatures: postsQuery.data?.length ?? 0,
-  }
 
   return (
     <Box sx={{ height: '100%', position: 'relative', display: 'flex' }}>
@@ -57,11 +49,11 @@ export default function Explore() {
           enabledHazards={enabledHazards}
           setEnabledHazards={setEnabledHazards}
           hazardQueryMap={hazardQueryMap}
+          postsQuery={postsQuery}
           postsLoading={postsQuery.isFetching}
           showPosts={showPosts}
           setShowPosts={setShowPosts}
           setFilterParamsDefaults={setFilterParamsDefaults}
-          postsInfo={postsInfo}
         />
       </Box>
       <Box sx={{ flexGrow: 1, height: '100%' }}>

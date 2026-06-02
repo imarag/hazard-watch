@@ -1,4 +1,4 @@
-import { Typography, Box, Divider, IconButton } from '@mui/material'
+import { Typography, Box, Divider } from '@mui/material'
 
 export default function HazardLayerPanel({
   title,

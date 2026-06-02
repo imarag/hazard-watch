@@ -6,11 +6,14 @@ import { hazardMeta } from '@/features/hazards/constants'
 import { postMeta } from '@/features/posts/constants'
 import { useMapEvents } from 'react-leaflet'
 import type { FilterParamsDefaults } from '@/shared/types/config'
+import type { UseQueryResult } from '@tanstack/react-query'
 import type {
-  DefinedUseQueryResult,
-  UseQueryResult,
-} from '@tanstack/react-query'
-import type { HazardType } from '@/features/hazards/types'
+  EarthquakeResponse,
+  EruptionResponse,
+  HazardType,
+  TsunamiResponse,
+  WildfireResponse,
+} from '@/features/hazards/types'
 import { useRef, useCallback } from 'react'
 import MapSpinner from './MapSpinner'
 
@@ -33,7 +36,12 @@ interface MainMapProps {
     React.SetStateAction<FilterParamsDefaults>
   >
   loading: boolean
-  hazardQueryMap: Record<HazardType, UseQueryResult>
+  hazardQueryMap: {
+    earthquake: UseQueryResult<EarthquakeResponse, Error>
+    wildfire: UseQueryResult<WildfireResponse, Error>
+    eruption: UseQueryResult<EruptionResponse, Error>
+    tsunami: UseQueryResult<TsunamiResponse, Error>
+  }
   enabledHazards: HazardType[]
 }
 
@@ -80,16 +88,16 @@ export default function MainMap({
     >
       {loading && <MapSpinner />}
       <MapBoundsListener onBoundsChange={handleBoundsChange} />
-      {(Object.entries(hazardQueryMap) as [HazardType, UseQueryResult][])
+      {(Object.entries(hazardQueryMap) as [HazardType, typeof hazardQueryMap[HazardType]][])
         .filter(([hazard]) => enabledHazards.includes(hazard))
         .filter(([_, query]) => query.data !== undefined)
         .map(([hazard, query]) => (
           <MarkerClusterGroup key={hazard} chunkedLoading>
-            {query.data.data.features.map((feature) => {
+            {query.data?.data.features.map((feature, ind) => {
               const [lon, lat] = feature.geometry.coordinates
               return (
                 <MapMarker
-                  key={feature.properties?.id}
+                  key={ind}
                   lat={lat}
                   lon={lon}
                   color={hazardMeta[hazard]['backgroundColor']}

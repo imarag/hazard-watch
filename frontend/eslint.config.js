@@ -33,6 +33,13 @@ export default defineConfig([
       'arrow-body-style': ['error', 'as-needed'],
       camelcase: 'warn',
       curly: 'error',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          varsIgnorePattern: '^_',
+          argsIgnorePattern: '^_',
+        },
+      ],
     },
   },
 ])

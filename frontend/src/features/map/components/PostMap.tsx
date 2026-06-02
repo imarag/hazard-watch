@@ -11,7 +11,7 @@ import useCurrentPosition from '@/hooks/useCurrentPosition'
 function LocationPicker({
   onLocationSelect,
 }: {
-  onLocationSelect: (loc) => void
+  onLocationSelect: (loc: { latitude: number; longitude: number }) => void
 }) {
   useMapEvents({
     click(e) {

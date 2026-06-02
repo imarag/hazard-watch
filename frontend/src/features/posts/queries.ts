@@ -31,7 +31,7 @@ export function postQueryOptions(
       return await getAllPosts(params)
     },
     staleTime: 5 * 60 * 1000,
-    enabled: true,
+    enabled: enabled,
     placeholderData: (previousData) => previousData,
   })
 }
