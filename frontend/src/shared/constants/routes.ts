@@ -59,7 +59,12 @@ export const appRoutes = {
     title: 'Search posts',
     pageTitle: 'search posts',
   },
+  account: {
+    path: '/account',
+    title: 'Account',
+    pageTitle: 'Account Settings',
+  },
 } as const
 
 export type RouteKey = keyof typeof appRoutes
-export type AppRoute = typeof appRoutes[RouteKey]
+export type AppRoute = (typeof appRoutes)[RouteKey]

@@ -19,6 +19,7 @@ export const extractToken = (
     const payload = verifyJWTToken(token)
     if (payload) {
       req['userId'] = payload.id
+      req['userEmail'] = payload.email
     }
   }
   next()

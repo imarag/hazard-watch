@@ -12,7 +12,16 @@ const createUser = async (user: UserRegister): Promise<User> => {
   return newUser
 }
 
+const updateUser = async (userId: string, data: Partial<User>): Promise<User> => {
+  const updatedUser = await prisma.user.update({
+    where: { id: userId },
+    data,
+  })
+  return updatedUser
+}
+
 export default {
   getUserByEmail,
+  updateUser,
   createUser,
 }

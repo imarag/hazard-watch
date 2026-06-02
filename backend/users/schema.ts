@@ -28,6 +28,15 @@ export const UserRegisterSchema = z.object({
   password: passwordField,
 })
 
+export const UserUpdatePasswordSchema = z.object({
+  currentPassword: passwordField.optional(),
+  newPassword: passwordField.optional(),
+})
+
+export const UserUpdateInformationSchema = z.object({
+  name: nameField.optional(),
+})
+
 export const UserForgotPasswordSchema = z.object({
   email: emailField,
 })
@@ -38,4 +47,6 @@ export const UserResetPasswordSchema = z.object({
 })
 
 export type UserLogin = z.infer<typeof UserLoginSchema>
+export type UserUpdatePassword = z.infer<typeof UserUpdatePasswordSchema>
+export type UserUpdateInformation = z.infer<typeof UserUpdateInformationSchema>
 export type UserRegister = z.infer<typeof UserRegisterSchema>

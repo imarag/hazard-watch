@@ -41,7 +41,6 @@ export default function NavigationBarItem({
           xs: 'center',
           sm: 'start',
           md: 'center',
-          xl: 'start',
         },
         '&:hover': {
           backgroundColor: 'background.default',
@@ -52,7 +51,7 @@ export default function NavigationBarItem({
           fontWeight: 'bold',
         },
         '& .MuiButton-startIcon': {
-          display: { xs: 'flex', md: 'none', xl: 'flex' },
+          display: { xs: 'flex', md: 'none' },
         },
         ...sx,
         display: 'flex',

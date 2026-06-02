@@ -1,6 +1,7 @@
 export interface CurrentUser {
   id: string
   email: string
+  name: string
 }
 
 export type User = {
@@ -17,6 +18,15 @@ export type UserRegister = Omit<User, 'id'> & {
   password: string
 }
 
+export type UserChangePassword = {
+  currentPassword: string
+  newPassword: string
+}
+
+export type UserUpdateInformation = {
+  name?: string
+}
+
 export type UserForgotPassword = Pick<User, 'email'>
 
 export type UserResetPassword = {
@@ -27,5 +37,6 @@ export type UserResetPassword = {
 export type LoginResponse = {
   id: string
   email: string
+  name: string
   token: string
 }

@@ -39,6 +39,19 @@ const resetPassword = async (payload: UserResetPassword) => {
   return res.data
 }
 
+const changePassword = async (data: {
+  currentPassword: string
+  newPassword: string
+}) => {
+  const res = await api.put(`${baseUrl}/change-password`, data)
+  return res.data
+}
+
+const updateInformation = async (data: { name?: string }) => {
+  const res = await api.put(`${baseUrl}/update-information`, data)
+  return res.data
+}
+
 export default {
   login,
   register,
@@ -46,4 +59,6 @@ export default {
   refreshToken,
   resetPassword,
   sendResetLink,
+  changePassword,
+  updateInformation,
 }

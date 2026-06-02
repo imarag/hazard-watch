@@ -1,10 +1,17 @@
 import express from 'express'
-import type { UserLogin, UserRegister } from '../users/schema.ts'
+import type {
+  UserLogin,
+  UserRegister,
+  UserUpdateInformation,
+  UserUpdatePassword,
+} from '../users/schema.ts'
 import {
   UserForgotPasswordSchema,
   UserLoginSchema,
   UserRegisterSchema,
   UserResetPasswordSchema,
+  UserUpdateInformationSchema,
+  UserUpdatePasswordSchema,
 } from '../users/schema.ts'
 import usersService from '../users/services.ts'
 import {
@@ -46,6 +53,7 @@ router.post('/refresh', async (req, res) => {
   return res.status(200).json({
     id: userPayload.id,
     email: userPayload.email,
+    name: userPayload.userName,
     token: accessToken,
   })
 })
@@ -93,6 +101,7 @@ router.post('/login', async (req, res) => {
     id: existingUser.id,
     email: existingUser.email,
     token: accessToken,
+    name: existingUser.name,
   })
 })
 
@@ -167,6 +176,56 @@ router.post('/forgot-password', async (req, res) => {
   }
 
   return res.json(genericResponse)
+})
+
+router.put('/update-information', async (req, res) => {
+  const body: UserUpdateInformation = req.body
+  const user = UserUpdateInformationSchema.parse(body)
+
+  const existingUser = await usersService.getUserByEmail(req.userEmail!)
+  if (!existingUser) {
+    throw new AppError(401, 'Invalid user email.')
+  }
+
+  const newUser = { ...existingUser, ...user }
+  await usersService.updateUser(existingUser.id, newUser)
+
+  return res.status(200).json({ message: 'Information updated successfully' })
+})
+
+router.put('/change-password', async (req, res) => {
+  const body: UserUpdatePassword = req.body
+  const user = UserUpdatePasswordSchema.parse(body)
+
+  const existingUser = await usersService.getUserByEmail(req.userEmail!)
+  if (!existingUser) {
+    throw new AppError(401, 'Invalid user email.')
+  }
+
+  if (!user.newPassword || !user.currentPassword) {
+    throw new AppError(400, 'Current password and new password are required.')
+  }
+
+  if (user.currentPassword === user.newPassword) {
+    throw new AppError(
+      400,
+      'New password cannot be the same as the current password.',
+    )
+  }
+
+  const passwordMatch = await compareHashed(
+    user.currentPassword,
+    existingUser.password,
+  )
+  if (!passwordMatch) {
+    throw new AppError(401, 'Invalid current password.')
+  }
+
+  existingUser.password = await hashPassword(user.newPassword)
+
+  await usersService.updateUser(existingUser.id, existingUser)
+
+  return res.status(200).json({ message: 'Password updated successfully' })
 })
 
 router.post('/reset-password', async (req, res) => {

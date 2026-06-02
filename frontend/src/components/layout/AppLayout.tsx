@@ -7,7 +7,7 @@ export default function MainLayout() {
     <Box
       sx={{
         display: 'flex',
-        flexDirection: { xs: 'column', xl: 'row' },
+        flexDirection: 'column',
         height: '100vh',
       }}
     >

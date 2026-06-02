@@ -23,6 +23,8 @@ type Actions = {
     register: (userInfo: UserRegister) => Promise<void>
     sendResetLink: (data: UserForgotPassword) => Promise<void>
     resetPassword: (data: UserResetPassword) => Promise<void>
+    changePassword: (data: { currentPassword: string; newPassword: string }) => Promise<void>
+    updateInformation: (data: { name?: string; email?: string }) => Promise<void>
   }
 }
 
@@ -37,7 +39,7 @@ const useAuthStore = create<State & Actions>((set) => ({
       const res = await authService.login(credentials)
       setToken(res.token)
       set({
-        currentUser: { id: res.id, email: res.email },
+        currentUser: { id: res.id, email: res.email, name: res.name },
         isLoggingOut: false,
       })
     },
@@ -60,6 +62,19 @@ const useAuthStore = create<State & Actions>((set) => ({
     resetPassword: async (data) => {
       await authService.resetPassword(data)
     },
+
+    changePassword: async (data: { currentPassword: string; newPassword: string }) => {
+      await authService.changePassword(data)
+    },
+    
+    updateInformation: async (data: { name?: string }) => {
+      await authService.updateInformation(data)
+      set((state) => ({
+        currentUser: state.currentUser
+          ? { ...state.currentUser, name: data.name || state.currentUser.name }
+          : null,
+      }))
+    },  
   },
 }))
 
