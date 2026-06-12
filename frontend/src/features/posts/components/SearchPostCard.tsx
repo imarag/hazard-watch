@@ -40,7 +40,7 @@ export default function SearchPostCard({ post }: SearchPostCardProps) {
               >
                 {post.title}
               </Typography>
-              <HazardChip hazard={post.hazardType} />
+              <HazardChip hazard={post.hazard_type} />
             </Box>
 
             <Typography
@@ -69,7 +69,7 @@ export default function SearchPostCard({ post }: SearchPostCardProps) {
               <Typography variant='caption'>{post.author.name}</Typography>
               <Typography variant='caption'>·</Typography>
               <Typography variant='caption'>
-                {formatDate(post.createdAt)}
+                {formatDate(post.created_at)}
               </Typography>
               <Typography variant='caption'>·</Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>

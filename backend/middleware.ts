@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
 import { verifyJWTToken } from './auth/utils.ts'
-import postService from './posts/services.ts'
+import { getPostById } from './posts/services.ts'
 import { z } from 'zod'
 import config from './lib/config.ts'
 import axios from 'axios'
@@ -18,8 +18,7 @@ export const extractToken = (
     const token = authorization.replace('Bearer ', '')
     const payload = verifyJWTToken(token)
     if (payload) {
-      req['userId'] = payload.id
-      req['userEmail'] = payload.email
+      req['userId'] = payload.userId
     }
   }
   next()
@@ -42,9 +41,9 @@ export const requireOwnership = async (
   next: NextFunction,
 ) => {
   const postId = String(req.params['id'])
-  const existingPost = await postService.getPostById(postId)
+  const existingPost = await getPostById(postId)
 
-  if (existingPost.authorId !== req['userId']) {
+  if (existingPost.author_id !== req['userId']) {
     throw new AppError(403, 'Unauthorized')
   }
 

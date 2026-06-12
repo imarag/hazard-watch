@@ -1,5 +1,9 @@
-import type { User } from '../generated/prisma/client.js'
-
-export type UserPublic = Omit<User, 'password'> & {
+export type UserInDb = {
   id: string
+  created_at: Date
+  name: string
+  email: string
+  password: string
 }
+
+export type UserPublic = Omit<UserInDb, 'password'>

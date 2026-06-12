@@ -18,6 +18,7 @@ import MainLayout from '@/components/layout/MainLayout'
 import AuthLayout from '@/components/layout/AuthLayout'
 import { appRoutes } from '@/shared/constants/routes'
 import Account from '@/pages/Account'
+import NotFound from './pages/NotFound'
 
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
@@ -55,6 +56,7 @@ function App() {
               <Route path={appRoutes.viewPost.path} element={<ViewPost />} />
               <Route path={appRoutes.map.path} element={<Explore />} />
               <Route path={appRoutes.account.path} element={<Account />} />
+              <Route path='*' element={<NotFound />} />
             </Route>
           </Route>
         </Routes>

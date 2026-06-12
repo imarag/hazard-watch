@@ -11,27 +11,33 @@ import { useAuthActions, useCurrentUser } from '@/features/auth/store'
 import { useNotificationActions } from '@/shared/stores/notification'
 
 export default function UpdateInformationForm() {
-
   const currentUser = useCurrentUser()
   const name = useField(currentUser?.name || '')
-  const email = useField(currentUser?.email || '')
 
   const { showNotification, createNotification } = useNotificationActions()
   const { updateInformation } = useAuthActions()
 
   const navigate = useNavigate()
 
-  async function handleUpdateInformation(e: React.SubmitEvent<HTMLFormElement>) {
+  async function handleUpdateInformation(
+    e: React.SubmitEvent<HTMLFormElement>,
+  ) {
     e.preventDefault()
     mutate({ name: name.value })
   }
 
   const { mutate, isPending } = useMutation({
     mutationFn: async ({ name }: UserUpdateInformation) => {
-      await updateInformation({ name })
+      const updatedUser = await updateInformation({ name })
+      return updatedUser
     },
     onSuccess: () => {
-      showNotification(createNotification('Account information updated successfully.', 'success'))
+      showNotification(
+        createNotification(
+          'Account information updated successfully.',
+          'success',
+        ),
+      )
       navigate(appRoutes.home.path)
     },
     onError: (error: unknown) => {
@@ -41,20 +47,16 @@ export default function UpdateInformationForm() {
   })
 
   return (
-    <FormContainer title='Update Account Information' onSubmit={handleUpdateInformation}>
+    <FormContainer
+      title='Update Account Information'
+      onSubmit={handleUpdateInformation}
+    >
       <>
         <TextField
           label='Name'
           value={name.value}
           onChange={name.onChange}
           required
-        />
-        <TextField
-          label='Email'
-          value={email.value}
-          onChange={email.onChange}
-          required
-          disabled
         />
         <Button loading={isPending} type='submit' variant='contained' fullWidth>
           Update information

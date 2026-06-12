@@ -92,13 +92,8 @@ export default function CreatePostForm() {
         ))}
       </TextField>
       <PostMap
-        onLocationSelect={(longitude: number, latitude: number) =>
-          hazardPosition.setValue({ longitude, latitude })
-        }
-        longitude={hazardPosition.value?.longitude}
-        latitude={hazardPosition.value?.latitude}
-        isLoading={isPending}
-        flyToLocation={false}
+        flyToLocation={true}
+        hazardPosition={hazardPosition.value}
         setHazardPosition={hazardPosition.setValue}
       />
       <Button

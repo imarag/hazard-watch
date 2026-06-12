@@ -1,9 +1,8 @@
 import { Box } from '@mui/material'
 import Map from '@/features/map/components/Map'
-import MapMarker from '@/features/map/components/MapMarker'
-import FlyToLocation from '@/features/map/components/FlyToLocation'
 import type { Post } from '@/features/posts/types'
 import PostCardTitle from '@/features/posts/components/PostCardTitle'
+import type { FlyTarget, MarkerType } from '@/features/map/types'
 import { createPostTooltip } from '../utils'
 
 interface PostViewMapProps {
@@ -11,8 +10,19 @@ interface PostViewMapProps {
 }
 
 export default function PostViewMap({ post }: PostViewMapProps) {
-  const lat = post.latitude
-  const lon = post.longitude
+  const postMarker: MarkerType = {
+    id: post.id,
+    coords: { lat: post.latitude, lon: post.longitude },
+    tooltip: createPostTooltip(post),
+  }
+
+  const flyTarget: FlyTarget = {
+    coords: {
+      lat: post.latitude,
+      lon: post.longitude,
+    },
+    zoom: 13,
+  }
 
   return (
     <Box
@@ -43,10 +53,7 @@ export default function PostViewMap({ post }: PostViewMapProps) {
         </Box>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-        <Map height='100%'>
-          <FlyToLocation lat={lat} lon={lon} />
-          <MapMarker lat={lat} lon={lon} tooltip={createPostTooltip(post)} />
-        </Map>
+        <Map markers={[[postMarker]]} height='100%' flyTarget={flyTarget} />
       </Box>
     </Box>
   )

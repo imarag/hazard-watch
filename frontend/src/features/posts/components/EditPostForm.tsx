@@ -22,7 +22,7 @@ export default function EditPostForm({ post }: EditPostFormProps) {
 
   const title = useField(post.title)
   const description = useField(post.description)
-  const hazardType = useField<HazardType>(post.hazardType)
+  const hazardType = useField<HazardType>(post.hazard_type)
   const hazardPosition = useField<HazardPosition | null>(null)
 
   const { mutate, isPending } = useMutation({

@@ -5,8 +5,6 @@ export type ErrorResponse = {
 }
 
 export type TokenPayload = {
-  id: string
-  userName: string
-  email: string
+  userId: string
   tokenType: 'access' | 'refresh' | 'reset'
 }

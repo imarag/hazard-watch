@@ -15,8 +15,12 @@ export default function AuthGate({ children }: AuthGateProps) {
     async function restoreSession() {
       try {
         const res = await authService.refreshToken()
-        setToken(res.token)
-        setCurrentUser({ id: res.id, email: res.email })
+        setToken(res.accessToken)
+        setCurrentUser({
+          id: res.user.id,
+          name: res.user.name,
+          email: res.user.email,
+        })
       } catch {
         setToken(null)
         setCurrentUser(null)

@@ -24,7 +24,7 @@ import config from '../lib/config.js'
 import { sendMail } from '../lib/mailer.js'
 import { logger } from '../lib/logger.js'
 import { AppError } from '../errors.js'
-import { prisma } from '../lib/prisma.ts'
+import pool from '../lib/db.ts'
 
 const router = express.Router()
 
@@ -42,19 +42,24 @@ router.post('/refresh', async (req, res) => {
 
   const accessToken = createJWTToken(
     {
-      id: userPayload.id,
-      userName: userPayload.userName,
-      email: userPayload.email,
+      userId: userPayload.userId,
       tokenType: 'access',
     },
     config.ACCESS_TOKEN_DUR,
   )
 
+  const existingUser = await usersService.getUserById(userPayload.userId)
+  if (!existingUser) {
+    throw new AppError(401, 'User not found')
+  }
+
   return res.status(200).json({
-    id: userPayload.id,
-    email: userPayload.email,
-    name: userPayload.userName,
-    token: accessToken,
+    accessToken,
+    user: {
+      id: userPayload.userId,
+      email: existingUser.email,
+      name: existingUser.name,
+    },
   })
 })
 
@@ -75,18 +80,12 @@ router.post('/login', async (req, res) => {
     throw new AppError(401, 'Invalid email or password.')
   }
 
-  const userPayload = {
-    email: existingUser.email,
-    id: existingUser.id,
-    userName: existingUser.name,
-  }
-
   const accessToken = createJWTToken(
-    { ...userPayload, tokenType: 'access' },
+    { userId: existingUser.id, tokenType: 'access' },
     config.ACCESS_TOKEN_DUR,
   )
   const refreshToken = createJWTToken(
-    { ...userPayload, tokenType: 'refresh' },
+    { userId: existingUser.id, tokenType: 'refresh' },
     config.REFRESH_TOKEN_DUR,
   )
 
@@ -98,10 +97,12 @@ router.post('/login', async (req, res) => {
   })
 
   return res.status(200).json({
-    id: existingUser.id,
-    email: existingUser.email,
-    token: accessToken,
-    name: existingUser.name,
+    accessToken,
+    user: {
+      id: existingUser.id,
+      email: existingUser.email,
+      name: existingUser.name,
+    },
   })
 })
 
@@ -133,7 +134,10 @@ router.post('/forgot-password', async (req, res) => {
   const body = req.body
   const payload = UserForgotPasswordSchema.parse(body)
 
-  const user = await prisma.user.findUnique({ where: { email: payload.email } })
+  const result = await pool.query('SELECT * FROM users WHERE email = $1', [
+    payload.email,
+  ])
+  const user = result.rows[0] ?? null
 
   // Always return the same message to prevent email enumeration
   const genericResponse = {
@@ -146,9 +150,7 @@ router.post('/forgot-password', async (req, res) => {
 
   const resetToken = createJWTToken(
     {
-      id: user.id,
-      userName: user.name,
-      email: user.email,
+      userId: user.id,
       tokenType: 'reset',
     },
     '1h',
@@ -182,24 +184,30 @@ router.put('/update-information', async (req, res) => {
   const body: UserUpdateInformation = req.body
   const user = UserUpdateInformationSchema.parse(body)
 
-  const existingUser = await usersService.getUserByEmail(req.userEmail!)
+  const existingUser = await usersService.getUserById(req.userId!)
   if (!existingUser) {
-    throw new AppError(401, 'Invalid user email.')
+    throw new AppError(401, 'Invalid user.')
   }
 
   const newUser = { ...existingUser, ...user }
   await usersService.updateUser(existingUser.id, newUser)
 
-  return res.status(200).json({ message: 'Information updated successfully' })
+  return res.status(200).json({
+    user: {
+      id: existingUser.id,
+      email: newUser.email,
+      name: newUser.name,
+    },
+  })
 })
 
 router.put('/change-password', async (req, res) => {
   const body: UserUpdatePassword = req.body
   const user = UserUpdatePasswordSchema.parse(body)
 
-  const existingUser = await usersService.getUserByEmail(req.userEmail!)
+  const existingUser = await usersService.getUserById(req.userId!)
   if (!existingUser) {
-    throw new AppError(401, 'Invalid user email.')
+    throw new AppError(401, 'Invalid user.')
   }
 
   if (!user.newPassword || !user.currentPassword) {
@@ -246,10 +254,10 @@ router.post('/reset-password', async (req, res) => {
 
   const hashedPassword = await hashPassword(payload.newPassword)
 
-  await prisma.user.update({
-    where: { id: decoded.id },
-    data: { password: hashedPassword },
-  })
+  await pool.query('UPDATE users SET password = $1 WHERE id = $2', [
+    hashedPassword,
+    decoded.userId,
+  ])
 
   return res.json({ message: 'Password reset successful' })
 })

@@ -3,20 +3,20 @@ import type { SvgIconComponent } from '@mui/icons-material'
 
 export type Post = {
   id: string
-  createdAt: string
-  updatedAt: string
+  created_at: string
+  updated_at: string
   title: string
-  hazardType: HazardType
+  hazard_type: HazardType
   description: string
   author: { name: string; id: string; email: string; createdAt: string }
-  authorId: string
+  author_id: string
   longitude: number
   latitude: number
 }
 
 export type CreatePost = Pick<
   Post,
-  'title' | 'hazardType' | 'description' | 'longitude' | 'latitude'
+  'title' | 'hazard_type' | 'description' | 'longitude' | 'latitude'
 >
 
 export type SearchParams = {

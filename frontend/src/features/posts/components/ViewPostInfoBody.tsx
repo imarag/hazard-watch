@@ -23,15 +23,15 @@ export default function ViewPostInfoBody({ post }: PostViewInfoBodyProps) {
       </PostCardItem>
       <PostCardItem label='Hazard type'>
         <PostCardText
-          text={post.hazardType}
-          icon={hazardMeta[post.hazardType]['muiIcon']}
+          text={post.hazard_type}
+          icon={hazardMeta[post.hazard_type]['muiIcon']}
         />
       </PostCardItem>
       <PostCardItem label='Coordinates'>
         <PostCardText text={formatCoordinates(lon, lat)} />
       </PostCardItem>
       <PostCardItem label='Report creation date'>
-        <PostCardText text={formatDate(post.createdAt)} />
+        <PostCardText text={formatDate(post.created_at)} />
       </PostCardItem>
     </Stack>
   )

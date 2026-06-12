@@ -50,3 +50,5 @@ export type UserLogin = z.infer<typeof UserLoginSchema>
 export type UserUpdatePassword = z.infer<typeof UserUpdatePasswordSchema>
 export type UserUpdateInformation = z.infer<typeof UserUpdateInformationSchema>
 export type UserRegister = z.infer<typeof UserRegisterSchema>
+export type UserForgotPassword = z.infer<typeof UserForgotPasswordSchema>
+export type UserResetPassword = z.infer<typeof UserResetPasswordSchema>

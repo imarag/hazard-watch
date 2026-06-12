@@ -1,11 +1,5 @@
 import Map from '@/features/map/components/Map'
-import MapMarker from '@/features/map/components/MapMarker'
-import MarkerClusterGroup from 'react-leaflet-cluster'
 import type { Post } from '@/features/posts/types'
-import { hazardMeta } from '@/features/hazards/constants'
-import { postMeta } from '@/features/posts/constants'
-import { useMapEvents } from 'react-leaflet'
-import type { FilterParamsDefaults } from '@/shared/types/config'
 import type { UseQueryResult } from '@tanstack/react-query'
 import type {
   EarthquakeResponse,
@@ -14,20 +8,13 @@ import type {
   TsunamiResponse,
   WildfireResponse,
 } from '@/features/hazards/types'
-import { useRef, useCallback } from 'react'
-import MapSpinner from './MapSpinner'
-
-function MapBoundsListener({
-  onBoundsChange,
-}: {
-  onBoundsChange: (bounds: L.LatLngBounds) => void
-}) {
-  useMapEvents({
-    moveend: (e) => onBoundsChange(e.target.getBounds()),
-    zoomend: (e) => onBoundsChange(e.target.getBounds()),
-  })
-  return null
-}
+import React, { useRef, useCallback } from 'react'
+import type { MarkerType } from '@/features/map/types'
+import { createPostTooltip } from '@/features/posts/utils'
+import { postMeta } from '@/features/posts/constants'
+import { hazardMeta } from '@/features/hazards/constants'
+import type { FilterParamsDefaults } from '@/shared/types/config'
+import type { MapBounds } from '@/features/hazards/types'
 
 interface MainMapProps {
   postsQuery: UseQueryResult<Post[], Error>
@@ -55,8 +42,8 @@ export default function MainMap({
 }: MainMapProps) {
   const boundsTimer = useRef<ReturnType<typeof setTimeout>>(null)
 
-  const handleBoundsChange = useCallback(
-    (bounds: L.LatLngBounds) => {
+  const handleMoveEnd = useCallback(
+    ({ minLat, maxLat, minLng, maxLng }: MapBounds) => {
       if (boundsTimer.current) {
         clearTimeout(boundsTimer.current)
       }
@@ -66,17 +53,49 @@ export default function MainMap({
           ...prev,
           global: {
             ...prev.global,
-            // round in order not to cache every decimal of coords
-            minLat: Math.max(Math.round(bounds.getSouth()), -90),
-            maxLat: Math.min(Math.round(bounds.getNorth()), 90),
-            minLng: Math.max(Math.round(bounds.getWest()), -180),
-            maxLng: Math.min(Math.round(bounds.getEast()), 180),
+            minLat: Math.max(Math.round(minLat), -90),
+            maxLat: Math.min(Math.round(maxLat), 90),
+            minLng: Math.max(Math.round(minLng), -180),
+            maxLng: Math.min(Math.round(maxLng), 180),
           },
         }))
       }, 500)
     },
     [setFilterParamsDefaults],
   )
+
+  const hazardMarkers = (
+    Object.entries(hazardQueryMap) as [
+      HazardType,
+      (typeof hazardQueryMap)[HazardType],
+    ][]
+  )
+    .filter(([hazard]) => enabledHazards.includes(hazard))
+    .filter(([_, query]) => query.data !== undefined)
+    .map(([hazard, query]) =>
+      query.data?.data.features
+        ? query.data.data.features.map((feature, ind) => {
+            const [lon, lat] = feature.geometry.coordinates
+            return {
+              id: String(ind),
+              coords: { lat, lon },
+              tooltip: feature.properties,
+              icon: hazardMeta[hazard].muiIcon,
+            } satisfies MarkerType
+          })
+        : [],
+    )
+
+  const postsMarkers: MarkerType[] = showPosts
+    ? (postsQuery.data?.map((post) => ({
+        id: String(post.id),
+        coords: { lat: post.latitude, lon: post.longitude },
+        tooltip: createPostTooltip(post),
+        icon: postMeta.muiIcon,
+      })) ?? [])
+    : []
+
+  const markers = [...hazardMarkers, postsMarkers]
 
   return (
     <Map
@@ -85,45 +104,9 @@ export default function MainMap({
       zoomControl={false}
       attributionControl={false}
       buttonIconSize='large'
-    >
-      {loading && <MapSpinner />}
-      <MapBoundsListener onBoundsChange={handleBoundsChange} />
-      {(Object.entries(hazardQueryMap) as [HazardType, typeof hazardQueryMap[HazardType]][])
-        .filter(([hazard]) => enabledHazards.includes(hazard))
-        .filter(([_, query]) => query.data !== undefined)
-        .map(([hazard, query]) => (
-          <MarkerClusterGroup key={hazard} chunkedLoading>
-            {query.data?.data.features.map((feature, ind) => {
-              const [lon, lat] = feature.geometry.coordinates
-              return (
-                <MapMarker
-                  key={ind}
-                  lat={lat}
-                  lon={lon}
-                  color={hazardMeta[hazard]['backgroundColor']}
-                  icon={hazardMeta[hazard]['muiIcon']}
-                  tooltip={feature.properties}
-                />
-              )
-            })}
-          </MarkerClusterGroup>
-        ))}
-      <MarkerClusterGroup>
-        {showPosts && (
-          <>
-            {postsQuery.data?.map((post) => (
-              <MapMarker
-                key={post.id}
-                lat={post.latitude}
-                lon={post.longitude}
-                color={postMeta['backgroundColor']}
-                icon={postMeta['muiIcon']}
-                tooltip={post}
-              />
-            ))}
-          </>
-        )}
-      </MarkerClusterGroup>
-    </Map>
+      markers={markers}
+      loading={loading}
+      onMoveEnd={handleMoveEnd}
+    />
   )
 }

@@ -1,27 +1,41 @@
-import { prisma } from '../lib/prisma.ts'
-import type { User } from '../generated/prisma/index.js'
+import pool from '../lib/db.ts'
 import type { UserRegister } from '../users/schema.ts'
+import type { UserInDb } from './types.ts'
+import { buildQueryParts } from '../lib/utils.ts'
 
-const getUserByEmail = async (email: string): Promise<User | null> => {
-  const user = await prisma.user.findUnique({ where: { email: email } })
-  return user
+const getUserByEmail = async (email: string): Promise<UserInDb | null> => {
+  const result = await pool.query('SELECT * FROM users WHERE email = $1', [
+    email,
+  ])
+  return result.rows[0] ?? null
 }
 
-const createUser = async (user: UserRegister): Promise<User> => {
-  const newUser = await prisma.user.create({ data: user })
-  return newUser
+const getUserById = async (userId: string): Promise<UserInDb | null> => {
+  const result = await pool.query('SELECT * FROM users WHERE id = $1', [userId])
+  return result.rows[0] ?? null
 }
 
-const updateUser = async (userId: string, data: Partial<User>): Promise<User> => {
-  const updatedUser = await prisma.user.update({
-    where: { id: userId },
-    data,
-  })
-  return updatedUser
+const createUser = async (user: UserRegister): Promise<UserInDb> => {
+  const { columnsJoinStr, placeholdersJoinStr, valuesList } =
+    buildQueryParts(user)
+  const queryText = `INSERT INTO users (${columnsJoinStr}) VALUES (${placeholdersJoinStr}) RETURNING *`
+  const result = await pool.query(queryText, valuesList)
+  return result.rows[0]
+}
+
+const updateUser = async (
+  userId: string,
+  data: Partial<UserInDb>,
+): Promise<UserInDb | null> => {
+  const { setFieldsClause, valuesList } = buildQueryParts(data, 2)
+  const queryText = `UPDATE users SET ${setFieldsClause} WHERE id = $1 RETURNING *`
+  const result = await pool.query(queryText, [userId, ...valuesList])
+  return result.rows[0] ?? null
 }
 
 export default {
   getUserByEmail,
+  getUserById,
   updateUser,
   createUser,
 }

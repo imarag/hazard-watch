@@ -1,63 +1,59 @@
-import { ToggleButtonGroup, ToggleButton, Typography, Box } from '@mui/material'
-import { useMapEvents } from 'react-leaflet'
+import { Typography, Box } from '@mui/material'
+import { useEffect, useRef, useMemo, useState } from 'react'
 import Map from '@/features/map/components/Map'
 import { formatCoordinates } from '@/shared/utils/geometry'
-import MapMarker from '@/features/map/components/MapMarker'
-import FlyToLocation from '@/features/map/components/FlyToLocation'
-import { useState } from 'react'
-import type { HazardPositionMode, HazardPosition } from '@/features/hazards/types'
-import useCurrentPosition from '@/hooks/useCurrentPosition'
+import type { HazardPosition } from '@/features/hazards/types'
+import { useMapEvents } from 'react-leaflet'
 
-function LocationPicker({
-  onLocationSelect,
-}: {
-  onLocationSelect: (loc: { latitude: number; longitude: number }) => void
-}) {
-  useMapEvents({
-    click(e) {
-      onLocationSelect({ latitude: e.latlng.lat, longitude: e.latlng.lng })
+function GetCurrentPosition() {
+  const [position, setPosition] = useState(null)
+  const map = useMapEvents({
+    click() {
+      map.locate()
+    },
+    locationfound(e) {
+      setPosition(e.latlng)
+      map.flyTo(e.latlng, map.getZoom())
     },
   })
-  return null
+  return (
+    <></>
+  )
 }
 
 interface PostMapProps {
-  longitude: number | null | undefined
-  latitude: number | null | undefined
-  onLocationSelect: (longitude: number, latitude: number) => void
-  isLoading: boolean
+  hazardPosition: HazardPosition | null
   flyToLocation: boolean
   setHazardPosition: React.Dispatch<React.SetStateAction<HazardPosition | null>>
 }
 
 export default function PostMap({
-  longitude,
-  latitude,
-  onLocationSelect,
-  isLoading,
+  hazardPosition,
   flyToLocation,
   setHazardPosition,
 }: PostMapProps) {
-  const currPosition = useCurrentPosition()
-  const [selectLocationMode, setSelectLocationMode] =
-    useState<HazardPositionMode>('current')
+  const markerRef = useRef(null)
 
-  function handleChangeSelectLocationMode(
-    _event: React.MouseEvent<HTMLElement, MouseEvent>,
-    newMode: HazardPositionMode,
-  ) {
-    if (!newMode) {
-      setHazardPosition(null)
-    }
-
-    if (newMode === 'current') {
+  useEffect(() => {
+    if (currPosition) {
       setHazardPosition(currPosition)
     }
+  }, [setHazardPosition, currPosition])
 
-    setSelectLocationMode(newMode)
-  }
+  const eventHandlers = useMemo(
+    () => ({
+      dragend() {
+        const marker = markerRef.current
+        if (marker != null) {
+          setHazardPosition(marker.getLatLng())
+        }
+      },
+    }),
+    [],
+  )
 
-  const hazardLocationExists = longitude && latitude
+  const hazardLocationExists =
+    hazardPosition?.longitude && hazardPosition.latitude
   return (
     <Box>
       <Box
@@ -76,46 +72,26 @@ export default function PostMap({
         >
           Set the hazard location
         </Typography>
-
-        <ToggleButtonGroup
-          color='primary'
-          value={selectLocationMode}
-          exclusive
-          onChange={handleChangeSelectLocationMode}
-          aria-label='Location selection mode'
-          size='small'
-        >
-          <ToggleButton value='current'>Use current location</ToggleButton>
-
-          <ToggleButton value='map'>Select on map</ToggleButton>
-        </ToggleButtonGroup>
       </Box>
       <Typography variant='caption' color='text.secondary'>
         Click on the map to set the location
       </Typography>
-      {selectLocationMode === 'map' && (
-        <Map height='240px'>
-          <LocationPicker
-            onLocationSelect={(loc) => {
-              if (isLoading) {
-                return
-              }
-              onLocationSelect(loc.longitude, loc.latitude)
-            }}
-          />
-          {hazardLocationExists && (
-            <>
-              <MapMarker lat={latitude} lon={longitude} />
-              {flyToLocation && (
-                <FlyToLocation lat={latitude} lon={longitude} />
-              )}
-            </>
-          )}
-        </Map>
-      )}
+      <Map height='240px'>
+        <GetCurrentPosition />
+        {hazardLocationExists && (
+          <>
+            <MapMarker
+              eventHandlers={eventHandlers}
+              draggable={true}
+              lat={hazardPosition?.latitude}
+              lon={hazardPosition?.longitude}
+            />
+          </>
+        )}
+      </Map>
       <Typography variant='caption' color='text.secondary'>
         {hazardLocationExists
-          ? formatCoordinates(longitude, latitude)
+          ? formatCoordinates(hazardPosition.longitude, hazardPosition.latitude)
           : 'You have not selected any location yet'}
       </Typography>
     </Box>

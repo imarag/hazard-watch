@@ -1,7 +1,10 @@
 import z from 'zod'
 import dotenv from 'dotenv'
+import path from 'path'
+import { fileURLToPath } from 'url'
 
-dotenv.config()
+const __dirname = fileURLToPath(new URL('.', import.meta.url))
+dotenv.config({ path: path.resolve(__dirname, '../.env') })
 
 const SECONDS = 1
 const MINUTES = 60 * SECONDS
@@ -27,6 +30,11 @@ const envConfig = {
   MAIL_FROM: process.env['MAIL_FROM'],
   CLIENT_URL: process.env['CLIENT_URL'],
   FIRMS_MAP_KEY: process.env['FIRMS_MAP_KEY'],
+  DB_HOST: process.env['DB_HOST'],
+  DB_PORT: process.env['DB_PORT'],
+  DB_NAME: process.env['DB_NAME'],
+  DB_USER: process.env['DB_USER'],
+  DB_PASSWORD: process.env['DB_PASSWORD'],
 }
 
 const rawConfig = {
@@ -35,21 +43,26 @@ const rawConfig = {
 }
 
 const configSchema = z.object({
-  JWT_SECRET: z.string(),
   REFRESH_TOKEN_KEY: z.string(),
   REFRESH_TOKEN_TTL: z.number(),
-  NODE_ENV: z.enum(['production', 'development']),
+  REFRESH_TOKEN_DUR: z.number(),
+  ACCESS_TOKEN_DUR: z.number(),
   ACCESS_TOKEN_TTL: z.number(),
+  NODE_ENV: z.enum(['production', 'development']),
   PORT: z.coerce.number().int(),
+  JWT_SECRET: z.string(),
   MONGO_DB_USERNAME: z.string(),
   MONGO_DB_PASSWORD: z.string(),
   MONGO_DB_NAME: z.string(),
   RESEND_API_KEY: z.string(),
   MAIL_FROM: z.string(),
   CLIENT_URL: z.string(),
-  REFRESH_TOKEN_DUR: z.number(),
-  ACCESS_TOKEN_DUR: z.number(),
   FIRMS_MAP_KEY: z.string(),
+  DB_HOST: z.string(),
+  DB_PORT: z.coerce.number().int(),
+  DB_NAME: z.string(),
+  DB_USER: z.string(),
+  DB_PASSWORD: z.string(),
 })
 
 const config = configSchema.parse(rawConfig)

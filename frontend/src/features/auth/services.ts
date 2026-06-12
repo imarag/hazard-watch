@@ -2,10 +2,14 @@ import { api, plainAxios } from '@/lib/api'
 import type {
   UserLogin,
   UserRegister,
-  LoginResponse,
   UserForgotPassword,
   UserResetPassword,
 } from '@/features/users/types'
+import type {
+  LoginResponse,
+  RefreshResponse,
+  UpdateInformationResponse,
+} from '@/features/auth/types'
 
 const baseUrl = '/auth'
 
@@ -24,7 +28,7 @@ const logout = async () => {
   return res.data
 }
 
-const refreshToken = async () => {
+const refreshToken = async (): Promise<RefreshResponse> => {
   const res = await plainAxios.post(`${baseUrl}/refresh`)
   return res.data
 }
@@ -47,7 +51,9 @@ const changePassword = async (data: {
   return res.data
 }
 
-const updateInformation = async (data: { name?: string }) => {
+const updateInformation = async (data: {
+  name?: string
+}): Promise<UpdateInformationResponse> => {
   const res = await api.put(`${baseUrl}/update-information`, data)
   return res.data
 }

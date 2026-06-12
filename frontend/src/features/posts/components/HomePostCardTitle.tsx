@@ -51,12 +51,12 @@ export default function HomePostCardTitle({
             {post.author.name}
           </Typography>
           <Typography variant='caption' sx={{ color: 'text.disabled' }}>
-            {formatDate(post.createdAt)}
+            {formatDate(post.created_at)}
           </Typography>
         </Stack>
       </Box>
       <Box>
-        <HazardChip hazard={post.hazardType} />
+        <HazardChip hazard={post.hazard_type} />
       </Box>
     </Box>
   )
