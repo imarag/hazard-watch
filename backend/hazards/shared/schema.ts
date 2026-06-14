@@ -4,7 +4,6 @@ import { EarthquakeQueryParamsSchema } from '../earthquakes/schema.ts'
 import { WildfireQueryParamsSchema } from '../wildfires/schema.ts'
 import { TsunamiQueryParamsSchema } from '../tsunamis/schema.ts'
 import { EruptionQueryParamsSchema } from '../eruptions/schema.ts'
-import { datesBefore, getToday } from '../../lib/utils.ts'
 import { HazardType } from './types.ts'
 
 export const postQueryParamsSchema = z.object({

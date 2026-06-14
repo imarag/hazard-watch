@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS posts (
 );
 
 CREATE TABLE IF NOT EXISTS earthquakes (
-  id              SERIAL      PRIMARY KEY,
+  id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
   usgs_id         TEXT        NOT NULL UNIQUE,
   magnitude       NUMERIC,
   location        TEXT,
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS earthquakes (
 );
 
 CREATE TABLE IF NOT EXISTS eruptions (
-  id                     SERIAL  PRIMARY KEY,
+  id                     UUID    PRIMARY KEY DEFAULT gen_random_uuid(),
   gvp_eruption_id        INTEGER NOT NULL UNIQUE,
   gvp_volcano_id         INTEGER,
   volcano_name           TEXT    NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE IF NOT EXISTS eruptions (
 );
 
 CREATE TABLE IF NOT EXISTS tsunamis (
-  id                   SERIAL  PRIMARY KEY,
+  id                   UUID    PRIMARY KEY DEFAULT gen_random_uuid(),
   noaa_id              INTEGER NOT NULL UNIQUE,
   location             TEXT,
   country              TEXT,
@@ -69,14 +69,14 @@ CREATE TABLE IF NOT EXISTS tsunamis (
 );
 
 CREATE TABLE IF NOT EXISTS wildfires (
-  id                  SERIAL PRIMARY KEY,
+  id                   UUID    PRIMARY KEY DEFAULT gen_random_uuid(),
   fire_radiative_power NUMERIC,
-  brightness_temp_k   NUMERIC,
-  confidence          TEXT CHECK (confidence IN ('low', 'nominal', 'high')),
-  detected_at         TIMESTAMPTZ,
-  time_of_day         TEXT CHECK (time_of_day IN ('day', 'night')),
-  satellite           TEXT,
-  geom                GEOMETRY(Point, 4326)
+  brightness_temp_k    NUMERIC,
+  confidence           TEXT CHECK (confidence IN ('low', 'nominal', 'high')),
+  detected_at          TIMESTAMPTZ,
+  time_of_day          TEXT CHECK (time_of_day IN ('day', 'night')),
+  satellite            TEXT,
+  geom                 GEOMETRY(Point, 4326)
 );
 
 CREATE INDEX IF NOT EXISTS posts_geom_idx            ON posts        USING GIST (geom);
@@ -84,10 +84,11 @@ CREATE INDEX IF NOT EXISTS earthquakes_geom_idx      ON earthquakes  USING GIST 
 CREATE INDEX IF NOT EXISTS eruptions_geom_idx        ON eruptions    USING GIST (geom);
 CREATE INDEX IF NOT EXISTS tsunamis_geom_idx         ON tsunamis     USING GIST (geom);
 CREATE INDEX IF NOT EXISTS wildfires_geom_idx        ON wildfires    USING GIST (geom);
-
 CREATE INDEX IF NOT EXISTS earthquakes_occurred_at_idx  ON earthquakes (occurred_at);
 CREATE INDEX IF NOT EXISTS wildfires_detected_at_idx    ON wildfires   (detected_at);
 CREATE INDEX IF NOT EXISTS tsunamis_year_idx            ON tsunamis    (year);
+CREATE UNIQUE INDEX IF NOT EXISTS wildfires_detected_at_geom_idx
+  ON wildfires (detected_at, ST_AsText(geom));
 
 CREATE OR REPLACE FUNCTION update_updated_at()
 RETURNS TRIGGER AS $$

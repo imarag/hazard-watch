@@ -9,6 +9,7 @@ const FIRMSWildfireRowSchema = z.object({
   acq_time: z.coerce.number(),
   confidence: z.string(),
   daynight: z.enum(['D', 'N']),
+  satellite: z.string().optional(),  // add this
 })
 
 export const FIRMSWildfireResponseSchema = z.array(FIRMSWildfireRowSchema)

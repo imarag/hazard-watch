@@ -17,6 +17,20 @@ const appConfig = {
   REFRESH_TOKEN_TTL: 7 * DAYS,
   REFRESH_TOKEN_DUR: 7 * DAYS,
   ACCESS_TOKEN_DUR: 15 * MINUTES,
+  CRON_EARTHQUAKES_DEV: '*/1 * * * *',
+  CRON_EARTHQUAKES_PROD: '*/5 * * * *',
+  CRON_WILDFIRES_DEV: '*/3 * * * *', // 3 min to avoid overlap with 52s sync
+  CRON_WILDFIRES_PROD: '*/15 * * * *',
+  CRON_TSUNAMIS_DEV: '*/3 * * * *',
+  CRON_TSUNAMIS_PROD: '0 0 * * *',
+  CRON_ERUPTIONS_DEV: '*/5 * * * *',
+  CRON_ERUPTIONS_PROD: '0 0 * * 0',
+  CRON_CLEAN_DEV: '*/10 * * * *',
+  CRON_CLEAN_PROD: '0 2 * * *',
+  EARTHQUAKES_RETENTION_DAYS: 90,
+  WILDFIRES_RETENTION_DAYS: 30,
+  BATCH_THRESHOLD: 1000,
+  BATCH_SIZE: 5000, // was 1000, 5000 is faster with fewer round trips
 }
 
 const envConfig = {
@@ -65,6 +79,11 @@ const configSchema = z.object({
   DB_PASSWORD: z.string(),
 })
 
-const config = configSchema.parse(rawConfig)
+const validatedEnv = configSchema.parse(rawConfig)
+
+const config = {
+  ...appConfig,
+  ...validatedEnv,
+}
 
 export default config

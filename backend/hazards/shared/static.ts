@@ -24,7 +24,6 @@ export const providers = {
         request: 'GetFeature',
         outputFormat: 'application/json',
         typeName: 'GVP-VOTW:Smithsonian_VOTW_Holocene_Eruptions',
-        maxFeatures: 500,
       },
       info: {
         source: 'Smithsonian Institution Global Volcanism Program',
@@ -39,7 +38,7 @@ export const providers = {
       baseUrl: `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${config.FIRMS_MAP_KEY}`,
       defaults: {
         source: 'VIIRS_SNPP_NRT',
-        dayRange: 5,
+        dayRange: '5',
       },
       info: {
         source: 'NASA FIRMS',
@@ -54,8 +53,8 @@ export const providers = {
       baseUrl:
         'https://www.ngdc.noaa.gov/hazel/hazard-service/api/v1/tsunamis/events',
       defaults: {
-        minEventValidity: 3,
-        itemsPerPage: 200,
+        minEventValidity: '3',
+        itemsPerPage: '200',
       },
       info: {
         source: 'NOAA National Centers for Environmental Information',
