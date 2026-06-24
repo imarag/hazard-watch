@@ -1,4 +1,4 @@
-import pool from '../lib/db.ts'
+import pool from '../db/db.ts'
 import { logger } from '../lib/logger.ts'
 import config from '../lib/config.ts'
 

@@ -1,6 +1,25 @@
 import type { MapPosition, CustomPosition } from '@/features/map/types'
 import type { ControlPosition } from 'leaflet'
 
+export const MAP_CONFIG = {
+  center: [51.505, -0.09] as [number, number],
+  zoom: 13,
+  height: '240px',
+  scrollWheelZoom: true,
+  zoomControl: false,
+  attributionControl: true,
+  buttonIconSize: 'small' as const,
+  legendTitle: 'Legend',
+  tileUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+} as const
+
+export const MAP_POSITIONS = {
+  attribution: 'bottomleft',
+  zoomControl: 'topleft',
+  currentPosition: 'bottomright',
+  legend: 'topright',
+} as const satisfies Record<string, ControlPosition>
+
 const LEAFLET_POSITION_CLASSES: Record<ControlPosition, string> = {
   bottomleft: 'leaflet-bottom leaflet-left',
   bottomright: 'leaflet-bottom leaflet-right',

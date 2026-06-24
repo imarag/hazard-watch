@@ -5,13 +5,13 @@ import {
   getEruptions,
   getTsunamis,
 } from './services.ts'
-import type { GlobalHazardParams } from './schema.ts'
+import type { GlobalHazardQueryParams } from './schema.ts'
 import { getAllPosts } from '../../posts/services.ts'
 import type { LayerResult } from './types.ts'
 
 export const layerFetchMapping: Record<
   Layer,
-  (params: GlobalHazardParams) => Promise<LayerResult>
+  (params: GlobalHazardQueryParams) => Promise<LayerResult>
 > = {
   post: getAllPosts,
   earthquake: getEarthquakes,

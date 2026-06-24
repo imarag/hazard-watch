@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import authService from '@/features/auth/services'
+import { refreshToken } from '@/features/auth/services'
 import { setToken } from '@/lib/api'
 import { useAuthActions } from '@/features/auth/store'
 
@@ -14,7 +14,7 @@ export default function AuthGate({ children }: AuthGateProps) {
   useEffect(() => {
     async function restoreSession() {
       try {
-        const res = await authService.refreshToken()
+        const res = await refreshToken()
         setToken(res.accessToken)
         setCurrentUser({
           id: res.user.id,

@@ -6,7 +6,15 @@ import type {
   UserForgotPassword,
   UserResetPassword,
 } from '@/features/users/types'
-import authService from '@/features/auth/services'
+import {
+  login,
+  logout,
+  register,
+  resetPassword,
+  sendResetLink,
+  changePassword,
+  updateInformation,
+} from '@/features/auth/services'
 import { setToken } from '@/lib/api'
 
 type State = {
@@ -42,8 +50,8 @@ const useAuthStore = create<State & Actions>((set) => ({
     setIsLoggingOut: (value) => set({ isLoggingOut: value }),
 
     login: async (credentials) => {
-      const res = await authService.login(credentials)
-      setToken(res.token)
+      const res = await login(credentials)
+      setToken(res.accessToken)
       set({
         currentUser: res.user,
         isLoggingOut: false,
@@ -52,32 +60,32 @@ const useAuthStore = create<State & Actions>((set) => ({
 
     logout: async () => {
       set({ isLoggingOut: true })
-      await authService.logout()
+      await logout()
       setToken(null)
       set({ currentUser: null })
     },
 
     register: async (userInfo) => {
-      await authService.register(userInfo)
+      await register(userInfo)
     },
 
     sendResetLink: async (data) => {
-      await authService.sendResetLink(data)
+      await sendResetLink(data)
     },
 
     resetPassword: async (data) => {
-      await authService.resetPassword(data)
+      await resetPassword(data)
     },
 
     changePassword: async (data: {
       currentPassword: string
       newPassword: string
     }) => {
-      await authService.changePassword(data)
+      await changePassword(data)
     },
 
     updateInformation: async (data: { name?: string }) => {
-      const updatedUser = await authService.updateInformation(data)
+      const updatedUser = await updateInformation(data)
       set((state) => ({
         currentUser: {
           ...state.currentUser,

@@ -8,10 +8,7 @@ export type Post = {
   hazard_type: HazardType
   description: string
   author_id: string
-  longitude: number
-  latitude: number
-  author_name: string
-  author_email: string
+  geom: string
 }
 
 export type SearchResult = {

@@ -1,6 +1,6 @@
 import { providers } from '../hazards/shared/static.ts'
 import { logger } from '../lib/logger.ts'
-import { upsertRecords } from '../lib/utils.ts'
+import { upsertRecords } from '../db/utils.ts'
 import type { GVPEruptionResponse } from '../hazards/eruptions/types.ts'
 import { transformEruptions } from '../hazards/eruptions/transform.ts'
 import { logSyncError } from './utils.ts'
@@ -11,11 +11,9 @@ export async function syncEruptions() {
 
     logger.info('[eruptions] starting sync')
 
-    const queryParams = new URLSearchParams(
-      Object.fromEntries(
-        Object.entries(provider.defaults).map(([k, v]) => [k, String(v)]),
-      ),
-    )
+    const queryParams = new URLSearchParams({
+      ...provider.defaults,
+    })
 
     logger.info(`[eruptions] requesting: ${provider.baseUrl}?${queryParams}`)
     const res = await fetch(`${provider.baseUrl}?${queryParams}`)

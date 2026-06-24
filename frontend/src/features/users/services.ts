@@ -3,14 +3,13 @@ import type { User, UserRegister, UserForgotPassword } from '@/features/users/ty
 
 const baseUrl = '/users'
 
-const createUser = async (user: UserRegister): Promise<User> => {
-  const res = await api.post(`${baseUrl}`, user)
+const createUser = async (data: UserRegister): Promise<User> => {
+  const res = await api.post(baseUrl, data)
   return res.data
 }
 
-const resetPassword = async (user: UserForgotPassword): Promise<User> => {
-  const res = await api.post(`${baseUrl}/reset-password`, user)
-  return res.data
+const resetPassword = async (data: UserForgotPassword): Promise<void> => {
+  await api.post(`${baseUrl}/reset-password`, data)
 }
 
 export default {

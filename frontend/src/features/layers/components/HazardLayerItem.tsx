@@ -1,35 +1,33 @@
-import {
-  Box,
-  Typography,
-  Switch,
-  CircularProgress,
-  IconButton,
-  Tooltip,
-  Stack,
-  Alert,
-} from '@mui/material'
+import { Box, Typography, Switch } from '@mui/material'
+import type { HazardType } from '../types'
 import type { SvgIconComponent } from '@mui/icons-material'
-import type { HazardInfo } from '../types'
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined'
+
+interface HazardLayerItemProps {
+  label: string
+  icon: SvgIconComponent
+  iconColor: string
+  enabledLayers: (HazardType | 'post')[]
+  setEnabledLayers: React.Dispatch<
+    React.SetStateAction<(HazardType | 'post')[]>
+  >
+  layer: HazardType | 'post'
+  loading: boolean
+}
 
 export default function HazardLayerItem({
   label,
   icon: Icon,
   iconColor,
+  enabledLayers,
+  setEnabledLayers,
+  layer,
   loading,
-  isEnabled,
-  onClick,
-  info,
-}: {
-  label: string
-  icon: SvgIconComponent
-  iconColor: string
-  loading: boolean
-  isEnabled: boolean
-  onClick: () => void
-  info: HazardInfo
-}) {
-  const hasNoData = isEnabled && !loading && info.totalFeatures === 0
+}: HazardLayerItemProps) {
+  function toggleHazard() {
+    setEnabledLayers((prev) =>
+      prev.includes(layer) ? prev.filter((h) => h !== layer) : [...prev, layer],
+    )
+  }
 
   return (
     <Box>
@@ -43,7 +41,7 @@ export default function HazardLayerItem({
           {label}
         </Typography>
         <Box sx={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-          {isEnabled && (
+          {/* {isEnabled && (
             <Tooltip
               title={
                 <Stack spacing={0.5} sx={{ p: 0.5 }}>
@@ -69,22 +67,23 @@ export default function HazardLayerItem({
                 />
               </IconButton>
             </Tooltip>
-          )}
-          {loading ? (
-            <CircularProgress size={16} />
-          ) : (
-            <Switch size='small' checked={isEnabled} onChange={onClick} />
-          )}
+          )} */}
+          <Switch
+            size='small'
+            checked={enabledLayers.includes(layer)}
+            onChange={toggleHazard}
+            disabled={loading}
+          />
         </Box>
       </Box>
-      {hasNoData && (
+      {/* {hasNoData && (
         <Alert severity='warning' sx={{ py: 0, mt: 0.5 }}>
           <Typography variant='caption'>
             No data found. Try adjusting filters or moving the map to a
             different location.
           </Typography>
         </Alert>
-      )}
+      )} */}
     </Box>
   )
 }

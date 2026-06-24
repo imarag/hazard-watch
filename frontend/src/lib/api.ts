@@ -1,6 +1,9 @@
 import axios from 'axios'
-import authService from '@/features/auth/services.js'
+import { refreshToken } from '@/features/auth/services.js'
 import { appRoutes } from '@/shared/constants/routes'
+import {
+  camelToSnakeCaseParams,
+} from '@/shared/utils/typography'
 
 let accessToken: string | null = null
 
@@ -31,6 +34,10 @@ api.interceptors.request.use((request) => {
     request.headers.Authorization = `Bearer ${token}`
   }
 
+  if (request.params) {
+    request.params = camelToSnakeCaseParams(request.params)
+  }
+
   return request
 })
 
@@ -51,9 +58,9 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true
       try {
-        const res = await authService.refreshToken()
-        setToken(res.token)
-        error.config.headers.Authorization = `Bearer ${res.token}`
+        const res = await refreshToken()
+        setToken(res.accessToken)
+        error.config.headers.Authorization = `Bearer ${res.accessToken}`
         return api(originalRequest)
       } catch (refreshError) {
         clearToken()

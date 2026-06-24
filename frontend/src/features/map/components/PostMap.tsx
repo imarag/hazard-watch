@@ -2,7 +2,7 @@ import { Typography, Box } from '@mui/material'
 import { useEffect, useRef, useMemo, useState } from 'react'
 import Map from '@/features/map/components/Map'
 import { formatCoordinates } from '@/shared/utils/geometry'
-import type { HazardPosition } from '@/features/hazards/types'
+import type { HazardPosition } from '@/features/layers/types'
 import { useMapEvents } from 'react-leaflet'
 
 function GetCurrentPosition() {
@@ -16,9 +16,7 @@ function GetCurrentPosition() {
       map.flyTo(e.latlng, map.getZoom())
     },
   })
-  return (
-    <></>
-  )
+  return <></>
 }
 
 interface PostMapProps {

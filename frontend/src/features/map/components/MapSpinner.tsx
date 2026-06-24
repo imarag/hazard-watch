@@ -1,5 +1,6 @@
 import { PuffLoader } from 'react-spinners'
 import { Box } from '@mui/material'
+
 export default function MapSpinner() {
   return (
     <Box

@@ -1,6 +1,6 @@
 import { Stack } from '@mui/material'
 import { formatCoordinates } from '@/shared/utils/geometry'
-import { hazardMeta } from '@/features/hazards/constants'
+import { layerMeta } from '@/features/layers/constants'
 import { formatDate } from '@/shared/utils/typography'
 import type { Post } from '@/features/posts/types'
 import PostCardText from '@/features/posts/components/PostCardText'
@@ -23,15 +23,15 @@ export default function ViewPostInfoBody({ post }: PostViewInfoBodyProps) {
       </PostCardItem>
       <PostCardItem label='Hazard type'>
         <PostCardText
-          text={post.hazard_type}
-          icon={hazardMeta[post.hazard_type]['muiIcon']}
+          text={post.hazardType}
+          icon={layerMeta[post.hazardType]['muiIcon']}
         />
       </PostCardItem>
       <PostCardItem label='Coordinates'>
         <PostCardText text={formatCoordinates(lon, lat)} />
       </PostCardItem>
       <PostCardItem label='Report creation date'>
-        <PostCardText text={formatDate(post.created_at)} />
+        <PostCardText text={formatDate(post.createdAt)} />
       </PostCardItem>
     </Stack>
   )

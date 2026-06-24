@@ -1,7 +1,7 @@
-import pool from '../lib/db.ts'
+import pool from '../db/db.ts'
 import type { UserRegister } from '../users/schema.ts'
 import type { UserInDb } from './types.ts'
-import { buildQueryParts } from '../lib/utils.ts'
+import { buildQueryParts } from '../db/utils.ts'
 
 const getUserByEmail = async (email: string): Promise<UserInDb | null> => {
   const result = await pool.query('SELECT * FROM users WHERE email = $1', [

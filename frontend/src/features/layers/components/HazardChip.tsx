@@ -1,6 +1,6 @@
 import { Chip, type SxProps } from '@mui/material'
-import { HazardType } from '@/features/hazards/types'
-import { hazardMeta } from '@/features/hazards/constants'
+import { HazardType } from '@/features/layers/types'
+import { layerMeta } from '@/features/layers/constants'
 
 interface HazardChipProps {
   hazard: HazardType
@@ -8,7 +8,7 @@ interface HazardChipProps {
 }
 
 export default function HazardChip({ hazard, sx }: HazardChipProps) {
-  const hazardInfo = hazardMeta[hazard]
+  const hazardInfo = layerMeta[hazard]
   const HazardIcon = hazardInfo.muiIcon
   return (
     <Chip

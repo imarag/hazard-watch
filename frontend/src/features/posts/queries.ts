@@ -1,40 +1,10 @@
 import { queryOptions, infiniteQueryOptions } from '@tanstack/react-query'
 import {
-  getAllPosts,
   getPostById,
   searchPosts,
 } from '@/features/posts/services'
 import { getErrorMessage } from '@/features/auth/utils'
-import type { FilterParamsDefaults } from '@/shared/types/config'
 import type { SearchResult } from '@/features/posts/types'
-
-export function postQueryOptions(
-  enabled: boolean,
-  filterParamsDefaults: FilterParamsDefaults,
-) {
-  return queryOptions({
-    queryKey: [
-      'posts',
-      filterParamsDefaults['posts'],
-      filterParamsDefaults.global,
-    ],
-    queryFn: async () => {
-      const rawParams = {
-        ...filterParamsDefaults.global,
-        ...filterParamsDefaults.posts,
-      }
-      const params = Object.fromEntries(
-        Object.entries(rawParams).filter(
-          ([_, v]) => v !== '' && v !== null && v !== undefined,
-        ),
-      )
-      return await getAllPosts(params)
-    },
-    staleTime: 5 * 60 * 1000,
-    enabled: enabled,
-    placeholderData: (previousData) => previousData,
-  })
-}
 
 export function getPostQueryOptions(
   id?: string,

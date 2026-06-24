@@ -50,8 +50,8 @@ function App() {
                   element={<CreatePost />}
                 />
                 <Route path={appRoutes.editPost.path} element={<EditPost />} />
-                <Route path={appRoutes.about.path} element={<About />} />
               </Route>
+              <Route path={appRoutes.about.path} element={<About />} />
               <Route path={appRoutes.search.path} element={<Search />} />
               <Route path={appRoutes.viewPost.path} element={<ViewPost />} />
               <Route path={appRoutes.map.path} element={<Explore />} />

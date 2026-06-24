@@ -8,7 +8,7 @@ import AuthRouter from './auth/routes.ts'
 import PostsRouter from './posts/routes.ts'
 import HazardsRouter from './hazards/shared/routes.ts'
 import config from './lib/config.ts'
-import { extractToken, errorHandler, routeNotFound } from './middleware.js'
+import { extractToken, errorHandler, routeNotFound, camelCaseQueryTransformer } from './middleware.js'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -25,6 +25,7 @@ if (config.NODE_ENV === 'development') {
   )
 }
 
+app.use(camelCaseQueryTransformer)
 app.use(morgan('tiny'))
 app.use(express.json())
 app.use(cookieParser())

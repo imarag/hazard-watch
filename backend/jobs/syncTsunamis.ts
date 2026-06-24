@@ -1,6 +1,6 @@
 import { providers } from '../hazards/shared/static.ts'
 import { logger } from '../lib/logger.ts'
-import { upsertRecords } from '../lib/utils.ts'
+import { upsertRecords } from '../db/utils.ts'
 import { transformTsunamis } from '../hazards/tsunamis/transform.ts'
 import type { NOAATsunamiResponse } from '../hazards/tsunamis/types.ts'
 import { logSyncError } from './utils.ts'
@@ -36,7 +36,9 @@ export async function syncTsunamis() {
     const records = transformTsunamis(allItems)
     const inserted = await upsertRecords('tsunamis', 'noaa_id', records)
 
-    logger.info(`[tsunamis] done — ${inserted} upserted, ${allItems.length - inserted} skipped`)
+    logger.info(
+      `[tsunamis] done — ${inserted} upserted, ${allItems.length - inserted} skipped`,
+    )
   } catch (err) {
     logSyncError('tsunamis', err)
   }

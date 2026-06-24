@@ -38,7 +38,7 @@ export const providers = {
       baseUrl: `https://firms.modaps.eosdis.nasa.gov/api/area/csv/${config.FIRMS_MAP_KEY}`,
       defaults: {
         source: 'VIIRS_SNPP_NRT',
-        dayRange: '5',
+        dayRange: '3',
       },
       info: {
         source: 'NASA FIRMS',

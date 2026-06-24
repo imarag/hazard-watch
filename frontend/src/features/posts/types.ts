@@ -1,27 +1,27 @@
-import { HazardType } from '@/features/hazards/types'
+import { HazardType } from '@/features/layers/types'
 import type { SvgIconComponent } from '@mui/icons-material'
 
 export type Post = {
   id: string
-  created_at: string
-  updated_at: string
+  createdAt: string
+  updatedAt: string
   title: string
-  hazard_type: HazardType
+  hazardType: HazardType
   description: string
-  author: { name: string; id: string; email: string; createdAt: string }
-  author_id: string
+  author: { name: string; id: string; email: string }
   longitude: number
   latitude: number
 }
 
 export type CreatePost = Pick<
   Post,
-  'title' | 'hazard_type' | 'description' | 'longitude' | 'latitude'
+  'title' | 'hazardType' | 'description' | 'longitude' | 'latitude'
 >
 
 export type SearchParams = {
+  page?: number
+  limit?: number
   q?: string
-  page: number
 }
 
 export type SearchResult = {

@@ -1,5 +1,4 @@
 import type { TsunamiTransformResult } from './types.ts'
-import type { NOAATsunamiResponse } from './types.ts'
 
 const CAUSE_CODE_MAP: Record<number, string> = {
   0: 'Unknown',

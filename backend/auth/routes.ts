@@ -24,7 +24,7 @@ import config from '../lib/config.js'
 import { sendMail } from '../lib/mailer.js'
 import { logger } from '../lib/logger.js'
 import { AppError } from '../errors.js'
-import pool from '../lib/db.ts'
+import pool from '../db/db.ts'
 
 const router = express.Router()
 

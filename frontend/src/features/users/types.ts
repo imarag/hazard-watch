@@ -4,11 +4,24 @@ export interface User {
   name: string
 }
 
-// Form types
-export type UserLogin = Pick<User, 'email'> & { password: string }
-export type UserRegister = Omit<User, 'id'> & { password: string }
-export type UserForgotPassword = Pick<User, 'email'>
-export type UserUpdateInformation = Partial<Pick<User, 'name'>>
+export type UserLogin = {
+  email: string
+  password: string
+}
+
+export type UserRegister = {
+  email: string
+  name: string
+  password: string
+}
+
+export type UserForgotPassword = {
+  email: string
+}
+
+export type UserUpdateInformation = {
+  name?: string
+}
 
 export type UserChangePassword = {
   currentPassword: string

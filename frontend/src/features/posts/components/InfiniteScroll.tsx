@@ -24,11 +24,11 @@ export default function InfiniteScroll({
       queryKey: searchParam
         ? ['posts', 'search', searchParam]
         : ['posts', 'feed'],
-      queryFn: async ({ pageParam }: { pageParam: string | undefined }) => {
+      queryFn: async ({ pageParam }: { pageParam: number }) => {
         try {
           return await searchPosts({
-            cursor: pageParam,
-            limit: 3,
+            page: pageParam,
+            limit: 10,
             q: searchParam,
           })
         } catch (error: unknown) {
@@ -41,8 +41,9 @@ export default function InfiniteScroll({
           throw error
         }
       },
-      initialPageParam: undefined as string | undefined,
-      getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+      initialPageParam: 1,
+      getNextPageParam: (lastPage, _, lastPageParam) =>
+        lastPage.hasMore ? lastPageParam + 1 : undefined,
     })
 
   const { ref, inView } = useInView({ rootMargin: '200px' })
@@ -57,7 +58,7 @@ export default function InfiniteScroll({
     return <Loading text='Loading posts' />
   }
 
-  const posts = data?.pages.flatMap((page) => page.data) ?? []
+  const posts = data?.pages.flatMap((page) => page.posts) ?? []
 
   if (posts.length === 0) {
     return <EmptyPostsMessage searchParam={searchParam} />

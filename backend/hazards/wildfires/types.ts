@@ -1,4 +1,3 @@
-// types.ts
 export type WildfireDB = {
   id: string
   fire_radiative_power: number | null

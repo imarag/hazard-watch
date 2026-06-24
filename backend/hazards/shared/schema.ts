@@ -4,10 +4,12 @@ import { EarthquakeQueryParamsSchema } from '../earthquakes/schema.ts'
 import { WildfireQueryParamsSchema } from '../wildfires/schema.ts'
 import { TsunamiQueryParamsSchema } from '../tsunamis/schema.ts'
 import { EruptionQueryParamsSchema } from '../eruptions/schema.ts'
-import { HazardType } from './types.ts'
 
 export const postQueryParamsSchema = z.object({
-  hazardType: z.enum(HazardType).optional(),
+  hazardType: z.enum(allLayers)
+    .optional()
+    .or(z.literal(''))
+    .transform((val) => (val === '' ? undefined : val)),
 })
 export type PostQueryParams = z.infer<typeof postQueryParamsSchema>
 
@@ -60,10 +62,10 @@ function transformLayers(val: string, ctx: z.RefinementCtx) {
   return layers as Layer[]
 }
 
-export const GlobalHazardParamsSchema = z
+export const GlobalHazardQueryParamsSchema = z
   .object({
-    startdate: z.iso.datetime().optional(),
-    enddate: z.iso.datetime().optional(),
+    startDate: z.iso.datetime().optional(),
+    endDate: z.iso.datetime().optional(),
     bbox: z.string().default('-180,-90,180,90').transform(transformBbox),
     layers: z
       .string({
@@ -77,11 +79,13 @@ export const GlobalHazardParamsSchema = z
     ...postQueryParamsSchema.shape,
   })
   .refine(
-    ({ startdate, enddate }) =>
-      startdate === undefined ||
-      enddate === undefined ||
-      new Date(startdate) <= new Date(enddate),
+    ({ startDate, endDate }) =>
+      startDate === undefined ||
+      endDate === undefined ||
+      new Date(startDate) <= new Date(endDate),
     'startdate must be before enddate',
   )
 
-export type GlobalHazardParams = z.infer<typeof GlobalHazardParamsSchema>
+export type GlobalHazardQueryParams = z.infer<
+  typeof GlobalHazardQueryParamsSchema
+>

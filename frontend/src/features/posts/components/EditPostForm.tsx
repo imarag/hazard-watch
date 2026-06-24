@@ -9,7 +9,7 @@ import { updatePost } from '@/features/posts/services'
 import { useNotificationActions } from '@/shared/stores/notification'
 import { appRoutes } from '@/shared/constants/routes'
 import { getErrorMessage } from '@/features/auth/utils'
-import type { HazardPosition, HazardType } from '@/features/hazards/types'
+import { type HazardPosition, HazardType } from '@/features/layers/types'
 
 interface EditPostFormProps {
   post: Post
@@ -22,7 +22,7 @@ export default function EditPostForm({ post }: EditPostFormProps) {
 
   const title = useField(post.title)
   const description = useField(post.description)
-  const hazardType = useField<HazardType>(post.hazard_type)
+  const hazardType = useField<HazardType>(post.hazardType)
   const hazardPosition = useField<HazardPosition | null>(null)
 
   const { mutate, isPending } = useMutation({

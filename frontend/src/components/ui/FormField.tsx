@@ -18,7 +18,7 @@ export default function FormField(props: FormFieldProps) {
           required={props.required}
           size={props.size}
           value={props.value}
-          onChange={props.onChange}
+          onChange={(e) => props.onChange?.(e.target.value)}
           disabled={props.disabled}
           fullWidth
         />
@@ -34,7 +34,7 @@ export default function FormField(props: FormFieldProps) {
           required={props.required}
           size={props.size}
           value={props.value}
-          onChange={props.onChange}
+          onChange={(e) => props.onChange?.(e.target.value)}
           slotProps={{ inputLabel: { shrink: true } }}
           disabled={props.disabled}
           fullWidth
@@ -50,8 +50,12 @@ export default function FormField(props: FormFieldProps) {
           label={props.label}
           required={props.required}
           size={props.size}
-          onChange={props.onChange}
           value={props.value ?? ''}
+          onChange={(e) =>
+            props.onChange?.(
+              e.target.value === '' ? null : Number(e.target.value),
+            )
+          }
           slotProps={{
             htmlInput: { min: props.min, max: props.max, step: 'any' },
           }}
@@ -73,9 +77,8 @@ export default function FormField(props: FormFieldProps) {
             labelId={`${props.id}-label`}
             id={props.id}
             name={props.name}
-            label={props.label}
             value={props.value}
-            onChange={props.onChange}
+            onChange={(e) => props.onChange?.(e.target.value as string)}
             displayEmpty={true}
           >
             {props.options.map((option) => (

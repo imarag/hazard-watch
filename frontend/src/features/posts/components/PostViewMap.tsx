@@ -3,7 +3,6 @@ import Map from '@/features/map/components/Map'
 import type { Post } from '@/features/posts/types'
 import PostCardTitle from '@/features/posts/components/PostCardTitle'
 import type { FlyTarget, MarkerType } from '@/features/map/types'
-import { createPostTooltip } from '../utils'
 
 interface PostViewMapProps {
   post: Post
@@ -12,8 +11,8 @@ interface PostViewMapProps {
 export default function PostViewMap({ post }: PostViewMapProps) {
   const postMarker: MarkerType = {
     id: post.id,
-    coords: { lat: post.latitude, lon: post.longitude },
-    tooltip: createPostTooltip(post),
+    coords: { lat: post.latitude, lng: post.longitude },
+    tooltip: post,
   }
 
   const flyTarget: FlyTarget = {

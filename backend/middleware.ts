@@ -6,6 +6,7 @@ import config from './lib/config.ts'
 import axios from 'axios'
 import { logger } from './lib/logger.ts'
 import { AppError } from './errors.js'
+import { snakeToCamelCase } from './lib/utils.ts'
 
 export const extractToken = (
   req: Request,
@@ -96,4 +97,20 @@ export const errorHandler = (
         isProd ? 'Internal Server Error' : error.message,
       ),
     )
+}
+
+function transformKeysToCamel(obj: Record<string, unknown>): Record<string, unknown> {
+  return Object.fromEntries(
+    Object.entries(obj).map(([key, value]) => [snakeToCamelCase(key), value])
+  )
+}
+
+export function camelCaseQueryTransformer(req: Request, _res: Response, next: NextFunction) {
+  const transformed = transformKeysToCamel(req.query as Record<string, unknown>)
+  Object.defineProperty(req, 'query', {
+    value: transformed,
+    writable: true,
+    configurable: true,
+  })
+  next()
 }

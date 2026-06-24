@@ -2,7 +2,7 @@ import { providers } from '../hazards/shared/static.ts'
 import { logger } from '../lib/logger.ts'
 import { FIRMSWildfireResponseSchema } from '../hazards/wildfires/schema.ts'
 import { transformWildfires } from '../hazards/wildfires/transform.ts'
-import { upsertRecords } from '../lib/utils.ts'
+import { upsertRecords } from '../db/utils.ts'
 import { logSyncError } from './utils.ts'
 
 export async function syncWildfires() {

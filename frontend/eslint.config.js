@@ -24,13 +24,13 @@ export default defineConfig([
       '@stylistic': stylistic,
     },
     rules: {
-      '@stylistic/indent': ['error', 2],
       '@stylistic/quotes': ['warn', 'single'],
       '@stylistic/jsx-quotes': ['warn', 'prefer-single'],
       'no-console': ['warn', { allow: ['warn', 'error'] }],
       'no-duplicate-imports': ['error', { allowSeparateTypeImports: true }],
       'no-template-curly-in-string': 'error',
       'arrow-body-style': ['error', 'as-needed'],
+      "@stylistic/indent": "off",
       camelcase: 'warn',
       curly: 'error',
       '@typescript-eslint/no-unused-vars': [

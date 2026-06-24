@@ -1,5 +1,6 @@
 import { providers } from '../hazards/shared/static.ts'
-import { datesBefore, countTableRows, upsertRecords } from '../lib/utils.ts'
+import { datesBefore } from '../lib/utils.ts'
+import { countTableRows, upsertRecords } from '../db/utils.ts'
 import { logger } from '../lib/logger.ts'
 import type { USGSEarthquakeResponse } from '../hazards/earthquakes/types.ts'
 import { transformEarthquakes } from '../hazards/earthquakes/transform.ts'
@@ -20,6 +21,7 @@ export async function syncEarthquakes() {
     })
 
     logger.info(`[earthquakes] requesting: ${provider.baseUrl}?${queryParams}`)
+    
     const res = await fetch(`${provider.baseUrl}?${queryParams}`)
 
     if (!res.ok) {
@@ -38,6 +40,7 @@ export async function syncEarthquakes() {
     )
 
     const records = transformEarthquakes(data)
+    
     const inserted = await upsertRecords('earthquakes', 'usgs_id', records)
 
     logger.info(

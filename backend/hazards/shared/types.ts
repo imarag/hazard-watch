@@ -1,7 +1,7 @@
-import type { EarthquakeDisplay } from "../earthquakes/schema.ts"
-import type { EruptionDisplay } from "../eruptions/schema.ts"
-import type { WildfireDisplay } from "../wildfires/schema.ts"
-import type { TsunamiDisplay } from "../tsunamis/schema.ts"
+import type { EarthquakeDisplay } from "../earthquakes/types.ts"
+import type { EruptionDisplay } from "../eruptions/types.ts"
+import type { WildfireDisplay } from "../wildfires/types.ts"
+import type { TsunamiDisplay } from "../tsunamis/types.ts"
 import type { Post } from "../../posts/types.ts"
 
 export const HazardType = {

@@ -1,20 +1,16 @@
-import {
-  MapContainer,
-  TileLayer,
-  AttributionControl,
-  Marker,
-  useMapEvents,
-} from 'react-leaflet'
+import { MapContainer, TileLayer, AttributionControl } from 'react-leaflet'
 import ZoomControlButtons from '@/features/map/components/ZoomControlButtons'
 import GetCurrentPositionButton from '@/features/map/components/GetCurrentPositionButton'
-import React, { useRef } from 'react'
+import React from 'react'
 import FlyToController from '@/features/map/components/FlyController'
-import type { FlyTarget, MarkerType } from '@/features/map/types'
-import MarkerTooltip from '@/features/map/components/MarkerToolTip'
+import type { FlyTarget, LegendItem, MarkerType } from '@/features/map/types'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import MapSpinner from '@/features/map/components/MapSpinner'
-import L from 'leaflet'
-import type { MapBounds } from '@/features/hazards/types'
+import type { MapBounds } from '@/features/layers/types'
+import Legend from '@/features/map/components/Legend'
+import MarkerItem from './MarkerItem'
+import MapEventsListener from './MapEventsListener'
+import { MAP_POSITIONS, MAP_CONFIG } from '../constants'
 
 interface MapProps {
   center?: [number, number]
@@ -25,83 +21,36 @@ interface MapProps {
   attributionControl?: boolean
   children?: React.ReactNode
   buttonIconSize?: 'small' | 'medium' | 'large'
-  onMapClick?: (coords: { lat: number; lon: number }) => void
-  onLocationFound?: (coords: { lat: number; lon: number }) => void
-  onMarkerMove?: (id: string, coords: { lat: number; lon: number }) => void
+  onMapClick?: (coords: { lat: number; lng: number }) => void
+  onLocationFound?: (coords: { lat: number; lng: number }) => void
+  onMarkerMove?: (id: string, coords: { lat: number; lng: number }) => void
   onMoveEnd?: (bounds: MapBounds) => void
   onZoomEnd?: (bounds: MapBounds) => void
+  onMapReady?: (bounds: MapBounds) => void
   flyTarget?: FlyTarget | null
   markers?: MarkerType[][]
   loading?: boolean
-}
-
-function MarkerItem({
-  marker,
-  onMove,
-}: {
-  marker: MarkerType
-  onMove?: (id: string, coords: { lat: number; lon: number }) => void
-}) {
-  const markerRef = useRef<L.Marker>(null)
-
-  return (
-    <Marker
-      position={[marker.coords.lat, marker.coords.lon]}
-      draggable={marker.draggable}
-      ref={markerRef}
-      eventHandlers={{
-        dragend() {
-          if (marker.draggable && onMove) {
-            const latlng = markerRef.current?.getLatLng()
-            if (latlng) {
-              onMove(marker.id, { lat: latlng.lat, lon: latlng.lng })
-            }
-          }
-        },
-      }}
-    >
-      {marker.tooltip && <MarkerTooltip tooltip={marker.tooltip} />}
-    </Marker>
-  )
-}
-
-function getBoundsObject(bounds: L.LatLngBounds): MapBounds {
-  return {
-    minLat: bounds.getSouth(),
-    maxLat: bounds.getNorth(),
-    minLng: bounds.getWest(),
-    maxLng: bounds.getEast(),
-  }
-}
-
-function MapEventsListener({
-  onMoveEnd,
-  onZoomEnd,
-}: {
-  onMoveEnd?: (bounds: MapBounds) => void
-  onZoomEnd?: (bounds: MapBounds) => void
-}) {
-  useMapEvents({
-    moveend: (e) => onMoveEnd?.(getBoundsObject(e.target.getBounds())),
-    zoomend: (e) => onZoomEnd?.(getBoundsObject(e.target.getBounds())),
-  })
-  return null
+  legendTitle?: string
+  legendItems?: LegendItem[]
 }
 
 export default function Map({
-  center = [51.505, -0.09],
-  scrollWheelZoom = true,
-  zoom = 13,
-  height = '240px',
-  zoomControl = false,
-  attributionControl = true,
-  buttonIconSize = 'small',
+  center = MAP_CONFIG.center,
+  scrollWheelZoom = MAP_CONFIG.scrollWheelZoom,
+  zoom = MAP_CONFIG.zoom,
+  height = MAP_CONFIG.height,
+  zoomControl = MAP_CONFIG.zoomControl,
+  attributionControl = MAP_CONFIG.attributionControl,
+  buttonIconSize = MAP_CONFIG.buttonIconSize,
   flyTarget = null,
   markers = [],
   loading = false,
+  legendTitle = MAP_CONFIG.legendTitle,
+  legendItems = [],
   onMarkerMove,
   onMoveEnd,
   onZoomEnd,
+  onMapReady,
   children,
 }: MapProps) {
   return (
@@ -113,20 +62,30 @@ export default function Map({
       zoomControl={zoomControl}
       attributionControl={attributionControl}
     >
-      <TileLayer url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png' />
-      <AttributionControl position='bottomleft' />
-      <ZoomControlButtons size={buttonIconSize} position='topleft' />
-      <GetCurrentPositionButton size={buttonIconSize} position='bottomright' />
+      <TileLayer url={MAP_CONFIG.tileUrl} />
+      <AttributionControl position={MAP_POSITIONS.attribution} />
+      <ZoomControlButtons size={buttonIconSize} position={MAP_POSITIONS.zoomControl} />
+      <GetCurrentPositionButton size={buttonIconSize} position={MAP_POSITIONS.currentPosition} />
       {loading && <MapSpinner />}
       <FlyToController target={flyTarget} />
-      <MapEventsListener onMoveEnd={onMoveEnd} onZoomEnd={onZoomEnd} />
+      <MapEventsListener
+        onMoveEnd={onMoveEnd}
+        onZoomEnd={onZoomEnd}
+        onMapReady={onMapReady}
+      />
       {markers.map((group, i) => (
-        <MarkerClusterGroup key={i} chunkedLoading>
+        <MarkerClusterGroup
+          key={i}
+          chunkedLoading
+          animate={false}
+          disableClusteringAtZoom={8}
+        >
           {group.map((m) => (
             <MarkerItem key={m.id} marker={m} onMove={onMarkerMove} />
           ))}
         </MarkerClusterGroup>
       ))}
+      <Legend title={legendTitle} items={legendItems} position={MAP_POSITIONS.legend} />
       {children}
     </MapContainer>
   )

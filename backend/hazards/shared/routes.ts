@@ -1,12 +1,12 @@
 import express from 'express'
 import { z } from 'zod'
-import { GlobalHazardParamsSchema } from './schema.ts'
+import { GlobalHazardQueryParamsSchema } from './schema.ts'
 import { layerFetchMapping } from './utils.ts'
 
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  const parsed = GlobalHazardParamsSchema.safeParse(req.query)
+  const parsed = GlobalHazardQueryParamsSchema.safeParse(req.query)
 
   if (!parsed.success)
     return res.status(400).json({ errors: z.prettifyError(parsed.error) })

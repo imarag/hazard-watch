@@ -9,24 +9,13 @@ const FIRMSWildfireRowSchema = z.object({
   acq_time: z.coerce.number(),
   confidence: z.string(),
   daynight: z.enum(['D', 'N']),
-  satellite: z.string().optional(),  // add this
+  satellite: z.string().optional(),
 })
 
 export const FIRMSWildfireResponseSchema = z.array(FIRMSWildfireRowSchema)
 
 export const WildfireQueryParamsSchema = z.object({})
 
-export const WildfireDisplaySchema = z.object({
-  id: z.number(),
-  fire_radiative_power: z.number().nullable(),
-  brightness_temp_k: z.number().nullable(),
-  confidence: z.enum(['low', 'nominal', 'high']).nullable(),
-  detected_at: z.coerce.date().nullable(),
-  time_of_day: z.enum(['day', 'night']).nullable(),
-  satellite: z.string().nullable(),
-})
-
 export type FIRMSWildfireRow = z.infer<typeof FIRMSWildfireRowSchema>
 export type FIRMSWildfireResponse = z.infer<typeof FIRMSWildfireResponseSchema>
 export type WildfireQueryParams = z.infer<typeof WildfireQueryParamsSchema>
-export type WildfireDisplay = z.infer<typeof WildfireDisplaySchema>

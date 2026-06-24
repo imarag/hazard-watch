@@ -17,11 +17,17 @@ export type MarkerType = {
   id: string
   coords: {
     lat: number
-    lon: number
+    lng: number
   }
   draggable?: boolean
   popup?: string
   tooltip?: Record<string, unknown>
   color?: string
   icon?: SvgIconComponent
+}
+
+export type LegendItem = {
+  icon: string
+  label: string
+  count?: number
 }
