@@ -1,12 +1,12 @@
 import type { Request, Response, NextFunction } from 'express'
-import { verifyJWTToken } from './auth/utils.ts'
-import { getPostById } from './posts/services.ts'
+import { verifyJWTToken } from './auth/utils.js'
+import { getPostById } from './posts/services.js'
 import { z } from 'zod'
-import config from './lib/config.ts'
+import config from './lib/config.js'
 import axios from 'axios'
-import { logger } from './lib/logger.ts'
-import { AppError } from './errors.js'
-import { snakeToCamelCase } from './lib/utils.ts'
+import { logger } from './lib/logger.js'
+import { AppError } from './lib/errors.js'
+import { snakeToCamelCase } from './lib/utils.js'
 
 export const extractToken = (
   req: Request,
@@ -44,7 +44,7 @@ export const requireOwnership = async (
   const postId = String(req.params['id'])
   const existingPost = await getPostById(postId)
 
-  if (existingPost.author_id !== req['userId']) {
+  if (existingPost.author.id !== req['userId']) {
     throw new AppError(403, 'Unauthorized')
   }
 
@@ -99,13 +99,19 @@ export const errorHandler = (
     )
 }
 
-function transformKeysToCamel(obj: Record<string, unknown>): Record<string, unknown> {
+function transformKeysToCamel(
+  obj: Record<string, unknown>,
+): Record<string, unknown> {
   return Object.fromEntries(
-    Object.entries(obj).map(([key, value]) => [snakeToCamelCase(key), value])
+    Object.entries(obj).map(([key, value]) => [snakeToCamelCase(key), value]),
   )
 }
 
-export function camelCaseQueryTransformer(req: Request, _res: Response, next: NextFunction) {
+export function camelCaseQueryTransformer(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
   const transformed = transformKeysToCamel(req.query as Record<string, unknown>)
   Object.defineProperty(req, 'query', {
     value: transformed,

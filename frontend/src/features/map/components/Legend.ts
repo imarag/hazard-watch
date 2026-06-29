@@ -17,11 +17,6 @@ export default function Legend({
   const map = useMap()
 
   useEffect(() => {
-    // ✅ don't show legend if no items
-    if (items.length === 0) {
-      return
-    }
-
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const legend = L.control({ position: position })

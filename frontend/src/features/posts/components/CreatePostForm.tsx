@@ -92,7 +92,6 @@ export default function CreatePostForm() {
         ))}
       </TextField>
       <PostMap
-        flyToLocation={true}
         hazardPosition={hazardPosition.value}
         setHazardPosition={hazardPosition.setValue}
       />

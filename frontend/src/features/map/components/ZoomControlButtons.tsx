@@ -1,15 +1,16 @@
 import MapButton from '@/features/map/components/MapButton'
 import { useMap } from 'react-leaflet'
-import type { MapPosition } from '@/features/map/types'
+import type { MapElementPosition } from '@/features/map/types'
 import RemoveIcon from '@mui/icons-material/Remove'
 import AddIcon from '@mui/icons-material/Add'
 import { Box } from '@mui/material'
 import { getPositionProps } from '@/features/map/constants'
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap'
+import type { ElementSize } from '@/shared/types/form'
 
 interface ZoomControlButtonsProps {
-  position?: MapPosition
-  size?: 'small' | 'medium' | 'large'
+  position?: MapElementPosition
+  size?: ElementSize
 }
 
 export default function ZoomControlButtons({
@@ -30,12 +31,10 @@ export default function ZoomControlButtons({
     map.setView([0, 0], 2)
   }
 
-  const positionProps = getPositionProps(position)
   return (
     <Box
-      sx={{ display: 'flex', flexDirection: 'column' }}
-      className={positionProps.className}
-      style={positionProps.style}
+      sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}
+      style={getPositionProps(position)}
     >
       <MapButton size={size} icon={<AddIcon />} onClick={handleZoomIn} />
       <MapButton size={size} icon={<RemoveIcon />} onClick={handleZoomOut} />

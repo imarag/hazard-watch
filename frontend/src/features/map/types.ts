@@ -6,11 +6,12 @@ export type CustomPosition =
   | 'centerright'
   | 'centertop'
   | 'centerbottom'
-export type MapPosition = ControlPosition | CustomPosition
+export type MapElementPosition = ControlPosition | CustomPosition
 
 export type FlyTarget = {
   coords: { lat: number; lon: number }
   zoom?: number
+  flyDurationSec?: number
 }
 
 export type MarkerType = {

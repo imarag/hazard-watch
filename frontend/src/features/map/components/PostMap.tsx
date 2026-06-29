@@ -1,57 +1,47 @@
 import { Typography, Box } from '@mui/material'
-import { useEffect, useRef, useMemo, useState } from 'react'
 import Map from '@/features/map/components/Map'
 import { formatCoordinates } from '@/shared/utils/geometry'
 import type { HazardPosition } from '@/features/layers/types'
-import { useMapEvents } from 'react-leaflet'
-
-function GetCurrentPosition() {
-  const [position, setPosition] = useState(null)
-  const map = useMapEvents({
-    click() {
-      map.locate()
-    },
-    locationfound(e) {
-      setPosition(e.latlng)
-      map.flyTo(e.latlng, map.getZoom())
-    },
-  })
-  return <></>
-}
+import { layerMeta } from '@/features/layers/constants'
 
 interface PostMapProps {
   hazardPosition: HazardPosition | null
-  flyToLocation: boolean
   setHazardPosition: React.Dispatch<React.SetStateAction<HazardPosition | null>>
 }
 
 export default function PostMap({
   hazardPosition,
-  flyToLocation,
   setHazardPosition,
 }: PostMapProps) {
-  const markerRef = useRef(null)
+  
+  function handleLocationFound(coords: { lat: number; lng: number }) {
+    setHazardPosition({ longitude: coords.lng, latitude: coords.lat })
+  }
 
-  useEffect(() => {
-    if (currPosition) {
-      setHazardPosition(currPosition)
-    }
-  }, [setHazardPosition, currPosition])
-
-  const eventHandlers = useMemo(
-    () => ({
-      dragend() {
-        const marker = markerRef.current
-        if (marker != null) {
-          setHazardPosition(marker.getLatLng())
-        }
-      },
-    }),
-    [],
-  )
+  function handleMapClick(coords: { lat: number; lng: number }) {
+    setHazardPosition({ longitude: coords.lng, latitude: coords.lat })
+  }
 
   const hazardLocationExists =
     hazardPosition?.longitude && hazardPosition.latitude
+
+  const mapMarkers = []
+
+  if (hazardLocationExists) {
+    const hazardMarker = {
+      id: 'sdfs',
+      coords: {
+        lat: hazardPosition?.latitude,
+        lng: hazardPosition.longitude,
+      },
+      draggable: false,
+      color: layerMeta.post.backgroundColor,
+      icon: layerMeta.post.muiIcon,
+    }
+    const group = [hazardMarker]
+    mapMarkers.push(group)
+  }
+
   return (
     <Box>
       <Box
@@ -74,19 +64,13 @@ export default function PostMap({
       <Typography variant='caption' color='text.secondary'>
         Click on the map to set the location
       </Typography>
-      <Map height='240px'>
-        <GetCurrentPosition />
-        {hazardLocationExists && (
-          <>
-            <MapMarker
-              eventHandlers={eventHandlers}
-              draggable={true}
-              lat={hazardPosition?.latitude}
-              lon={hazardPosition?.longitude}
-            />
-          </>
-        )}
-      </Map>
+      <Map
+        height='240px'
+        onLocationFound={handleLocationFound}
+        onMapClick={handleMapClick}
+        markers={mapMarkers}
+        locateOnMount={true}
+      />
       <Typography variant='caption' color='text.secondary'>
         {hazardLocationExists
           ? formatCoordinates(hazardPosition.longitude, hazardPosition.latitude)

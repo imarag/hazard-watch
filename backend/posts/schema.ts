@@ -28,7 +28,7 @@ export const CreatePostPayloadSchema = z.object({
   latitude: LatitudeSchema,
 })
 
-export const UpdatePostPayloadSchema = CreatePostPayloadSchema.partial()
+export const UpdatePostPayloadSchema = CreatePostPayloadSchema
 
 export const SearchParamsSchema = z.object({
   q: z.string().trim().min(1).optional(),

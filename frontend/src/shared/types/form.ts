@@ -41,3 +41,5 @@ export type FormFieldProps =
   | DateFieldProps
   | NumberFieldProps
   | SelectFieldProps
+
+export type ElementSize = 'small' | 'medium' | 'large'

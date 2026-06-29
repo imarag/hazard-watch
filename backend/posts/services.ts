@@ -37,12 +37,12 @@ export const getAllPosts = async (
     'ST_Within(posts.geom, ST_MakeEnvelope($1, $2, $3, $4, 4326))',
   ]
 
-  if (params.startdate) {
-    values.push(new Date(params.startdate))
+  if (params.startDate) {
+    values.push(new Date(params.startDate))
     filters.push(`posts.created_at >= $${values.length}`)
   }
-  if (params.enddate) {
-    values.push(new Date(params.enddate))
+  if (params.endDate) {
+    values.push(new Date(params.endDate))
     filters.push(`posts.created_at <= $${values.length}`)
   }
   if (params.hazardType) {
@@ -120,8 +120,13 @@ export const getPostById = async (id: string): Promise<Post> => {
 }
 
 export const createPost = async (data: CreatePostData): Promise<Post> => {
+  const { latitude, longitude, ...rest } = data
+  const dbData = {
+    ...rest,
+    geom: `POINT(${longitude} ${latitude})`,
+  }
   const { columnsJoinStr, placeholdersJoinStr, valuesList } =
-    buildQueryParts(data)
+    buildQueryParts(dbData)
   const sql = `INSERT INTO posts (${columnsJoinStr}) VALUES (${placeholdersJoinStr}) RETURNING *`
   const result = await pool.query(sql, valuesList)
   if (!result.rows[0]) {
@@ -134,7 +139,12 @@ export const updatePost = async (
   data: UpdatePostData,
   id: string,
 ): Promise<Post> => {
-  const { setFieldsClause, valuesList } = buildQueryParts(data, 2)
+  const { latitude, longitude, ...rest } = data
+  const dbData = {
+    ...rest,
+    geom: `POINT(${longitude} ${latitude})`,
+  }
+  const { setFieldsClause, valuesList } = buildQueryParts(dbData, 2)
   const sql = `UPDATE posts SET ${setFieldsClause} WHERE id = $1 RETURNING *`
   const result = await pool.query(sql, [id, ...valuesList])
   if (!result.rows[0]) {

@@ -1,8 +1,9 @@
 import pool from './db.ts'
 import config from '../lib/config.ts'
+import { camelToSnakeCase } from '../lib/utils.ts'
 
 export const buildQueryParts = (data: Record<string, unknown>, startAt = 1) => {
-  const keys = Object.keys(data)
+  const keys = Object.keys(data).map(camelToSnakeCase)
   const valuesList = Object.values(data)
   const columnsJoinStr = keys.join(', ')
   const placeholdersJoinStr = keys.map((_, i) => `$${i + startAt}`).join(', ')

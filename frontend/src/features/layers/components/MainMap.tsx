@@ -46,19 +46,19 @@ export default function MainMap({
           ...prev.global,
           minLat: {
             ...prev.global.minLat,
-            value: Math.max(Math.round(minLat), -90),
+            value: Math.max(minLat, -90),
           } as NumberFieldProps,
           maxLat: {
             ...prev.global.maxLat,
-            value: Math.min(Math.round(maxLat), 90),
+            value: Math.min(maxLat, 90),
           } as NumberFieldProps,
           minLng: {
             ...prev.global.minLng,
-            value: Math.max(Math.round(minLng), -180),
+            value: Math.max(minLng, -180),
           } as NumberFieldProps,
           maxLng: {
             ...prev.global.maxLng,
-            value: Math.min(Math.round(maxLng), 180),
+            value: Math.min(maxLng, 180),
           } as NumberFieldProps,
         },
       }))

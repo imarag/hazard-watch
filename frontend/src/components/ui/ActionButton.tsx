@@ -1,11 +1,12 @@
 import { Button, IconButton, Box, Tooltip } from '@mui/material'
 import { Link } from 'react-router'
 import type { SvgIconComponent } from '@mui/icons-material'
+import type { ElementSize } from '@/shared/types/form'
 
 type CommonProps = {
   icon: SvgIconComponent
   label?: string
-  size?: 'small' | 'medium' | 'large'
+  size?: ElementSize
   variant?: 'text' | 'outlined' | 'contained'
   color?:
     | 'primary'

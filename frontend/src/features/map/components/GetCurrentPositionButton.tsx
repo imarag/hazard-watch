@@ -1,35 +1,30 @@
 import MyLocationIcon from '@mui/icons-material/MyLocation'
-import { useMapEvents } from 'react-leaflet'
 import MapButton from '@/features/map/components/MapButton'
-import type { MapPosition } from '@/features/map/types'
+import type { MapElementPosition } from '@/features/map/types'
 import { getPositionProps } from '@/features/map/constants'
 import { Box } from '@mui/material'
+import type { ElementSize } from '@/shared/types/form'
+import { useMap } from 'react-leaflet'
 
 interface GetCurrentPositionProps {
-  position: MapPosition
-  size?: 'small' | 'medium' | 'large'
+  position: MapElementPosition
+  size?: ElementSize
 }
 
 export default function GetCurrentPositionButton({
   position,
   size,
 }: GetCurrentPositionProps) {
-  const map = useMapEvents({
-    locationfound(e) {
-      map.flyTo(e.latlng, map.getZoom())
-    },
-  })
+  const map = useMap()
 
   function getCurrentLocation() {
     map.locate()
   }
 
-  const positionProps = getPositionProps(position)
   return (
     <Box
       sx={{ display: 'flex', flexDirection: 'column' }}
-      className={positionProps.className}
-      style={positionProps.style}
+      style={getPositionProps(position)}
     >
       <MapButton
         size={size}

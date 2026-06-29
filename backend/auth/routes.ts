@@ -23,7 +23,7 @@ import {
 import config from '../lib/config.js'
 import { sendMail } from '../lib/mailer.js'
 import { logger } from '../lib/logger.js'
-import { AppError } from '../errors.js'
+import { AppError } from '../lib/errors.js'
 import pool from '../db/db.ts'
 
 const router = express.Router()
@@ -209,7 +209,7 @@ router.put('/change-password', async (req, res) => {
   if (!existingUser) {
     throw new AppError(401, 'Invalid user.')
   }
-
+  console.log(user)
   if (!user.newPassword || !user.currentPassword) {
     throw new AppError(400, 'Current password and new password are required.')
   }

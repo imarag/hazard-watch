@@ -10,17 +10,16 @@ import type { MapBounds } from '@/features/layers/types'
 import Legend from '@/features/map/components/Legend'
 import MarkerItem from './MarkerItem'
 import MapEventsListener from './MapEventsListener'
-import { MAP_POSITIONS, MAP_CONFIG } from '../constants'
+import { MAP_SETTINGS } from '../constants'
+import type { ElementSize } from '@/shared/types/form'
 
 interface MapProps {
   center?: [number, number]
   scrollWheelZoom?: boolean
   zoom?: number
   height?: string
-  zoomControl?: boolean
-  attributionControl?: boolean
-  children?: React.ReactNode
-  buttonIconSize?: 'small' | 'medium' | 'large'
+  buttonIconSize?: ElementSize
+  legendTitle?: string
   onMapClick?: (coords: { lat: number; lng: number }) => void
   onLocationFound?: (coords: { lat: number; lng: number }) => void
   onMarkerMove?: (id: string, coords: { lat: number; lng: number }) => void
@@ -30,45 +29,79 @@ interface MapProps {
   flyTarget?: FlyTarget | null
   markers?: MarkerType[][]
   loading?: boolean
-  legendTitle?: string
   legendItems?: LegendItem[]
+  children?: React.ReactNode
+  showZoomControls?: boolean
+  showCurrentPosition?: boolean
+  showLegend?: boolean
+  showAttributionControl?: boolean
+  locateOnMount?: boolean
 }
 
 export default function Map({
-  center = MAP_CONFIG.center,
-  scrollWheelZoom = MAP_CONFIG.scrollWheelZoom,
-  zoom = MAP_CONFIG.zoom,
-  height = MAP_CONFIG.height,
-  zoomControl = MAP_CONFIG.zoomControl,
-  attributionControl = MAP_CONFIG.attributionControl,
-  buttonIconSize = MAP_CONFIG.buttonIconSize,
+  center = MAP_SETTINGS.center,
+  scrollWheelZoom = MAP_SETTINGS.scrollWheelZoom,
+  zoom = MAP_SETTINGS.zoom,
+  height = MAP_SETTINGS.height,
+  buttonIconSize = MAP_SETTINGS.buttonIconSize,
+  legendTitle = MAP_SETTINGS.legendTitle,
+  showZoomControls = MAP_SETTINGS.showZoomControls,
+  showCurrentPosition = MAP_SETTINGS.showCurrentPosition,
+  showLegend = MAP_SETTINGS.showLegend,
+  showAttributionControl = MAP_SETTINGS.showAttributionControl,
   flyTarget = null,
   markers = [],
   loading = false,
-  legendTitle = MAP_CONFIG.legendTitle,
   legendItems = [],
+  onMapClick,
+  onLocationFound,
   onMarkerMove,
   onMoveEnd,
   onZoomEnd,
   onMapReady,
+  locateOnMount = MAP_SETTINGS.locateOnMount,
   children,
 }: MapProps) {
+  const { positions, tileUrl } = MAP_SETTINGS
+
   return (
     <MapContainer
       center={center}
       zoom={zoom}
       scrollWheelZoom={scrollWheelZoom}
       style={{ height }}
-      zoomControl={zoomControl}
-      attributionControl={attributionControl}
+      zoomControl={false}
+      attributionControl={false}
     >
-      <TileLayer url={MAP_CONFIG.tileUrl} />
-      <AttributionControl position={MAP_POSITIONS.attribution} />
-      <ZoomControlButtons size={buttonIconSize} position={MAP_POSITIONS.zoomControl} />
-      <GetCurrentPositionButton size={buttonIconSize} position={MAP_POSITIONS.currentPosition} />
+      <TileLayer url={tileUrl} />
+      {showZoomControls && (
+        <ZoomControlButtons
+          size={buttonIconSize}
+          position={positions.zoomControl}
+        />
+      )}
+      {showCurrentPosition && (
+        <GetCurrentPositionButton
+          size={buttonIconSize}
+          position={positions.currentPosition}
+        />
+      )}
+      {showLegend && legendItems.length > 0 && (
+        <Legend
+          title={legendTitle}
+          items={legendItems}
+          position={positions.legend}
+        />
+      )}
+      {showAttributionControl && (
+        <AttributionControl position={positions.attribution} />
+      )}
       {loading && <MapSpinner />}
       <FlyToController target={flyTarget} />
       <MapEventsListener
+        locateOnMount={locateOnMount}
+        onMapClick={onMapClick}
+        onLocationFound={onLocationFound}
         onMoveEnd={onMoveEnd}
         onZoomEnd={onZoomEnd}
         onMapReady={onMapReady}
@@ -78,14 +111,13 @@ export default function Map({
           key={i}
           chunkedLoading
           animate={false}
-          disableClusteringAtZoom={8}
+          disableClusteringAtZoom={MAP_SETTINGS.disableClusteringAtZoom}
         >
           {group.map((m) => (
             <MarkerItem key={m.id} marker={m} onMove={onMarkerMove} />
           ))}
         </MarkerClusterGroup>
       ))}
-      <Legend title={legendTitle} items={legendItems} position={MAP_POSITIONS.legend} />
       {children}
     </MapContainer>
   )

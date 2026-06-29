@@ -4,11 +4,17 @@ import morgan from 'morgan'
 import cors from 'cors'
 import path from 'path'
 import { fileURLToPath } from 'url'
-import AuthRouter from './auth/routes.ts'
-import PostsRouter from './posts/routes.ts'
-import HazardsRouter from './hazards/shared/routes.ts'
-import config from './lib/config.ts'
-import { extractToken, errorHandler, routeNotFound, camelCaseQueryTransformer } from './middleware.js'
+import AuthRouter from './auth/routes.js'
+import PostsRouter from './posts/routes.js'
+import HazardsRouter from './hazards/shared/routes.js'
+import config from './lib/config.js'
+import {
+  extractToken,
+  errorHandler,
+  routeNotFound,
+  camelCaseQueryTransformer,
+} from './middleware.js'
+import helmet from 'helmet'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -25,6 +31,7 @@ if (config.NODE_ENV === 'development') {
   )
 }
 
+app.use(helmet())
 app.use(camelCaseQueryTransformer)
 app.use(morgan('tiny'))
 app.use(express.json())

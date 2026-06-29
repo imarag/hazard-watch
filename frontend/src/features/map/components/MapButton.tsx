@@ -1,9 +1,10 @@
 import { IconButton, Box } from '@mui/material'
 import { useEffect, useRef } from 'react'
 import L from 'leaflet'
+import type { ElementSize } from '@/shared/types/form'
 
 interface MapButtonProps {
-  size?: 'small' | 'medium' | 'large'
+  size?: ElementSize
   icon: React.ReactNode
   onClick?: () => void
   title?: string

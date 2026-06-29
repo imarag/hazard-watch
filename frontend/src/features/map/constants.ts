@@ -1,33 +1,34 @@
-import type { MapPosition, CustomPosition } from '@/features/map/types'
-import type { ControlPosition } from 'leaflet'
+import type { MapElementPosition } from '@/features/map/types'
 
-export const MAP_CONFIG = {
+export const MAP_SETTINGS = {
   center: [51.505, -0.09] as [number, number],
+  scrollWheelZoom: true,
   zoom: 13,
   height: '240px',
-  scrollWheelZoom: true,
-  zoomControl: false,
-  attributionControl: true,
   buttonIconSize: 'small' as const,
   legendTitle: 'Legend',
   tileUrl: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  disableClusteringAtZoom: 8,
+  showZoomControls: true,
+  showCurrentPosition: true,
+  showLegend: true,
+  showAttributionControl: true,
+  positions: {
+    attribution: 'bottomleft',
+    zoomControl: 'topleft',
+    currentPosition: 'bottomright',
+    legend: 'topright',
+  } as const satisfies Record<string, MapElementPosition>,
+  locateOnMount: false,
+  flyDurationSec: 4,
+  startZoom: 15
 } as const
 
-export const MAP_POSITIONS = {
-  attribution: 'bottomleft',
-  zoomControl: 'topleft',
-  currentPosition: 'bottomright',
-  legend: 'topright',
-} as const satisfies Record<string, ControlPosition>
-
-const LEAFLET_POSITION_CLASSES: Record<ControlPosition, string> = {
-  bottomleft: 'leaflet-bottom leaflet-left',
-  bottomright: 'leaflet-bottom leaflet-right',
-  topleft: 'leaflet-top leaflet-left',
-  topright: 'leaflet-top leaflet-right',
-}
-
-const CUSTOM_POSITION_STYLES: Record<CustomPosition, React.CSSProperties> = {
+const POSITION_STYLES: Record<MapElementPosition, React.CSSProperties> = {
+  bottomleft: { position: 'absolute', bottom: 10, left: 10, zIndex: 1000 },
+  bottomright: { position: 'absolute', bottom: 10, right: 10, zIndex: 1000 },
+  topleft: { position: 'absolute', top: 10, left: 10, zIndex: 1000 },
+  topright: { position: 'absolute', top: 10, right: 10, zIndex: 1000 },
   centerright: {
     position: 'absolute',
     right: 10,
@@ -58,13 +59,6 @@ const CUSTOM_POSITION_STYLES: Record<CustomPosition, React.CSSProperties> = {
   },
 }
 
-const isLeafletPosition = (
-  position: MapPosition,
-): position is ControlPosition => position in LEAFLET_POSITION_CLASSES
-
-export function getPositionProps(position: MapPosition) {
-  if (isLeafletPosition(position)) {
-    return { className: LEAFLET_POSITION_CLASSES[position], style: undefined }
-  }
-  return { className: undefined, style: CUSTOM_POSITION_STYLES[position] }
+export function getPositionProps(position: MapElementPosition) {
+  return POSITION_STYLES[position]
 }

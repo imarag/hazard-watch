@@ -3,6 +3,7 @@ import Map from '@/features/map/components/Map'
 import type { Post } from '@/features/posts/types'
 import PostCardTitle from '@/features/posts/components/PostCardTitle'
 import type { FlyTarget, MarkerType } from '@/features/map/types'
+import { layerMeta } from '@/features/layers/constants'
 
 interface PostViewMapProps {
   post: Post
@@ -13,6 +14,8 @@ export default function PostViewMap({ post }: PostViewMapProps) {
     id: post.id,
     coords: { lat: post.latitude, lng: post.longitude },
     tooltip: post,
+    icon: layerMeta.post.muiIcon,
+    color: layerMeta.post.backgroundColor,
   }
 
   const flyTarget: FlyTarget = {
@@ -52,7 +55,13 @@ export default function PostViewMap({ post }: PostViewMapProps) {
         </Box>
       </Box>
       <Box sx={{ flexGrow: 1 }}>
-        <Map markers={[[postMarker]]} height='100%' flyTarget={flyTarget} />
+        <Map
+          center={[post.latitude, post.longitude]}
+          zoom={3}
+          markers={[[postMarker]]}
+          height='100%'
+          flyTarget={flyTarget}
+        />
       </Box>
     </Box>
   )
