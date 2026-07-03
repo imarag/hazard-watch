@@ -1,6 +1,6 @@
 import type { Request, Response, NextFunction } from 'express'
-import { verifyJWTToken } from './auth/utils.js'
-import { getPostById } from './posts/services.js'
+import { verifyJWTToken } from './modules/auth/index.js'
+import { getPostById } from './modules/posts/index.js'
 import { z } from 'zod'
 import config from './lib/config.js'
 import axios from 'axios'
@@ -30,7 +30,7 @@ export const requireAuth = (
   _res: Response,
   next: NextFunction,
 ) => {
-  if (!req.userId) {
+  if (!req?.userId) {
     throw new AppError(401, 'You must be logged in to use this option.')
   }
   next()

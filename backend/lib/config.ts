@@ -5,12 +5,12 @@ import { fileURLToPath } from 'url'
 
 z.enum(['production', 'development', 'test']).parse(process.env['NODE_ENV'])
 
-const __dirname = fileURLToPath(new URL('.', import.meta.url))
-dotenv.config({ path: path.resolve(__dirname, '../.env') })
-dotenv.config({
-  path: path.resolve(__dirname, `../.env.${process.env['NODE_ENV']}`),
-})
+const ROOT_DIR = fileURLToPath(new URL('..', import.meta.url))
 
+dotenv.config({ path: path.resolve(ROOT_DIR, '.env') })
+dotenv.config({
+  path: path.resolve(ROOT_DIR, `.env.${process.env['NODE_ENV']}`),
+})
 const SECONDS = 1
 const MINUTES = 60 * SECONDS
 const HOURS = 60 * MINUTES
@@ -22,6 +22,12 @@ const appConfig = {
   REFRESH_TOKEN_TTL: 7 * DAYS,
   REFRESH_TOKEN_DUR: 7 * DAYS,
   ACCESS_TOKEN_DUR: 15 * MINUTES,
+  REFRESH_COOKIE_OPTIONS: {
+    httpOnly: true,
+    secure: process.env['NODE_ENV'] === 'production',
+    sameSite: 'strict',
+    path: '/api/auth',
+  } as const,
   CRON_EARTHQUAKES_DEV: '*/1 * * * *',
   CRON_EARTHQUAKES_PROD: '*/5 * * * *',
   CRON_WILDFIRES_DEV: '*/3 * * * *', // 3 min to avoid overlap with 52s sync
@@ -36,7 +42,8 @@ const appConfig = {
   WILDFIRES_RETENTION_DAYS: 30,
   BATCH_THRESHOLD: 1000,
   BATCH_SIZE: 5000, // was 1000, 5000 is faster with fewer round trips
-  DB_POOL_MAX: 10
+  DB_POOL_MAX: 10,
+  ROOT_DIR: ROOT_DIR,
 }
 
 const envConfig = {
@@ -54,17 +61,7 @@ const envConfig = {
   DB_PASSWORD: process.env['DB_PASSWORD'],
 }
 
-const rawConfig = {
-  ...appConfig,
-  ...envConfig,
-}
-
 const configSchema = z.object({
-  REFRESH_TOKEN_KEY: z.string(),
-  REFRESH_TOKEN_TTL: z.number(),
-  REFRESH_TOKEN_DUR: z.number(),
-  ACCESS_TOKEN_DUR: z.number(),
-  ACCESS_TOKEN_TTL: z.number(),
   NODE_ENV: z.enum(['production', 'development', 'test']),
   PORT: z.coerce.number().int(),
   JWT_SECRET: z.string(),
@@ -79,11 +76,11 @@ const configSchema = z.object({
   DB_PASSWORD: z.string(),
 })
 
-const validatedEnv = configSchema.parse(rawConfig)
+const validatedEnv = configSchema.parse(envConfig)
 
 const config = {
   ...appConfig,
   ...validatedEnv,
-}
+} as const
 
 export default config

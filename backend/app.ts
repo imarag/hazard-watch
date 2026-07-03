@@ -3,10 +3,9 @@ import cookieParser from 'cookie-parser'
 import morgan from 'morgan'
 import cors from 'cors'
 import path from 'path'
-import { fileURLToPath } from 'url'
-import AuthRouter from './auth/routes.js'
-import PostsRouter from './posts/routes.js'
-import HazardsRouter from './hazards/shared/routes.js'
+import authRouter from './modules/auth/index.js'
+import postsRouter from './modules/posts/index.js'
+import layersRouter from './modules/layers/index.js'
 import config from './lib/config.js'
 import {
   extractToken,
@@ -15,9 +14,6 @@ import {
   camelCaseQueryTransformer,
 } from './middleware.js'
 import helmet from 'helmet'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
 
 const app = express()
 
@@ -38,13 +34,13 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(extractToken)
 
-app.use('/api/auth', AuthRouter)
-app.use('/api/posts', PostsRouter)
-app.use('/api/hazards', HazardsRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/posts', postsRouter)
+app.use('/api/hazards', layersRouter)
 
 // Static frontend (production only — in dev, Vite serves it)
 if (config.NODE_ENV === 'production') {
-  const publicDir = path.join(__dirname, 'public')
+  const publicDir = path.join(config.ROOT_DIR, 'public')
   app.use(express.static(publicDir))
 
   app.get(/^(?!\/api).*/, (_req, res) => {

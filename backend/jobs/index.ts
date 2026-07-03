@@ -1,11 +1,13 @@
 import cron from 'node-cron'
-import { syncEarthquakes } from './syncEarthquakes.js'
-import { syncWildfires } from './syncWildfires.js'
-import { syncTsunamis } from './syncTsunamis.js'
-import { syncEruptions } from './syncEruptions.js'
-import { cleanDatabase } from './cleanDatabase.ts'
+import {
+  syncEarthquakes,
+  syncEruptions,
+  syncTsunamis,
+  syncWildfires,
+  cleanHazards
+} from '../modules/hazards/index.js'
 import config from '../lib/config.js'
-import type { HazardType } from '../hazards/shared/types.ts'
+import type { HazardType } from '../modules/hazards/index.js'
 import { logger } from '../lib/logger.ts'
 
 const IS_DEV = config.NODE_ENV === 'development'
@@ -39,6 +41,6 @@ export function startCronJobs() {
   })
 
   cron.schedule(schedules.clean, async () => {
-    await cleanDatabase()
+    await cleanHazards()
   })
 }

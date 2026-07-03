@@ -1,0 +1,41 @@
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
+import config from '../../lib/config.ts'
+import type { Response } from 'express'
+import type { TokenPayload } from './auth.types.ts'
+import type { SignOptions } from 'jsonwebtoken'
+
+export const hashPassword = async (password: string, saltRounds = 10) => {
+  return await bcrypt.hash(password, saltRounds)
+}
+
+export const compareHashed = async (
+  plainPassword: string,
+  hashedPassword: string,
+): Promise<boolean> => {
+  return await bcrypt.compare(plainPassword, hashedPassword)
+}
+
+export const createJWTToken = (
+  payload: TokenPayload,
+  expires: number | string,
+) => {
+  return jwt.sign(payload, config.JWT_SECRET, {
+    expiresIn: expires,
+  } as SignOptions)
+}
+
+export const verifyJWTToken = (token: string): TokenPayload | null => {
+  try {
+    return jwt.verify(token, config.JWT_SECRET) as TokenPayload
+  } catch {
+    return null
+  }
+}
+
+export function setRefreshCookie(res: Response, refreshToken: string) {
+  res.cookie(config.REFRESH_TOKEN_KEY, refreshToken, {
+    ...config.REFRESH_COOKIE_OPTIONS,
+    maxAge: config.REFRESH_TOKEN_DUR * 1000,
+  })
+}
