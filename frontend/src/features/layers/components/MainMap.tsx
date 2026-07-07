@@ -24,6 +24,7 @@ interface MainMapProps {
       eruption: EruptionDisplayProperties[]
       wildfire: WildfireDisplayProperties[]
       tsunami: TsunamiDisplayProperties[]
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       post: any
     }>,
     Error
