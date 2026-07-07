@@ -1,4 +1,8 @@
 import { z } from 'zod'
+import { HAZARD_TYPES } from './hazards.static.js'
+
+const allLayers = [...HAZARD_TYPES, 'post'] as const satisfies readonly string[]
+export type LayerType = (typeof allLayers)[number]
 
 export const LongitudeSchema = z
   .number({ message: 'Longitude must be a number' })
@@ -9,6 +13,55 @@ export const LatitudeSchema = z
   .number({ message: 'Latitude must be a number' })
   .min(-90, 'Latitude must be at least -90')
   .max(90, 'Latitude must be at most 90')
+
+const CoordsSchema = z
+  .tuple([LongitudeSchema, LatitudeSchema, LongitudeSchema, LatitudeSchema])
+  .refine(
+    ([minLng, _minLat, maxLng, _maxLat]) => minLng < maxLng,
+    'minLng must be less than maxLng',
+  )
+  .refine(
+    ([_minLng, minLat, _maxLng, maxLat]) => minLat < maxLat,
+    'minLat must be less than maxLat',
+  )
+
+const BboxSchema = z
+  .string()
+  .default('-180,-90,180,90')
+  .transform((val) => val.split(',').map(Number))
+  .pipe(CoordsSchema)
+
+const LayersSchema = z
+  .string({
+    message: 'layers is required. Valid values: ' + allLayers.join(', '),
+  })
+  .transform((val) => val.split(',').map((l) => l.trim().toLowerCase()))
+  .pipe(
+    z
+      .array(
+        z.enum(allLayers, {
+          message: 'Invalid layer. Valid values: ' + allLayers.join(', '),
+        }),
+      )
+      .min(1, 'At least one layer is required'),
+  )
+
+export const BaseHazardQueryParamsSchema = z
+  .object({
+    startDate: z.iso.datetime().optional(),
+    endDate: z.iso.datetime().optional(),
+    bbox: BboxSchema,
+    layers: LayersSchema,
+  })
+  .refine(
+    ({ startDate, endDate }) =>
+      startDate === undefined ||
+      endDate === undefined ||
+      new Date(startDate) <= new Date(endDate),
+    'startdate must be before enddate',
+  )
+
+export type BaseHazardQueryParams = z.infer<typeof BaseHazardQueryParamsSchema>
 
 const FIRMSWildfireRowSchema = z.object({
   latitude: z.coerce.number(),
@@ -26,10 +79,16 @@ export const FIRMSWildfireResponseSchema = z.array(FIRMSWildfireRowSchema)
 
 export const WildfireQueryParamsSchema = z.object({
   minFireRadiativePower: z.coerce.number().min(0).optional(),
-  confidence: z.enum(['low', 'nominal', 'high']).optional()
-    .or(z.literal('')).transform((v) => (v === '' ? undefined : v)),
-  timeOfDay: z.enum(['day', 'night']).optional()
-    .or(z.literal('')).transform((v) => (v === '' ? undefined : v)),
+  confidence: z
+    .enum(['low', 'nominal', 'high'])
+    .optional()
+    .or(z.literal(''))
+    .transform((v) => (v === '' ? undefined : v)),
+  timeOfDay: z
+    .enum(['day', 'night'])
+    .optional()
+    .or(z.literal(''))
+    .transform((v) => (v === '' ? undefined : v)),
 })
 
 export type FIRMSWildfireRow = z.infer<typeof FIRMSWildfireRowSchema>

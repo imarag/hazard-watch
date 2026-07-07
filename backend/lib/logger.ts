@@ -1,5 +1,5 @@
 import winston from 'winston'
-import config from './config.ts'
+import config from './config.js'
 
 const devFormat = winston.format.combine(
   winston.format.colorize(),

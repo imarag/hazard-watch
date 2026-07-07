@@ -1,15 +1,16 @@
 import express from 'express'
-import { GlobalHazardQueryParamsSchema } from './layers.schemas.js'
-import { LAYERS_REGISTRY } from './layers.registry.ts'
+import { HazardQueryParamsSchema } from './layers.schemas.js'
+import { LAYERS_REGISTRY } from './layers.registry.js'
 
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  const payload = GlobalHazardQueryParamsSchema.parse(req.query)
+  const payload = HazardQueryParamsSchema.parse(req.query)
 
   const results = await Promise.all(
     payload.layers.map(async (layer) => {
-      const data = await LAYERS_REGISTRY[layer].fetchFn(payload)
+      const fetcher = LAYERS_REGISTRY[layer]
+      const data = await fetcher(payload)
       return [layer, data] as const
     }),
   )

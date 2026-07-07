@@ -8,10 +8,10 @@ import type {
   PostQueryParams,
 } from './posts.schemas.js'
 import postRepo from './posts.repo.js'
-import type { MapQueryParams } from '../hazards/index.js'
+import { type BaseHazardQueryParams } from '../hazards/index.js'
 
 export const getPostsForMap = async (
-  params: MapQueryParams & PostQueryParams,
+  params: BaseHazardQueryParams & PostQueryParams,
 ): Promise<Post[]> => {
   return postRepo.getForMap(params)
 }

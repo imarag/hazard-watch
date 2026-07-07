@@ -1,19 +1,19 @@
-import { AppError } from '../../lib/errors.ts'
-import { compareHashed, verifyJWTToken } from './auth.utils.ts'
+import { AppError } from '../../lib/errors.js'
+import { compareHashed, verifyJWTToken } from './auth.utils.js'
 import {
   getUserByEmail,
   createUser,
   getUserById,
   updateUser,
   type UserUpdateInformation,
-} from '../users/index.ts'
-import type { UserLogin, UserRegister } from './auth.schemas.ts'
-import { createJWTToken } from './auth.utils.ts'
-import config from '../../lib/config.ts'
-import { hashPassword } from './auth.utils.ts'
+} from '../users/index.js'
+import type { UserLogin, UserRegister } from './auth.schemas.js'
+import { createJWTToken } from './auth.utils.js'
+import config from '../../lib/config.js'
+import { hashPassword } from './auth.utils.js'
 import type { Request } from 'express'
-import { logger } from '../../lib/logger.ts'
-import { sendMail } from '../../lib/mailer.ts'
+import { logger } from '../../lib/logger.js'
+import { sendMail } from '../../lib/mailer.js'
 
 export const register = async ({ email, password, name }: UserRegister) => {
   const existingUser = await getUserByEmail(email)
@@ -58,6 +58,7 @@ export const login = async ({ email, password }: UserLogin) => {
 
 export const refresh = async ({ refreshToken }: { refreshToken: string }) => {
   const userPayload = verifyJWTToken(refreshToken)
+
   if (!userPayload || userPayload.tokenType !== 'refresh') {
     throw new AppError(401, 'Invalid refresh token')
   }

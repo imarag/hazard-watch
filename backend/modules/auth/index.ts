@@ -1,5 +1,5 @@
-export type { UserRegister } from './auth.schemas.ts'
-export { verifyJWTToken } from './auth.utils.ts'
-import authRouter from './auth.routes.ts'
+export type { UserRegister } from './auth.schemas.js'
+export { verifyJWTToken } from './auth.utils.js'
+import authRouter from './auth.routes.js'
 export default authRouter
 

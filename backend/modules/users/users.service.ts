@@ -1,4 +1,4 @@
-import type { UserRegister } from '../auth/index.js'
+import { type CreateUser } from './users.schemas.js'
 import * as usersRepo from './users.repo.js'
 import type { UserInDb } from './users.types.js'
 
@@ -12,7 +12,7 @@ export const getUserById = async (userId: string) => {
   return existingUser ?? null
 }
 
-export const createUser = async (data: UserRegister) => {
+export const createUser = async (data: CreateUser) => {
   const createdUser = await usersRepo.createOne(data)
   return createdUser
 }

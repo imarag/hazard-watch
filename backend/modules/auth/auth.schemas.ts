@@ -1,16 +1,12 @@
 import z from 'zod'
-import { emailField, nameField, passwordField } from '../users/index.ts'
+import { emailField, passwordField, CreateUserSchema } from '../users/index.js'
 
-export const UserLoginSchema = z.object({
-  email: emailField,
-  password: passwordField,
+export const UserLoginSchema = CreateUserSchema.pick({
+  email: true,
+  password: true,
 })
 
-export const UserRegisterSchema = z.object({
-  name: nameField,
-  email: emailField,
-  password: passwordField,
-})
+export const UserRegisterSchema = CreateUserSchema
 
 export const UserUpdatePasswordSchema = z.object({
   currentPassword: passwordField.optional(),

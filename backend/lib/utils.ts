@@ -1,4 +1,4 @@
-export const toInt = (val: unknown): number | null => {
+export const toNumber = (val: unknown): number | null => {
   const n = Number(val)
   return Number.isFinite(n) ? n : null
 }
@@ -33,4 +33,11 @@ export function snakeToCamelCase(str: string) {
 
 export function camelToSnakeCase(str: string) {
   return str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
+}
+
+export const capitalize = (str: string) => {
+  if (!str) {
+    return str
+  }
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
 }

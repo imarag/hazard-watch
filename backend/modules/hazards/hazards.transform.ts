@@ -1,32 +1,37 @@
-import { epochToIsoDate } from '../../lib/utils.ts'
 import type {
-  EarthquakeTransformResult,
   USGSEarthquakeResponse,
   GVPEruptionResponse,
+  EarthquakeTransformResult,
   EruptionTransformResult,
   TsunamiTransformResult,
-  FIRMSWildfireResponse,
   WildfireTransformResult,
 } from './hazards.types.js'
-import { toInt } from '../../lib/utils.ts'
+import { type FIRMSWildfireResponse } from './hazards.schemas.js'
+import { toNumber } from '../../lib/utils.js'
+import * as earthquakeUtils from './utils/earthquake.utils.js'
+import * as eruptionUtils from './utils/eruption.utils.js'
+import * as tsunamisUtils from './utils/tsunami.utils.js'
+import * as wildfireUtils from './utils/wildfire.utils.js'
 
 export function transformEarthquakes(
   data: USGSEarthquakeResponse,
 ): EarthquakeTransformResult[] {
   return data.features
-    .filter((f) => f.properties !== null)
+    .filter((f) => f.properties !== null && f.id != null)
     .map((f) => {
       const [lon, lat, depth] = f.geometry.coordinates
       const props = f.properties!
+
       return {
         usgs_id: String(f.id),
-        magnitude: props['mag'] ?? null,
+        magnitude: toNumber(props['mag']),
+        magnitude_type: earthquakeUtils.getMagnitudeType(props['magType']),
         location: props['place'] ?? null,
-        occurred_at: props['time'] ? epochToIsoDate(props['time'], 'ms') : null,
-        depth_km: depth ?? null,
-        triggered_tsunami: props['tsunami'] === 1,
-        review_status: props['status'] ?? null,
-        alert_level: props['alert'] ?? null,
+        occurred_at: earthquakeUtils.getOccurredAt(props['time']),
+        depth_km: toNumber(depth),
+        depth_class: earthquakeUtils.getDepthClass(depth),
+        triggered_tsunami: earthquakeUtils.getTsunamiInfo(props['tsunami']),
+        alert: earthquakeUtils.getAlertInfo(props['alert']),
         geom: `SRID=4326;POINT(${lon} ${lat})`,
       } satisfies EarthquakeTransformResult
     })
@@ -36,90 +41,79 @@ export function transformEruptions(
   raw: GVPEruptionResponse,
 ): EruptionTransformResult[] {
   return raw.features
-    .filter((f) => f.properties !== null && f.geometry !== null)
+    .filter(
+      (f) =>
+        f.properties !== null &&
+        f.geometry !== null &&
+        f.properties['Eruption_Number'] != null,
+    )
     .map((f) => {
       const props = f.properties!
       const [lon, lat] = f.geometry.coordinates
+      const vei = toNumber(props['ExplosivityIndexMax'])
+      const startYear = toNumber(props['StartDateYear'])
+
       return {
-        gvp_eruption_id: toInt(props['Eruption_Number'])!,
-        gvp_volcano_id: toInt(props['Volcano_Number']),
-        volcano_name: props['Volcano_Name'] as string,
-        eruption_area: (props['ActivityArea'] as string) ?? null,
-        start_year: toInt(props['StartDateYear']),
-        start_year_uncertainty: toInt(props['StartDateYearModifier']),
-        explosivity_index: toInt(props['ExplosivityIndexMax']),
+        gvp_eruption_id: toNumber(props['Eruption_Number'])!,
+        gvp_volcano_id: toNumber(props['Volcano_Number']),
+        volcano_name: props['Volcano_Name'] ?? null,
+        eruption_area: props['ActivityArea'] ?? null,
+        start_year: startYear,
+        start_year_display: eruptionUtils.getEraYear(startYear),
+        start_year_uncertainty: toNumber(props['StartDateYearUncertainty']),
+        explosivity_index: vei,
+        explosivity_label: eruptionUtils.getExplosivityLabel(vei),
         confirmed: props['Activity_Type'] === 'Confirmed Eruption',
         geom: `SRID=4326;POINT(${lon} ${lat})`,
       } satisfies EruptionTransformResult
     })
 }
 
-const CAUSE_CODE_MAP: Record<number, string> = {
-  0: 'Unknown',
-  1: 'Earthquake',
-  2: 'Questionable Earthquake',
-  3: 'Earthquake and Landslide',
-  4: 'Volcano and Earthquake',
-  5: 'Volcano, Earthquake, and Landslide',
-  6: 'Volcano',
-  7: 'Volcano and Landslide',
-  8: 'Landslide',
-  9: 'Meteorological',
-  10: 'Explosion',
-  11: 'Astronomical Tide',
-}
-
 export function transformTsunamis(
   items: Record<string, unknown>[],
 ): TsunamiTransformResult[] {
   return items
-    .filter((item) => item['latitude'] != null && item['longitude'] != null)
-    .filter((item) => item['latitude'] != null && item['longitude'] != null)
-    .map((item) => ({
-      noaa_id: item['id'] as number,
-      location: (item['locationName'] as string) ?? null,
-      country: (item['country'] as string) ?? null,
-      year: (item['year'] as number) ?? null,
-      max_wave_height_m: (item['maxWaterHeight'] as number) ?? null,
-      deaths:
-        (item['deathsTotal'] as number) ?? (item['deaths'] as number) ?? null,
-      deaths_severity: (item['deathsAmountOrder'] as number) ?? null,
-      earthquake_magnitude: (item['eqMagnitude'] as number) ?? null,
-      cause: CAUSE_CODE_MAP[item['causeCode'] as number] ?? 'Unknown',
-      event_validity: (item['eventValidity'] as number) ?? null,
-      intensity: (item['tsIntensity'] as number) ?? null,
-      region_code: (item['regionCode'] as number) ?? null,
-      geom: `SRID=4326;POINT(${item['longitude']} ${item['latitude']})`,
-    }))
-}
+    .filter(
+      (item) =>
+        item['id'] != null &&
+        item['latitude'] != null &&
+        item['longitude'] != null,
+    )
+    .map((item) => {
+      const deathsSeverity =
+        toNumber(item['deathsAmountOrder']) ??
+        toNumber(item['deathsAmountOrderTotal'])
 
-const CONFIDENCE_MAP = { l: 'low', n: 'nominal', h: 'high' } as const
-
-const parseConfidence = (raw: string): 'low' | 'nominal' | 'high' => {
-  if (raw in CONFIDENCE_MAP)
-    return CONFIDENCE_MAP[raw as keyof typeof CONFIDENCE_MAP]
-  const n = Number(raw)
-  if (!Number.isFinite(n)) return 'nominal'
-  if (n >= 80) return 'high'
-  if (n >= 30) return 'nominal'
-  return 'low'
-}
-
-const parseDetectedAt = (date: string, time: number): string => {
-  const padded = String(time).padStart(4, '0')
-  return `${date}T${padded.slice(0, 2)}:${padded.slice(2, 4)}:00Z`
+      return {
+        noaa_id: toNumber(item['id'])!,
+        location: (item['locationName'] as string) ?? null,
+        country: (item['country'] as string) ?? null,
+        year: toNumber(item['year']),
+        max_wave_height_m: toNumber(item['maxWaterHeight']),
+        deaths: toNumber(item['deathsTotal']) ?? toNumber(item['deaths']),
+        deaths_severity: deathsSeverity,
+        deaths_severity_label:
+          tsunamisUtils.getDeathsSeverityLabel(deathsSeverity),
+        earthquake_magnitude: toNumber(item['eqMagnitude']),
+        cause: tsunamisUtils.getCause(toNumber(item['causeCode'])),
+        geom: `SRID=4326;POINT(${item['longitude']} ${item['latitude']})`,
+      } satisfies TsunamiTransformResult
+    })
 }
 
 export function transformWildfires(
   raw: FIRMSWildfireResponse,
 ): WildfireTransformResult[] {
-  return raw.map((r) => ({
-    fire_radiative_power: r.frp ?? null,
-    brightness_temp_k: r.bright_ti4 ?? null,
-    confidence: parseConfidence(r.confidence),
-    detected_at: parseDetectedAt(r.acq_date, r.acq_time),
-    time_of_day: r.daynight === 'D' ? 'day' : 'night',
-    satellite: r.satellite ?? null,
-    geom: `SRID=4326;POINT(${r.longitude} ${r.latitude})`,
-  }))
+  return raw.map(
+    (r) =>
+      ({
+        fire_radiative_power: r.frp ?? null,
+        brightness_temp_k: r.bright_ti4 ?? null,
+        confidence: wildfireUtils.parseConfidence(r.confidence),
+        detected_at: wildfireUtils.parseDetectedAt(r.acq_date, r.acq_time),
+        time_of_day: r.daynight === 'D' ? 'day' : 'night',
+        satellite: wildfireUtils.getSatelliteName(r.satellite),
+        geom: `SRID=4326;POINT(${r.longitude} ${r.latitude})`,
+      }) satisfies WildfireTransformResult,
+  )
 }

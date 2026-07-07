@@ -1,5 +1,5 @@
-import pool from '../../db/db.ts'
-import config from '../../lib/config.ts'
+import pool from '../../db/db.js'
+import config from '../../lib/config.js'
 
 export const deleteRecords = async (table: string, days: number) => {
   const result = await pool.query(

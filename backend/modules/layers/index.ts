@@ -1,2 +1,2 @@
-import layersRouter from './layers.routes.ts'
+import layersRouter from './layers.routes.js'
 export default layersRouter

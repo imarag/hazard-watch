@@ -1,9 +1,12 @@
-export { HAZARDS_REGISTRY, type HazardType, HAZARD_TYPES } from './hazards.registry.js'
+export { type HazardType, HAZARD_TYPES, HAZARDS } from './hazards.static.js'
+export { HAZARD_FETCHERS } from './hazards.registry.js'
 export {
   EarthquakeQueryParamsSchema,
   WildfireQueryParamsSchema,
   TsunamiQueryParamsSchema,
   EruptionQueryParamsSchema,
+  BaseHazardQueryParamsSchema,
+  type BaseHazardQueryParams,
   LongitudeSchema,
   LatitudeSchema
 } from './hazards.schemas.js'
@@ -19,5 +22,4 @@ export {
   syncTsunamis,
   syncEruptions,
   cleanHazards
-} from './hazards.sync.ts'
-export {type MapQueryParams } from './hazards.types.js'
+} from './hazards.sync.js'

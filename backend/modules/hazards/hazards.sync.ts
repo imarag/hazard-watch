@@ -2,12 +2,12 @@ import { logger } from "../../lib/logger.js"
 import type { USGSEarthquakeResponse, NOAATsunamiResponse, GVPEruptionResponse} from "./hazards.types.js"
 import { FIRMSWildfireResponseSchema } from "./hazards.schemas.js"
 import { transformEarthquakes, transformTsunamis, transformWildfires, transformEruptions } from "./hazards.transform.js"
-import { HAZARDS_REGISTRY } from "./hazards.registry.js"
 import { datesBefore } from "../../lib/utils.js"
 import * as hazardsRepo from './hazards.repo.js'
-import config from "../../lib/config.ts"
-import { logSyncError } from "./hazards.utils.ts"
+import config from "../../lib/config.js"
+import { logSyncError } from "./hazards.utils.js"
 import { upsertRecords } from "./hazards.repo.js"
+import { HAZARDS } from "./hazards.static.js"
 
 export async function cleanHazards() {
   try {
@@ -33,7 +33,7 @@ export async function cleanHazards() {
 
 export async function syncEarthquakes() {
   try {
-    const provider = HAZARDS_REGISTRY.earthquake.provider
+    const provider = HAZARDS.earthquake.provider
 
     const totalRows = await hazardsRepo.countTableRows('earthquakes')
     const isFirstRun = totalRows === '0'
@@ -78,7 +78,7 @@ export async function syncEarthquakes() {
 
 export async function syncWildfires() {
   try {
-    const provider = HAZARDS_REGISTRY.wildfire.provider
+    const provider = HAZARDS.wildfire.provider
     const { source, dayRange } = provider.defaults
     const url = `${provider.baseUrl}/${provider.apiKey}/${source}/world/${dayRange}`
 
@@ -120,7 +120,7 @@ export async function syncWildfires() {
 
 export async function syncTsunamis() {
   try {
-    const provider = HAZARDS_REGISTRY.tsunami.provider
+    const provider = HAZARDS.tsunami.provider
     const allItems: Record<string, unknown>[] = []
     let page = 1
     let totalPages = 1
@@ -159,7 +159,7 @@ export async function syncTsunamis() {
 
 export async function syncEruptions() {
   try {
-    const provider = HAZARDS_REGISTRY.eruption.provider
+    const provider = HAZARDS.eruption.provider
 
     logger.info('[eruptions] starting sync')
 

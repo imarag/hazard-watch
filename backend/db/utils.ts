@@ -1,4 +1,4 @@
-import { camelToSnakeCase } from '../lib/utils.ts'
+import { camelToSnakeCase } from '../lib/utils.js'
 
 export const buildQueryParts = (data: Record<string, unknown>, startAt = 1) => {
   const keys = Object.keys(data).map(camelToSnakeCase)

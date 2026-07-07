@@ -21,4 +21,11 @@ export const UserUpdateInformationSchema = z.object({
   name: nameField.optional(),
 })
 
+export const CreateUserSchema = z.object({
+  name: nameField,
+  email: emailField,
+  password: passwordField,
+})
+export type CreateUser = z.infer<typeof CreateUserSchema>
+
 export type UserUpdateInformation = z.infer<typeof UserUpdateInformationSchema>

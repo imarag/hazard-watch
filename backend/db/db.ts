@@ -1,4 +1,4 @@
-import config from '../lib/config.ts'
+import config from '../lib/config.js'
 import { Pool } from 'pg'
 
 const pool = new Pool({

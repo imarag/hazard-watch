@@ -8,7 +8,7 @@ import {
 } from '../modules/hazards/index.js'
 import config from '../lib/config.js'
 import type { HazardType } from '../modules/hazards/index.js'
-import { logger } from '../lib/logger.ts'
+import { logger } from '../lib/logger.js'
 
 const IS_DEV = config.NODE_ENV === 'development'
 

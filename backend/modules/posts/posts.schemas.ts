@@ -1,6 +1,9 @@
 import { z } from 'zod'
-import { HAZARD_TYPES } from '../hazards/index.js'
-import { LongitudeSchema, LatitudeSchema } from '../hazards/hazards.schemas.js'
+import {
+  HAZARD_TYPES,
+  LongitudeSchema,
+  LatitudeSchema,
+} from '../hazards/index.js'
 
 export const PostQueryParamsSchema = z.object({
   hazardType: z

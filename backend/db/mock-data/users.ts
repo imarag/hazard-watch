@@ -1,6 +1,4 @@
-import type { UserMock } from "../../users/types.ts"
-
-export const users: UserMock[] = [
+export const users = [
   {
     name: 'James Hartley',
     email: 'james.hartley@gmail.com',

@@ -1,5 +1,18 @@
-export const eruptions = [
-  {
+import { getEraYear, getExplosivityLabel } from '../../modules/hazards/utils/eruption.utils.js'
+import type { EruptionTransformResult } from '../../modules/hazards/hazards.types.js'
+
+type EruptionSeed = Omit<EruptionTransformResult, 'geom'> & { lng: number; lat: number }
+
+const eruption = (
+  e: Omit<EruptionSeed, 'start_year_display' | 'explosivity_label'>,
+): EruptionSeed => ({
+  ...e,
+  start_year_display: getEraYear(e.start_year),
+  explosivity_label: getExplosivityLabel(e.explosivity_index),
+})
+
+export const eruptions: EruptionSeed[] = [
+  eruption({
     gvp_eruption_id: 10001,
     gvp_volcano_id: 210010,
     volcano_name: 'West Eifel Volcanic Field',
@@ -10,8 +23,8 @@ export const eruptions = [
     confirmed: true,
     lng: 6.85,
     lat: 50.17,
-  },
-  {
+  }),
+  eruption({
     gvp_eruption_id: 10003,
     gvp_volcano_id: 210020,
     volcano_name: 'Chaine des Puys',
@@ -22,8 +35,8 @@ export const eruptions = [
     confirmed: true,
     lng: 2.981,
     lat: 45.786,
-  },
-  {
+  }),
+  eruption({
     gvp_eruption_id: 22001,
     gvp_volcano_id: 311240,
     volcano_name: 'Etna',
@@ -34,8 +47,8 @@ export const eruptions = [
     confirmed: true,
     lng: 15.0,
     lat: 37.75,
-  },
-  {
+  }),
+  eruption({
     gvp_eruption_id: 22002,
     gvp_volcano_id: 373010,
     volcano_name: 'Kilauea',
@@ -46,8 +59,8 @@ export const eruptions = [
     confirmed: true,
     lng: -155.28,
     lat: 19.41,
-  },
-  {
+  }),
+  eruption({
     gvp_eruption_id: 22003,
     gvp_volcano_id: 341040,
     volcano_name: 'Stromboli',
@@ -58,8 +71,8 @@ export const eruptions = [
     confirmed: true,
     lng: 15.21,
     lat: 38.79,
-  },
-  {
+  }),
+  eruption({
     gvp_eruption_id: 22004,
     gvp_volcano_id: 341050,
     volcano_name: 'Fagradalsfjall',
@@ -70,5 +83,5 @@ export const eruptions = [
     confirmed: true,
     lng: -22.27,
     lat: 63.87,
-  },
+  }),
 ]

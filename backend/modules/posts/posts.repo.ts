@@ -1,8 +1,8 @@
 import pool from '../../db/db.js'
 import { buildQueryParts } from '../../db/utils.js'
+import type { BaseHazardQueryParams } from '../hazards/index.js'
 import type { CreatePostDbData, UpdatePostDbData, PostQueryParams } from './posts.schemas.js'
 import type { Post } from './posts.types.js'
-import type { MapQueryParams } from '../hazards/index.js'
 
 const POST_SELECT = `
   SELECT
@@ -24,7 +24,7 @@ const POST_SELECT = `
 `
 
 const getForMap = async (
-  params: MapQueryParams & PostQueryParams,
+  params: BaseHazardQueryParams & PostQueryParams,
 ): Promise<Post[]> => {
   const [minLng, minLat, maxLng, maxLat] = params.bbox
   const values: unknown[] = [minLng, minLat, maxLng, maxLat]

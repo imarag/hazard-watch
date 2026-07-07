@@ -5,13 +5,13 @@ import type {
   EruptionDisplay,
   WildfireDisplay,
   TsunamiDisplay,
-  MapQueryParams,
 } from './hazards.types.js'
 import type {
   EarthquakeQueryParams,
   EruptionQueryParams,
   TsunamiQueryParams,
   WildfireQueryParams,
+  BaseHazardQueryParams,
 } from './hazards.schemas.js'
 
 const buildWhere = (filters: string[]) =>
@@ -29,12 +29,12 @@ const addFilter = (
 }
 
 export const getEarthquakes = async (
-  params: MapQueryParams & EarthquakeQueryParams,
+  params: BaseHazardQueryParams & EarthquakeQueryParams,
 ): Promise<EarthquakeDisplay[]> => {
   const [minLng, minLat, maxLng, maxLat] = params.bbox
   const values: unknown[] = [minLng, minLat, maxLng, maxLat]
   const filters = ['ST_Within(geom, ST_MakeEnvelope($1, $2, $3, $4, 4326))']
-  console.log(minLng, minLat, maxLng, maxLat, '*****')
+
   addFilter(
     values,
     filters,
@@ -53,8 +53,8 @@ export const getEarthquakes = async (
   addFilter(values, filters, params.maxDepth, 'depth_km <= ?')
 
   const sql = `
-    SELECT id, usgs_id, magnitude, location, occurred_at, depth_km,
-           triggered_tsunami, review_status, alert_level,
+    SELECT id, usgs_id, magnitude, magnitude_type, location, occurred_at,
+           depth_km, depth_class, triggered_tsunami, alert,
            ST_X(geom) AS longitude, ST_Y(geom) AS latitude
     FROM earthquakes ${buildWhere(filters)}
   `
@@ -64,7 +64,7 @@ export const getEarthquakes = async (
 }
 
 export const getEruptions = async (
-  params: MapQueryParams & EruptionQueryParams,
+  params: BaseHazardQueryParams & EruptionQueryParams,
 ): Promise<EruptionDisplay[]> => {
   const [minLng, minLat, maxLng, maxLat] = params.bbox
   const values: unknown[] = [minLng, minLat, maxLng, maxLat]
@@ -80,7 +80,8 @@ export const getEruptions = async (
 
   const sql = `
     SELECT id, gvp_eruption_id, gvp_volcano_id, volcano_name, eruption_area,
-           start_year, start_year_uncertainty, explosivity_index, confirmed,
+           start_year, start_year_display, start_year_uncertainty,
+           explosivity_index, explosivity_label, confirmed,
            ST_X(geom) AS longitude, ST_Y(geom) AS latitude
     FROM eruptions ${buildWhere(filters)}
   `
@@ -90,7 +91,7 @@ export const getEruptions = async (
 }
 
 export const getWildfires = async (
-  params: MapQueryParams & WildfireQueryParams,
+  params: BaseHazardQueryParams & WildfireQueryParams,
 ): Promise<WildfireDisplay[]> => {
   const [minLng, minLat, maxLng, maxLat] = params.bbox
   const values: unknown[] = [minLng, minLat, maxLng, maxLat]
@@ -129,7 +130,7 @@ export const getWildfires = async (
 }
 
 export const getTsunamis = async (
-  params: MapQueryParams & TsunamiQueryParams,
+  params: BaseHazardQueryParams & TsunamiQueryParams,
 ): Promise<TsunamiDisplay[]> => {
   const [minLng, minLat, maxLng, maxLat] = params.bbox
   const values: unknown[] = [minLng, minLat, maxLng, maxLat]
@@ -145,8 +146,7 @@ export const getTsunamis = async (
 
   const sql = `
     SELECT id, noaa_id, location, country, year, max_wave_height_m, deaths,
-           deaths_severity, earthquake_magnitude, cause, event_validity,
-           intensity, region_code,
+           deaths_severity, deaths_severity_label, earthquake_magnitude, cause,
            ST_X(geom) AS longitude, ST_Y(geom) AS latitude
     FROM tsunamis ${buildWhere(filters)}
   `

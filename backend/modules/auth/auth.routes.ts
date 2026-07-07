@@ -17,9 +17,9 @@ import {
   resetPassword,
   requestPasswordReset,
   updateUserInformation,
-} from './auth.service.ts'
-import { setRefreshCookie } from './auth.utils.ts'
-import config from '../../lib/config.ts'
+} from './auth.service.js'
+import { setRefreshCookie } from './auth.utils.js'
+import config from '../../lib/config.js'
 import { UserUpdateInformationSchema } from '../users/index.js'
 
 const router = express.Router()
@@ -27,7 +27,7 @@ const router = express.Router()
 router.post('/refresh', async (req, res) => {
   const refreshToken = req.cookies?.[config.REFRESH_TOKEN_KEY]
 
-  const { accessToken, user } = await refresh(refreshToken)
+  const { accessToken, user } = await refresh({ refreshToken })
 
   return res.status(200).json({
     accessToken,
@@ -66,7 +66,7 @@ router.post('/register', async (req, res) => {
 })
 
 router.post('/logout', (_req, res) => {
-  res.clearCookie(config.REFRESH_TOKEN_KEY, REFRESH_COOKIE_OPTIONS)
+  res.clearCookie(config.REFRESH_TOKEN_KEY, config.REFRESH_COOKIE_OPTIONS)
   return res.status(200).json({ message: 'Logged out' })
 })
 

@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import config from '../../lib/config.ts'
+import config from '../../lib/config.js'
 import type { Response } from 'express'
-import type { TokenPayload } from './auth.types.ts'
+import type { TokenPayload } from './auth.types.js'
 import type { SignOptions } from 'jsonwebtoken'
 
 export const hashPassword = async (password: string, saltRounds = 10) => {

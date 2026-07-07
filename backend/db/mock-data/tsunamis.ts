@@ -1,5 +1,15 @@
-export const tsunamis = [
-  {
+import { getDeathsSeverityLabel } from '../../modules/hazards/utils/tsunami.utils.js'
+import type { TsunamiTransformResult } from '../../modules/hazards/hazards.types.js'
+
+type TsunamiSeed = Omit<TsunamiTransformResult, 'geom'> & { lng: number; lat: number }
+
+const tsunami = (t: Omit<TsunamiSeed, 'deaths_severity_label'>): TsunamiSeed => ({
+  ...t,
+  deaths_severity_label: getDeathsSeverityLabel(t.deaths_severity),
+})
+
+export const tsunamis: TsunamiSeed[] = [
+  tsunami({
     noaa_id: 1,
     location: 'Syrian Coasts',
     country: 'SYRIA',
@@ -9,13 +19,10 @@ export const tsunamis = [
     deaths_severity: 3,
     earthquake_magnitude: null,
     cause: 'Earthquake',
-    event_validity: 1,
-    intensity: 6,
-    region_code: 50,
     lng: 35.8,
     lat: 35.683,
-  },
-  {
+  }),
+  tsunami({
     noaa_id: 3,
     location: 'Thera Island (Santorini)',
     country: 'GREECE',
@@ -24,14 +31,11 @@ export const tsunamis = [
     deaths: null,
     deaths_severity: 3,
     earthquake_magnitude: null,
-    cause: 'Volcano',
-    event_validity: 4,
-    intensity: 6,
-    region_code: 50,
+    cause: 'Volcanic eruption',
     lng: 25.4,
     lat: 36.4,
-  },
-  {
+  }),
+  tsunami({
     noaa_id: 5001,
     location: 'Pacific Coast',
     country: 'JAPAN',
@@ -41,13 +45,10 @@ export const tsunamis = [
     deaths_severity: 4,
     earthquake_magnitude: 9.1,
     cause: 'Earthquake',
-    event_validity: 4,
-    intensity: 10,
-    region_code: 30,
     lng: 142.3,
     lat: 38.1,
-  },
-  {
+  }),
+  tsunami({
     noaa_id: 5002,
     location: 'Indian Ocean',
     country: 'INDONESIA',
@@ -57,13 +58,10 @@ export const tsunamis = [
     deaths_severity: 4,
     earthquake_magnitude: 9.1,
     cause: 'Earthquake',
-    event_validity: 4,
-    intensity: 9,
-    region_code: 40,
     lng: 95.9,
     lat: 3.3,
-  },
-  {
+  }),
+  tsunami({
     noaa_id: 5003,
     location: 'Ionian Sea',
     country: 'GREECE',
@@ -73,13 +71,10 @@ export const tsunamis = [
     deaths_severity: 1,
     earthquake_magnitude: 6.8,
     cause: 'Earthquake',
-    event_validity: 4,
-    intensity: 3,
-    region_code: 50,
     lng: 20.6,
     lat: 37.9,
-  },
-  {
+  }),
+  tsunami({
     noaa_id: 5004,
     location: 'Tyrrhenian Sea',
     country: 'ITALY',
@@ -88,11 +83,8 @@ export const tsunamis = [
     deaths: 1,
     deaths_severity: 1,
     earthquake_magnitude: null,
-    cause: 'Volcano',
-    event_validity: 4,
-    intensity: 2,
-    region_code: 50,
+    cause: 'Volcanic eruption',
     lng: 15.21,
     lat: 38.79,
-  },
+  }),
 ]

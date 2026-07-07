@@ -1,4 +1,4 @@
-import { logger } from "../../lib/logger.ts"
+import { logger } from "../../lib/logger.js"
 
 export function logSyncError(label: string, err: unknown) {
   if (err instanceof Error) {
